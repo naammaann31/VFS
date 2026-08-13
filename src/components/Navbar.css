@@ -22,7 +22,7 @@
 .navbar-logo img {
   object-fit: contain;
   width: auto;
-  height: 65px;
+  height: 85px;
   transition: filter 0.3s;
 }
 .navbar-links {
@@ -262,7 +262,7 @@
     padding: 0.8rem 2rem;
   }
   .navbar-logo img {
-    height: 80px;
+    height: 95px;
   }
   .navbar-links {
     gap: 0.8rem;
@@ -284,7 +284,7 @@
     padding: 0.6rem 1.2rem;
   }
   .navbar-logo img {
-    height: 65px;
+    height: 78px;
   }
   .navbar-hamburger {
     display: flex;
@@ -419,7 +419,7 @@
     padding-right: max(1rem, env(safe-area-inset-right));
   }
   .navbar-logo img {
-    height: 55px;
+    height: 64px;
   }
   .navbar-links {
     width: 85%;
@@ -431,7 +431,7 @@
     padding: 0.5rem 0.75rem;
   }
   .navbar-logo img {
-    height: 48px;
+    height: 56px;
   }
   .navbar-links {
     width: 90%;
