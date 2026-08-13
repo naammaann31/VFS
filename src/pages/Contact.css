@@ -250,68 +250,6 @@
   min-height: 120px;
   line-height: 1.6;
 }
-.contact-consent-block {
-  background: #f8fafc;
-  border: 1px solid #0000000d;
-  border-radius: 12px;
-  margin-bottom: 24px;
-  padding: 24px;
-}
-.contact-consent-text {
-  color: #64748b;
-  margin: 0 0 16px;
-  font-size: 13px;
-  line-height: 1.6;
-}
-.contact-consent-text strong {
-  color: #050a14;
-  font-weight: 700;
-}
-.contact-consent-text a {
-  color: #050a14;
-  font-weight: 600;
-  text-decoration: underline;
-}
-.contact-consent-checkbox-wrapper {
-  cursor: pointer;
-  align-items: flex-start;
-  gap: 12px;
-  display: flex;
-}
-.contact-consent-checkbox {
-  appearance: none;
-  cursor: pointer;
-  background-color: #fff;
-  border: 2px solid #cbd5e1;
-  border-radius: 4px;
-  flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-  margin-top: 2px;
-  transition: all 0.2s;
-  position: relative;
-}
-.contact-consent-checkbox:checked {
-  background-color: #050a14;
-  border-color: #050a14;
-}
-.contact-consent-checkbox:checked:after {
-  content: "";
-  border: 2px solid #fff;
-  border-width: 0 2px 2px 0;
-  width: 5px;
-  height: 10px;
-  position: absolute;
-  top: 1px;
-  left: 5px;
-  transform: rotate(45deg);
-}
-.contact-consent-label {
-  color: #334155;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.5;
-}
 .contact-form-error {
   color: #b91c1c;
   background-color: #fee2e2;

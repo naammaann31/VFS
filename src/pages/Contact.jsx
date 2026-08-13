@@ -76,7 +76,6 @@ const Contact = () => {
     visaType: "",
     message: "",
     website: "", // honeypot — bots fill this, humans never see it
-    consent: false,
   });
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -106,9 +105,6 @@ const Contact = () => {
     }
     if (!formData.phone.trim() || formData.phone.length < 6) {
       return setError("Please enter a valid phone number.");
-    }
-    if (!formData.consent) {
-      return setError("Please accept the text message updates to continue.");
     }
 
     setSubmitting(true);
@@ -498,28 +494,6 @@ const Contact = () => {
                   className="form-textarea"
                   rows="5"
                 />
-              </div>
-
-              <div className="contact-consent-block">
-                <p className="contact-consent-text">
-                  By opting in for text messages, you agree to receive appointment reminders and
-                  important updates from <strong>VECTRA FOREIGN SERVICES</strong> at the number
-                  provided. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to
-                  unsubscribe. Reply HELP for help.
-                </p>
-                <label className="contact-consent-checkbox-wrapper">
-                  <input
-                    type="checkbox"
-                    name="consent"
-                    className="contact-consent-checkbox"
-                    checked={formData.consent}
-                    onChange={handleChange}
-                    required
-                  />
-                  <span className="contact-consent-label">
-                    I would like to receive text message updates from Vectra Foreign Services.
-                  </span>
-                </label>
               </div>
 
               <AnimatePresence>
