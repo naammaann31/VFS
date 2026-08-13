@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Disallow crawling of internal or private routes
+Disallow: /thank-you
+Disallow: /send_mail.php
+
+Sitemap: https://vectraforeignservices.com/sitemap.xml

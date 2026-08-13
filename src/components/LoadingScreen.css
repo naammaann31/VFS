@@ -1,0 +1,33 @@
+.loading-screen {
+  z-index: 9999;
+  background-color: #fff;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100dvh;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.loading-logo-wrapper {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.loading-logo {
+  width: 140px;
+  height: auto;
+  animation: 1.5s ease-in-out infinite coin-spin;
+}
+@keyframes coin-spin {
+  0% {
+    transform: perspective(400px) rotateY(0);
+  }
+  50% {
+    transform: perspective(400px) rotateY(180deg);
+  }
+  to {
+    transform: perspective(400px) rotateY(360deg);
+  }
+}

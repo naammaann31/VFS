@@ -1,0 +1,108 @@
+.service-cta-section {
+  background-color: #f8fafc;
+  background-image: radial-gradient(#a1a1aa 1px, #0000 1px);
+  background-size: 30px 30px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px 20px 80px;
+  font-family: Inter, sans-serif;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+.service-cta-container {
+  text-align: center;
+  z-index: 2;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  position: relative;
+}
+.service-cta-title {
+  color: #050a14;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 900;
+  line-height: 1.1;
+}
+.service-cta-subtitle {
+  color: #4a5568;
+  max-width: 650px;
+  margin-bottom: 40px;
+  font-size: clamp(16px, 2vw, 18px);
+  line-height: 1.7;
+}
+.service-cta-btn {
+  color: #fff;
+  cursor: pointer;
+  background: #050a14;
+  border: none;
+  border-radius: 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 36px;
+  font-size: 16px;
+  font-weight: 800;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  box-shadow: 0 10px 30px #050a141a;
+}
+.service-cta-btn:hover {
+  background: #1e293b;
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 15px 40px #050a1433;
+}
+.service-cta-glow-left {
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle, #2563eb26 0%, #0000 70%);
+  border-radius: 50%;
+  width: 400px;
+  height: 400px;
+  position: absolute;
+  top: -150px;
+  left: -150px;
+}
+.service-cta-glow-right {
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle, #7c3aed1a 0%, #0000 70%);
+  border-radius: 50%;
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  bottom: -150px;
+  right: -150px;
+}
+@media (width<=768px) {
+  .service-cta-section {
+    padding: 80px 20px;
+  }
+}
+@media (width<=480px) {
+  .service-cta-section {
+    margin-top: 20px;
+    padding: 60px 16px;
+  }
+  .service-cta-btn {
+    width: 100%;
+    max-width: 320px;
+    padding: 14px 28px;
+    font-size: 14px;
+  }
+}
+@media (width<=360px) {
+  .service-cta-section {
+    padding: 50px 12px;
+  }
+  .service-cta-btn {
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-size: 13px;
+  }
+}

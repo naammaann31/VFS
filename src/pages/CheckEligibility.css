@@ -1,0 +1,304 @@
+.eligibility-page-wrapper {
+  background-color: #f8fafc;
+  background-image: radial-gradient(#a1a1aa 1px, #0000 1px);
+  background-size: 30px 30px;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: Inter, sans-serif;
+  display: flex;
+  position: relative;
+  overflow-x: hidden;
+}
+.eligibility-container {
+  flex: 1;
+  width: 100%;
+  max-width: 800px;
+  margin: 120px auto 80px;
+  padding: 0 20px;
+}
+.eligibility-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.eligibility-header h1 {
+  color: #050a14;
+  margin-bottom: 15px;
+  font-size: clamp(2rem, 3.5vw, 2.5rem);
+  font-weight: 800;
+}
+.eligibility-header p {
+  color: #6b6375;
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+}
+.progress-section {
+  margin-bottom: 40px;
+}
+.progress-header {
+  color: #050a14;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-weight: 600;
+  display: flex;
+}
+.progress-bar-bg {
+  background: #050a141a;
+  border-radius: 10px;
+  width: 100%;
+  height: 6px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  background: #050a14;
+  border-radius: 10px;
+  height: 100%;
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.step-indicators {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  display: flex;
+}
+.step-badge {
+  color: #6b6375;
+  background: #fff9;
+  border: 1px solid #0000000d;
+  border-radius: 5px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+.step-badge.active {
+  color: #fff;
+  background: #050a14;
+  border-color: #050a14;
+}
+.step-badge.completed {
+  color: #050a14;
+  background: #050a140d;
+  border-color: #050a1433;
+}
+.form-glass-card {
+  -webkit-backdrop-filter: blur(25px);
+  background: linear-gradient(135deg, #fffffff2 0%, #fff9 100%);
+  border: 1px solid #fffc;
+  border-radius: 24px;
+  padding: 50px;
+  box-shadow:
+    0 25px 50px -12px #00000014,
+    inset 0 0 0 1px #ffffff80;
+}
+.step-header {
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  display: flex;
+}
+.step-icon {
+  color: #050a14;
+  background: #050a140d;
+  border-radius: 12px;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  display: flex;
+}
+.step-title h2 {
+  color: #050a14;
+  margin: 0 0 5px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+.step-title p {
+  color: #6b6375;
+  margin: 0;
+  font-size: 0.95rem;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  color: #050a14;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: block;
+}
+.form-control {
+  color: #050a14;
+  background: #ffffffe6;
+  border: 1px solid #0000001a;
+  border-radius: 12px;
+  width: 100%;
+  padding: 15px 20px;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+.form-control:focus {
+  border-color: #050a14;
+  outline: none;
+  box-shadow: 0 0 0 3px #050a141a;
+}
+.options-grid {
+  flex-direction: column;
+  gap: 15px;
+  display: flex;
+}
+.option-card {
+  cursor: pointer;
+  color: #6b6375;
+  background: #fffffff2;
+  border: 1px solid #0000000f;
+  border-radius: 14px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 25px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  box-shadow: 0 4px 6px -1px #00000005;
+}
+.option-card:hover {
+  background: #fff;
+  border-color: #050a14;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px -5px #0000000f;
+}
+.option-card.selected {
+  color: #050a14;
+  background: linear-gradient(90deg, #050a140a, #0000);
+  border-color: #050a14;
+  font-weight: 600;
+  box-shadow: 0 10px 25px -5px #050a141f;
+}
+.check-circle {
+  border: 2px solid #0003;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  transition: all 0.3s;
+  display: flex;
+}
+.option-card.selected .check-circle {
+  background: #050a14;
+  border-color: #050a14;
+}
+.check-circle svg {
+  color: #fff;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: scale(0.5);
+}
+.option-card.selected .check-circle svg {
+  opacity: 1;
+  transform: scale(1);
+}
+.form-actions {
+  border-top: 1px solid #0000000d;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+  padding-top: 30px;
+  display: flex;
+}
+.btn-back {
+  color: #050a14;
+  cursor: pointer;
+  background: 0 0;
+  border: 1px solid #0003;
+  border-radius: 50px;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  display: flex;
+}
+.btn-back:hover {
+  background: #050a140d;
+  border-color: #050a14;
+}
+.btn-next {
+  color: #fff;
+  cursor: pointer;
+  background: #050a14;
+  border: 1px solid #050a14;
+  border-radius: 50px;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  display: flex;
+}
+.btn-next:hover {
+  background: #1a2436;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px #050a1426;
+}
+.btn-next:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+.success-state {
+  text-align: center;
+  padding: 40px 20px;
+}
+.success-icon {
+  color: #fff;
+  background: #050a14;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 30px;
+  display: flex;
+}
+.success-state h2 {
+  color: #050a14;
+  margin-bottom: 15px;
+  font-size: 2rem;
+}
+.success-state p {
+  color: #6b6375;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+.btn-home {
+  color: #fff;
+  background: #050a14;
+  border-radius: 50px;
+  padding: 15px 32px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s;
+  display: inline-flex;
+}
+.btn-home:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px #050a1426;
+}
+@media (width<=768px) {
+  .form-glass-card {
+    padding: 30px 20px;
+  }
+  .step-indicators {
+    display: none;
+  }
+}
