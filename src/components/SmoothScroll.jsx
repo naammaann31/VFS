@@ -5,6 +5,19 @@ import Lenis from "lenis";
 const prefersReducedMotion = () =>
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+// Shared so in-page anchors can scroll through Lenis instead of fighting it
+// with a native scroll that Lenis would immediately override.
+let activeLenis = null;
+
+export const scrollToElement = (el, offset = -110) => {
+  if (!el) return;
+  if (activeLenis) {
+    activeLenis.scrollTo(el, { offset });
+  } else {
+    el.scrollIntoView({ block: "start" });
+  }
+};
+
 function SmoothScroll() {
   const { pathname, hash } = useLocation();
   const lenisRef = useRef(null);
@@ -31,6 +44,7 @@ function SmoothScroll() {
       overscroll: false,
     });
     lenisRef.current = lenis;
+    activeLenis = lenis;
 
     let rafId;
     function raf(time) {
@@ -43,6 +57,7 @@ function SmoothScroll() {
       cancelAnimationFrame(rafId);
       lenis.destroy();
       lenisRef.current = null;
+      activeLenis = null;
     };
   }, []);
 

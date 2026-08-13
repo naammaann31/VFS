@@ -131,7 +131,7 @@ const Footer = () => {
           <p className="copyright">© {year} Vectra Foreign Services. All rights reserved.</p>
           <ul className="legal-links">
             <li>
-              <Link to="#">Terms of Service</Link>
+              <Link to="/terms-of-service">Terms of Service</Link>
             </li>
             <li>
               <Link to="#">Cookie Policy</Link>

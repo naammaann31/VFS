@@ -15,6 +15,7 @@ const About = lazy(() => import("./pages/About.jsx"));
 const CheckEligibility = lazy(() => import("./pages/CheckEligibility.jsx"));
 const Resources = lazy(() => import("./pages/Resources.jsx"));
 const ThankYou = lazy(() => import("./pages/ThankYou.jsx"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService.jsx"));
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/resources" element={<Resources />} />
             <Route path="/check-eligibility" element={<CheckEligibility />} />
             <Route path="/thank-you" element={<ThankYou />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>

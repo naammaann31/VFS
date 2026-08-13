@@ -27,8 +27,9 @@ const Navbar = () => {
   const isAbout = location.pathname === "/about";
   const isResources = location.pathname === "/resources";
   const isEligibility = location.pathname === "/check-eligibility";
+  const isTerms = location.pathname === "/terms-of-service";
   const isSolid =
-    scrolled || isServices || isContact || isAbout || isResources || isEligibility;
+    scrolled || isServices || isContact || isAbout || isResources || isEligibility || isTerms;
 
   useEffect(() => {
     let ticking = false;
