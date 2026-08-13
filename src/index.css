@@ -134,5 +134,7 @@ svg {
   width: 100%;
   min-height: 100vh;
   display: flex;
-  overflow-x: hidden;
+  /* clip, not hidden: hidden makes overflow-y compute to auto, which turns
+     #root into a scroll container and breaks position: sticky inside it. */
+  overflow-x: clip;
 }
