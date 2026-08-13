@@ -134,10 +134,10 @@ const Footer = () => {
               <Link to="/terms-of-service">Terms of Service</Link>
             </li>
             <li>
-              <Link to="#">Cookie Policy</Link>
+              <Link to="/cookie-policy">Cookie Policy</Link>
             </li>
             <li>
-              <Link to="#">Compliance</Link>
+              <Link to="/compliance">Compliance</Link>
             </li>
           </ul>
         </div>

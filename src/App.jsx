@@ -16,6 +16,8 @@ const CheckEligibility = lazy(() => import("./pages/CheckEligibility.jsx"));
 const Resources = lazy(() => import("./pages/Resources.jsx"));
 const ThankYou = lazy(() => import("./pages/ThankYou.jsx"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService.jsx"));
+const ComplianceDisclaimer = lazy(() => import("./pages/ComplianceDisclaimer.jsx"));
+const CookiePolicy = lazy(() => import("./pages/CookiePolicy.jsx"));
 
 function App() {
   return (
@@ -33,6 +35,8 @@ function App() {
             <Route path="/check-eligibility" element={<CheckEligibility />} />
             <Route path="/thank-you" element={<ThankYou />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/compliance" element={<ComplianceDisclaimer />} />
+            <Route path="/cookie-policy" element={<CookiePolicy />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>

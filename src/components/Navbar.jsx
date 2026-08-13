@@ -4,6 +4,17 @@ import { usePageTransition } from "../context/TransitionContext.jsx";
 import logo from "../assets/VFS-removebg-preview.png";
 import "./Navbar.css";
 
+const LIGHT_BACKGROUND_ROUTES = [
+  "/about",
+  "/services",
+  "/resources",
+  "/contact",
+  "/check-eligibility",
+  "/terms-of-service",
+  "/compliance",
+  "/cookie-policy",
+];
+
 const countries = [
   { name: "Canada", path: "/country/canada", code: "ca" },
   { name: "USA", path: "/country/usa", code: "us" },
@@ -21,15 +32,9 @@ const Navbar = () => {
   const location = useLocation();
   const { triggerTransition } = usePageTransition();
 
-  // These pages have a light background, so the navbar always uses its solid style
-  const isServices = location.pathname === "/services";
-  const isContact = location.pathname === "/contact";
-  const isAbout = location.pathname === "/about";
-  const isResources = location.pathname === "/resources";
-  const isEligibility = location.pathname === "/check-eligibility";
-  const isTerms = location.pathname === "/terms-of-service";
-  const isSolid =
-    scrolled || isServices || isContact || isAbout || isResources || isEligibility || isTerms;
+  // Light-background pages need the solid navbar from the start, otherwise the
+  // white nav text renders invisible against them.
+  const isSolid = scrolled || LIGHT_BACKGROUND_ROUTES.includes(location.pathname);
 
   useEffect(() => {
     let ticking = false;
