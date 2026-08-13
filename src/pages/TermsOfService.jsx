@@ -122,7 +122,9 @@ const TermsOfService = () => {
 
       <div className="terms-body">
         <aside className="terms-toc" aria-label="Table of contents">
-          <div className="terms-toc-inner">
+          {/* data-lenis-prevent: Lenis swallows wheel events globally, so
+              without this the list can never be scrolled to reach section 27. */}
+          <div className="terms-toc-inner" data-lenis-prevent>
             <h2 className="terms-toc-heading">Contents</h2>
             <nav>
               <ol className="terms-toc-list">

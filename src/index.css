@@ -35,7 +35,9 @@ html.lenis body {
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 }
-.lenis.lenis-smooth [data-lenis-prevent] {
+/* Not scoped to .lenis-smooth: that class is only present while a smooth
+   scroll is actually running, so the containment would come and go. */
+[data-lenis-prevent] {
   overscroll-behavior: contain;
 }
 .lenis.lenis-stopped {
@@ -44,18 +46,33 @@ html.lenis body {
 .lenis.lenis-smooth iframe {
   pointer-events: none;
 }
+/* One neutral scrollbar for the whole site. The track stays transparent so it
+   picks up whatever is behind it, and the thumb is a mid grey that reads on
+   both the dark hero and the light interior pages. The previous black track
+   with a white thumb only suited the dark home page. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #64748b73 #0000;
+}
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 12px;
+  height: 12px;
 }
 ::-webkit-scrollbar-track {
-  background: #02040a;
+  background: #0000;
 }
 ::-webkit-scrollbar-thumb {
-  background: #ffffffb3;
-  border-radius: 4px;
+  background-color: #64748b73;
+  background-clip: padding-box;
+  border: 3px solid #0000;
+  border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #fff;
+  background-color: #475569b3;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-corner {
+  background: #0000;
 }
 * {
   box-sizing: border-box;
