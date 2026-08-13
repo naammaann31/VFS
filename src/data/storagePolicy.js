@@ -14,7 +14,7 @@ export const cookieMeta = {
 
 export const cookieSections = [
   {
-    id: "what-are-cookies",
+    id: "what-they-are",
     title: "What Are Cookies?",
     blocks: [
       {
@@ -32,7 +32,7 @@ export const cookieSections = [
     ],
   },
   {
-    id: "why-we-use-cookies",
+    id: "why-we-use-them",
     title: "Why Does Vectra Use Cookies?",
     blocks: [
       {
@@ -59,7 +59,7 @@ export const cookieSections = [
     ],
   },
   {
-    id: "types-of-cookies",
+    id: "types",
     title: "Types of Cookies",
     blocks: [
       { type: "h3", text: "3.1 Strictly Necessary Cookies" },
@@ -143,7 +143,7 @@ export const cookieSections = [
     ],
   },
   {
-    id: "third-party-cookies",
+    id: "third-party",
     title: "Third-Party Cookies",
     blocks: [
       {
@@ -179,7 +179,7 @@ export const cookieSections = [
     ],
   },
   {
-    id: "cookie-consent",
+    id: "consent",
     title: "Cookie Consent",
     blocks: [
       {
@@ -199,7 +199,7 @@ export const cookieSections = [
     ],
   },
   {
-    id: "managing-cookies",
+    id: "managing-preferences",
     title: "Managing Cookies Through Your Browser",
     blocks: [
       { type: "p", text: "Most modern browsers allow you to:" },
@@ -221,7 +221,7 @@ export const cookieSections = [
     ],
   },
   {
-    id: "personal-data-and-cookies",
+    id: "personal-data",
     title: "Personal Data and Cookies",
     blocks: [
       {
@@ -331,7 +331,7 @@ export const cookieSections = [
     ],
   },
   {
-    id: "cookie-retention",
+    id: "retention",
     title: "Cookie Retention",
     blocks: [
       {
@@ -353,7 +353,7 @@ export const cookieSections = [
     ],
   },
   {
-    id: "changes-to-cookies",
+    id: "changes-to-technologies",
     title: "Changes to Cookies",
     blocks: [
       {

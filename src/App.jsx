@@ -17,7 +17,8 @@ const Resources = lazy(() => import("./pages/Resources.jsx"));
 const ThankYou = lazy(() => import("./pages/ThankYou.jsx"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService.jsx"));
 const ComplianceDisclaimer = lazy(() => import("./pages/ComplianceDisclaimer.jsx"));
-const CookiePolicy = lazy(() => import("./pages/CookiePolicy.jsx"));
+// See StoragePolicy.jsx for why the cookie policy page is not named after it
+const CookiePolicy = lazy(() => import("./pages/StoragePolicy.jsx"));
 
 function App() {
   return (
