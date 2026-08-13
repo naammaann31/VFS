@@ -237,6 +237,44 @@ const Contact = () => {
                     <p className="contact-info-detail">Mon - Sat, 10:00 AM - 6:00 PM</p>
                   </div>
                 </motion.div>
+
+                <motion.div
+                  className="contact-info-item"
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 1.3, ease: "easeOut" }}
+                >
+                  <div className="contact-info-icon">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                  </div>
+                  <div className="contact-info-text-group">
+                    <h4 className="contact-info-title">India - Ahmedabad</h4>
+                    <p className="contact-info-detail">
+                      <a
+                        href="https://www.google.com/maps/place/Vectra+Staffing+Pvt+Ltd/@23.1039949,72.5289416,16.93z/data=!4m10!1m2!2m1!1svectra+staffing+ahmedabad!3m6!1s0x395e830bcc3b1ec5:0x8a3f8f07b4c1f530!8m2!3d23.1039929!4d72.5338474!15sChl2ZWN0cmEgc3RhZmZpbmcgYWhtZWRhYmFkkgEVZW1wbG95bWVudF9jb25zdWx0YW504AEA!16s%2Fg%2F11npsvsbyt?authuser=0&entry=ttu&g_ep=EgoyMDI2MDYxMC4wIKXMDSoASAFQAw%3D%3D"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: "inherit", textDecoration: "none" }}
+                        onMouseEnter={(e) => (e.target.style.textDecoration = "underline")}
+                        onMouseLeave={(e) => (e.target.style.textDecoration = "none")}
+                      >
+                        SF- 202 Olive Greens, Ahmedabad - 382481, IND
+                      </a>
+                    </p>
+                  </div>
+                </motion.div>
               </div>
 
               <motion.div
