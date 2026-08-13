@@ -2,6 +2,9 @@ import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import Lenis from "lenis";
 
+const prefersReducedMotion = () =>
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
 function SmoothScroll() {
   const { pathname, hash } = useLocation();
   const lenisRef = useRef(null);
@@ -11,13 +14,21 @@ function SmoothScroll() {
       history.scrollRestoration = "manual";
     }
 
+    // Honour the OS setting — forcing momentum scrolling on someone who asked
+    // for reduced motion is a good way to make them motion sick.
+    if (prefersReducedMotion()) return;
+
     const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
+      // lerp instead of duration/easing: it's frame-rate independent and
+      // tracks the wheel closely, where a 1.2s eased tween kept coasting
+      // after the user stopped and read as laggy.
+      lerp: 0.09,
       wheelMultiplier: 1,
-      smoothTouch: false,
-      touchMultiplier: 1,
+      // Leave touch devices on native scrolling. Browsers hand that to the
+      // compositor, so it stays smooth even when the main thread is busy.
+      syncTouch: false,
+      touchMultiplier: 1.5,
+      overscroll: false,
     });
     lenisRef.current = lenis;
 
@@ -31,18 +42,30 @@ function SmoothScroll() {
     return () => {
       cancelAnimationFrame(rafId);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 
   useEffect(() => {
-    if (!lenisRef.current) return;
+    const lenis = lenisRef.current;
 
     if (hash) {
       const el = document.querySelector(hash);
-      if (el) lenisRef.current.scrollTo(el);
+      if (!el) return;
+
+      if (lenis) {
+        lenis.scrollTo(el, { offset: -80 });
+      } else {
+        el.scrollIntoView();
+      }
+      return;
+    }
+
+    // New page — start at the top, with no visible scroll animation.
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
     } else {
       window.scrollTo(0, 0);
-      lenisRef.current.scrollTo(0, { immediate: true });
     }
   }, [pathname, hash]);
 

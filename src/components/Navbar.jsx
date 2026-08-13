@@ -31,10 +31,20 @@ const Navbar = () => {
     scrolled || isServices || isContact || isAbout || isResources || isEligibility;
 
   useEffect(() => {
+    let ticking = false;
+
+    // Passive + rAF-throttled: the handler fires on every scroll event, so
+    // reading scrollY directly there forces layout mid-scroll.
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 50);
+        ticking = false;
+      });
     };
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 

@@ -17,11 +17,32 @@
   --overlay-darker: #000000bf;
 }
 html {
-  scroll-behavior: smooth;
+  /* No scroll-behavior: smooth here — Lenis drives scrolling in JS, and the
+     two fight each other, which is what made scrolling feel like it stuttered
+     and overshot. Use clip rather than hidden so neither html nor body becomes
+     an extra scroll container. */
   -webkit-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+/* Lenis' own requirements */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }
 ::-webkit-scrollbar {
   width: 8px;
@@ -53,7 +74,7 @@ body {
   width: 100%;
   min-height: 100dvh;
   font-family: Inter, sans-serif;
-  overflow: hidden auto;
+  overflow-x: clip;
 }
 a {
   color: inherit;

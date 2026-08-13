@@ -20,22 +20,48 @@ import australiaImg from "../assets/AUSTRALIA.webp";
 import ukImg from "../assets/UK.jpeg";
 import "./Home.css";
 
-const VideoBackground = () => (
-  <div className="video-container">
-    <video
-      className="bg-video"
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="auto"
-      src={bgVideo}
-    >
-      Your browser does not support the video tag.
-    </video>
-    <div className="video-overlay"></div>
-  </div>
-);
+const VideoBackground = () => {
+  const videoRef = useRef(null);
+
+  // Decoding video costs main-thread and GPU time even when it's scrolled well
+  // out of view, which shows up as jank further down the page.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0 },
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="video-container">
+      <video
+        ref={videoRef}
+        className="bg-video"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        src={bgVideo}
+      >
+        Your browser does not support the video tag.
+      </video>
+      <div className="video-overlay"></div>
+    </div>
+  );
+};
 
 const Hero = () => (
   <div className="hero-container">
@@ -340,28 +366,43 @@ const CountriesCarousel = () => {
   const { triggerTransition } = usePageTransition();
   const scrollerRef = useRef(null);
   const [paused, setPaused] = useState(false);
+  const [inView, setInView] = useState(false);
   const rafRef = useRef(null);
 
   useEffect(() => {
     const scroller = scrollerRef.current;
     if (!scroller) return;
 
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
+      threshold: 0,
+    });
+
+    observer.observe(scroller);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    if (!scroller || paused || !inView) return;
+
+    // Writing scrollLeft forces layout on every frame, so don't run the loop at
+    // all unless the carousel is actually on screen and moving.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     const step = () => {
-      if (!paused && scroller) {
-        scroller.scrollLeft += 0.5;
-        const oneSetWidth = scroller.scrollWidth / 3;
-        if (scroller.scrollLeft >= oneSetWidth * 2) {
-          scroller.scrollLeft -= oneSetWidth;
-        } else if (scroller.scrollLeft <= 0) {
-          scroller.scrollLeft += oneSetWidth;
-        }
+      scroller.scrollLeft += 0.5;
+      const oneSetWidth = scroller.scrollWidth / 3;
+      if (scroller.scrollLeft >= oneSetWidth * 2) {
+        scroller.scrollLeft -= oneSetWidth;
+      } else if (scroller.scrollLeft <= 0) {
+        scroller.scrollLeft += oneSetWidth;
       }
       rafRef.current = requestAnimationFrame(step);
     };
 
     rafRef.current = requestAnimationFrame(step);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [paused]);
+  }, [paused, inView]);
 
   const handleCountryClick = (e, path, name) => {
     e.preventDefault();
