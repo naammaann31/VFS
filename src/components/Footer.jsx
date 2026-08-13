@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="footer-top">
         <div className="footer-col brand-col">
           <div className="footer-logo">
-            <img src="/vectrafooter.jpeg" alt="Vectra Group" />
+            <img src="/vectrafooter.png" alt="Vectra Group" />
           </div>
           <h4 className="footer-heading">Vectra Group</h4>
           <ul className="footer-list group-list">
