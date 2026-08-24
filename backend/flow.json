@@ -1,0 +1,71 @@
+{
+  "start": {
+    "message": "👋 Hi! Welcome to Vectra Staffing.\nWe're happy to help you explore your study-abroad options.\n\nMay we have your name and current city?",
+    "type": "text",
+    "nextStep": "ask_country"
+  },
+  "ask_country": {
+    "message": "Thanks, {{name}}! 😊\nWhich country are you interested in?",
+    "type": "list",
+    "buttonText": "View Country Options",
+    "options": [
+      { "id": "country_ca", "title": "🇨🇦 Canada" },
+      { "id": "country_us", "title": "🇺🇸 USA" },
+      { "id": "country_uk", "title": "🇬🇧 UK" },
+      { "id": "country_au", "title": "🇦🇺 Australia" },
+      { "id": "country_nz", "title": "🇳🇿 New Zealand" },
+      { "id": "country_ae", "title": "🇦🇪 UAE" },
+      { "id": "country_eu", "title": "🇪🇺 Europe" },
+      { "id": "country_deciding", "title": "Still deciding" }
+    ],
+    "nextStep": "ask_level"
+  },
+  "ask_level": {
+    "message": "What level of study are you planning for?",
+    "type": "list",
+    "buttonText": "View Options",
+    "options": [
+      { "id": "level_ug", "title": "Undergraduate" },
+      { "id": "level_pg", "title": "Postgraduate" }
+    ],
+    "nextStep": "ask_intake"
+  },
+  "ask_intake": {
+    "message": "Which intake are you targeting?",
+    "type": "buttons",
+    "options": [
+      { "id": "intake_2026", "title": "2026" },
+      { "id": "intake_2027", "title": "2027" },
+      { "id": "intake_2028", "title": "2028" }
+    ],
+    "nextStep": "ask_english"
+  },
+  "ask_english": {
+    "message": "Do you have an English language test score?",
+    "type": "list",
+    "buttonText": "View Tests",
+    "options": [
+      { "id": "eng_ielts", "title": "IELTS" },
+      { "id": "eng_pte", "title": "PTE" },
+      { "id": "eng_toefl", "title": "TOEFL" },
+      { "id": "eng_notyet", "title": "Not yet" },
+      { "id": "eng_other", "title": "Other" }
+    ],
+    "nextStep": "ask_contact"
+  },
+  "ask_contact": {
+    "message": "How would you prefer to speak with our counsellor?",
+    "type": "buttons",
+    "options": [
+      { "id": "contact_phone", "title": "📞 Phone Call" },
+      { "id": "contact_whatsapp", "title": "💬 WhatsApp" },
+      { "id": "contact_office", "title": "🏢 Office Visit" }
+    ],
+    "nextStep": "finish"
+  },
+  "finish": {
+    "message": "✅ Thank you, {{name}}!\nWe've received your details. One of our counsellors will contact you shortly regarding your study-abroad options.",
+    "type": "text",
+    "nextStep": null
+  }
+}

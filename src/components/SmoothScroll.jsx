@@ -65,18 +65,27 @@ function SmoothScroll() {
     const lenis = lenisRef.current;
 
     if (hash) {
-      const el = document.querySelector(hash);
-      if (!el) return;
+      const scrollToHash = () => {
+        const el = document.querySelector(hash);
+        if (el) {
+          if (lenis) {
+            lenis.scrollTo(el, { offset: -80, immediate: false });
+          } else {
+            el.scrollIntoView({ behavior: "smooth" });
+          }
+          return true;
+        }
+        return false;
+      };
 
-      if (lenis) {
-        lenis.scrollTo(el, { offset: -80 });
-      } else {
-        el.scrollIntoView();
+      if (!scrollToHash()) {
+        const timer = setTimeout(scrollToHash, 100);
+        return () => clearTimeout(timer);
       }
       return;
     }
 
-    // New page — start at the top, with no visible scroll animation.
+    // New page without hash — start at the top, with no visible scroll animation.
     if (lenis) {
       lenis.scrollTo(0, { immediate: true });
     } else {

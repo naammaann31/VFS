@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "./Navbar.jsx";
 import { scrollToElement } from "./SmoothScroll.jsx";
@@ -97,6 +97,23 @@ const LegalDocument = ({ meta, sections }) => {
   const [activeId, setActiveId] = useState(sections[0].id);
   const [showTopButton, setShowTopButton] = useState(false);
   const sectionRefs = useRef({});
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Smart Back navigation: returns candidate to the exact page and position they came from
+  const goBack = () => {
+    const fromPath = location.state?.from;
+    const fromHash = location.state?.fromHash || "#footer";
+    const scrollY = location.state?.scrollY;
+
+    if (fromPath) {
+      navigate(`${fromPath}${fromHash}`, { state: { restoreScroll: scrollY } });
+    } else if (window.history.state?.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate("/#footer");
+    }
+  };
 
   // Highlight whichever section is currently nearest the top of the viewport.
   useEffect(() => {
@@ -148,6 +165,26 @@ const LegalDocument = ({ meta, sections }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
+          <div className="legal-back-row">
+            <button type="button" className="legal-back-button" onClick={goBack}>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <line x1="19" y1="12" x2="5" y2="12" />
+                <polyline points="12 19 5 12 12 5" />
+              </svg>
+              Back
+            </button>
+          </div>
+
           <p className="legal-eyebrow">{meta.eyebrow || "LEGAL"}</p>
           <h1 className="legal-title">{meta.title}</h1>
           <p className="legal-company">{meta.company}</p>

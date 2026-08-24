@@ -20,6 +20,13 @@ const ComplianceDisclaimer = lazy(() => import("./pages/ComplianceDisclaimer.jsx
 // See StoragePolicy.jsx for why the cookie policy page is not named after it
 const CookiePolicy = lazy(() => import("./pages/StoragePolicy.jsx"));
 
+// Mock Test Platform Routes
+const MockTestList = lazy(() => import("./pages/mockTest/MockTestList.jsx"));
+const MockTestAttempt = lazy(() => import("./pages/mockTest/MockTestAttempt.jsx"));
+const MockTestResult = lazy(() => import("./pages/mockTest/MockTestResult.jsx"));
+const AdminDashboard = lazy(() => import("./pages/mockTest/AdminDashboard.jsx"));
+const AdminLogin = lazy(() => import("./pages/mockTest/AdminLogin.jsx"));
+
 function App() {
   return (
     <BrowserRouter>
@@ -38,6 +45,14 @@ function App() {
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/compliance" element={<ComplianceDisclaimer />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
+
+            {/* IELTS Full Mock Test System */}
+            <Route path="/mock-tests" element={<MockTestList />} />
+            <Route path="/mock-tests/attempt/:attemptId" element={<MockTestAttempt />} />
+            <Route path="/mock-tests/result/:attemptId" element={<MockTestResult />} />
+            <Route path="/admin/mock-tests" element={<AdminDashboard />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Suspense>

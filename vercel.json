@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/ielts-mock-test.html",
+      "destination": "/ielts-mock-test.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

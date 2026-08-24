@@ -13,6 +13,9 @@ const LIGHT_BACKGROUND_ROUTES = [
   "/terms-of-service",
   "/compliance",
   "/cookie-policy",
+  "/admin",
+  "/mock-tests/result",
+  "/thank-you",
 ];
 
 const countries = [
@@ -34,7 +37,11 @@ const Navbar = () => {
 
   // Light-background pages need the solid navbar from the start, otherwise the
   // white nav text renders invisible against them.
-  const isSolid = scrolled || LIGHT_BACKGROUND_ROUTES.includes(location.pathname);
+  const isSolid =
+    scrolled ||
+    LIGHT_BACKGROUND_ROUTES.some((route) =>
+      location.pathname.startsWith(route)
+    );
 
   useEffect(() => {
     let ticking = false;
@@ -191,9 +198,30 @@ const Navbar = () => {
             CONTACT
           </Link>
         </li>
+
+        <li className="mobile-only-link">
+          <a
+            href="/ielts-mock-test.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ielts-test-btn"
+            onClick={closeMenu}
+          >
+            🎓 IELTS MOCK TEST
+          </a>
+        </li>
       </ul>
 
-      <div className="navbar-action">
+      <div className="navbar-action" style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+        <a
+          href="/ielts-mock-test.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ielts-test-btn"
+          onClick={closeMenu}
+        >
+          🎓 IELTS MOCK TEST
+        </a>
         <Link to="/contact" className="lets-talk-btn" onClick={closeMenu}>
           Book Consultation
         </Link>

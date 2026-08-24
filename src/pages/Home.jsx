@@ -9,7 +9,7 @@ import maraLogo from "../assets/mara.webp";
 import isoLogo from "../assets/iso9001.webp";
 import oiscLogo from "../assets/oisc.webp";
 import iaaLogo from "../assets/iaa-newzealand.webp";
-import britishCouncilLogo from "../assets/british-council.webp";
+import britishCouncilLogo from "../assets/british-council.jpeg";
 import icefLogo from "../assets/icef.webp";
 import canadaImg from "../assets/CANADA.webp";
 import usaImg from "../assets/USA.webp";

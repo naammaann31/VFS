@@ -21,6 +21,52 @@
   max-width: 860px;
 }
 
+/* The hero is centred, so the back button gets its own left-aligned row
+   rather than inheriting text-align: center from .legal-hero-inner. */
+.legal-back-row {
+  margin-bottom: 28px;
+  display: flex;
+}
+
+.legal-back-button {
+  color: #050a14;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #0000000a;
+  border-radius: 999px;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px 10px 15px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    transform 0.2s;
+  display: inline-flex;
+  box-shadow: 0 6px 20px #0000000a;
+}
+
+.legal-back-button:hover {
+  color: #fff;
+  background: #050a14;
+  transform: translateY(-2px);
+}
+
+.legal-back-button svg {
+  transition: transform 0.2s;
+}
+
+.legal-back-button:hover svg {
+  transform: translateX(-3px);
+}
+
+.legal-back-button:focus-visible {
+  outline: 2px solid #050a14;
+  outline-offset: 3px;
+}
+
 .legal-eyebrow {
   color: #6b6375;
   letter-spacing: 3px;
@@ -404,6 +450,10 @@
 @media (width<=480px) {
   .legal-hero {
     padding: 110px 16px 40px;
+  }
+
+  .legal-back-row {
+    margin-bottom: 20px;
   }
 
   .legal-body {

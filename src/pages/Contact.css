@@ -247,7 +247,8 @@
 }
 .form-textarea {
   resize: vertical;
-  min-height: 120px;
+  min-height: 110px;
+  max-height: 220px;
   line-height: 1.6;
 }
 .contact-form-error {

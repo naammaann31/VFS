@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "../components/Navbar.jsx";
 import ServiceCTA from "../components/ServiceCTA.jsx";
@@ -329,6 +330,58 @@ const Resources = () => {
               We help applicants understand which test may be relevant for their destination and
               prepare through structured coaching, practice, and feedback.
             </p>
+          </motion.div>
+
+          {/* Featured IELTS Mock Test Banner */}
+          <motion.div
+            className="ielts-mock-test-banner"
+            style={{
+              background: "linear-gradient(135deg, #1C2B4B 0%, #142038 100%)",
+              color: "#FFFFFF",
+              borderRadius: "16px",
+              padding: "2rem",
+              marginTop: "1.5rem",
+              border: "2px solid #D97706",
+              boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+              alignItems: "flex-start"
+            }}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.4, ease: "easeOut" }}
+          >
+            <div style={{ background: "#D97706", color: "#142038", padding: "0.35rem 0.75rem", borderRadius: "6px", fontWeight: "700", fontSize: "0.85rem", textTransform: "uppercase" }}>
+              100% Free Practice Test
+            </div>
+            <h2 style={{ color: "#FFFFFF", fontFamily: "'Fraunces', Georgia, serif", fontSize: "1.8rem", margin: 0 }}>
+              Take Our Free Full-Length Online IELTS Mock Test
+            </h2>
+            <p style={{ color: "#E2E8F0", fontSize: "1rem", lineHeight: "1.6", margin: 0, maxWidth: "750px" }}>
+              Experience an authentic exam environment with live 40-minute timer, Listening single-play audio, Reading passages, Task 2 Essay word-count tracker, and browser-based Speaking voice recording. Receive your detailed score breakdown within 48 hours!
+            </p>
+            <a
+              href="/ielts-mock-test.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                background: "#B3382C",
+                color: "#FFFFFF",
+                fontWeight: "700",
+                padding: "0.85rem 1.75rem",
+                borderRadius: "8px",
+                textDecoration: "none",
+                fontSize: "1rem",
+                boxShadow: "0 4px 12px rgba(179, 56, 44, 0.4)",
+                transition: "all 0.2s ease"
+              }}
+            >
+              🚀 Launch Free IELTS Mock Test Now →
+            </a>
           </motion.div>
         </div>
       </section>

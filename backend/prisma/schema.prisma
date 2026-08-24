@@ -1,0 +1,170 @@
+// Prisma Schema for Vectra Foreign Services Mock Test Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  String               @id @default(uuid())
+  name                String
+  email               String               @unique
+  phone               String?
+  targetCountry       String?
+  passwordHash        String?
+  role                String               @default("STUDENT") // "STUDENT" | "ADMIN"
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+
+  attempts            Attempt[]
+  writingEvaluations  WritingSubmission[]  @relation("EvaluatedWriting")
+  speakingEvaluations SpeakingSubmission[] @relation("EvaluatedSpeaking")
+}
+
+model MockTest {
+  id          String      @id @default(uuid())
+  title       String
+  description String?
+  category    String      @default("IELTS")
+  duration    Int         @default(40) // in minutes
+  status      String      @default("PUBLISHED") // "DRAFT" | "PUBLISHED" | "ARCHIVED"
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  sections    Section[]
+  attempts    Attempt[]
+}
+
+model Section {
+  id           String       @id @default(uuid())
+  mockTestId   String
+  mockTest     MockTest     @relation(fields: [mockTestId], references: [id], onDelete: Cascade)
+  type         String       // "LISTENING" | "READING" | "WRITING" | "SPEAKING"
+  title        String
+  instructions String?
+  order        Int          @default(1)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  questions    Question[]
+}
+
+model Question {
+  id              String         @id @default(uuid())
+  sectionId       String
+  section         Section        @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  type            String         // "MCQ" | "TRUE_FALSE" | "FILL_BLANK" | "WRITING" | "SPEAKING"
+  questionText    String
+  passage         String?
+  audioUrl        String?
+  preparationTime Int?           @default(0)  // in seconds
+  responseTime    Int?           @default(60) // in seconds (for speaking)
+  marks           Float          @default(1.0)
+  order           Int            @default(1)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  options         Option[]
+  answers         Answer[]
+  writingSubs     WritingSubmission[]
+  speakingSubs    SpeakingSubmission[]
+}
+
+model Option {
+  id          String    @id @default(uuid())
+  questionId  String
+  question    Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  optionText  String
+  isCorrect   Boolean   @default(false)
+  order       Int       @default(1)
+}
+
+model Attempt {
+  id                  String              @id @default(uuid())
+  userId              String
+  user                User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mockTestId          String
+  mockTest            MockTest            @relation(fields: [mockTestId], references: [id], onDelete: Cascade)
+  startedAt           DateTime            @default(now())
+  submittedAt         DateTime?
+  status              String              @default("IN_PROGRESS") // "IN_PROGRESS" | "SUBMITTED" | "UNDER_REVIEW" | "COMPLETED"
+  listeningScore      Float               @default(0)
+  listeningMax        Float               @default(0)
+  readingScore        Float               @default(0)
+  readingMax          Float               @default(0)
+  writingScore        Float               @default(0)
+  writingMax          Float               @default(0)
+  speakingScore       Float               @default(0)
+  speakingMax         Float               @default(0)
+  totalScore          Float               @default(0)
+  maxScore            Float               @default(0)
+  bandScore           Float?
+  feedbackSummary     String?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  answers             Answer[]
+  writingSubmissions  WritingSubmission[]
+  speakingSubmissions SpeakingSubmission[]
+}
+
+model Answer {
+  id         String    @id @default(uuid())
+  attemptId  String
+  attempt    Attempt   @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId String
+  question   Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answer     String?
+  isCorrect  Boolean?
+  marks      Float     @default(0)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@unique([attemptId, questionId])
+}
+
+model WritingSubmission {
+  id            String           @id @default(uuid())
+  attemptId     String
+  attempt       Attempt          @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId    String
+  question      Question         @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answer        String
+  wordCount     Int              @default(0)
+  score         Float?
+  maxMarks      Float            @default(9.0)
+  feedback      String?
+  status        String           @default("PENDING") // "PENDING" | "EVALUATED"
+  evaluatedById String?
+  evaluatedBy   User?            @relation("EvaluatedWriting", fields: [evaluatedById], references: [id])
+  evaluatedAt   DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@unique([attemptId, questionId])
+}
+
+model SpeakingSubmission {
+  id            String           @id @default(uuid())
+  attemptId     String
+  attempt       Attempt          @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId    String
+  question      Question         @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  audioUrl      String
+  duration      Int              @default(0) // in seconds
+  score         Float?
+  maxMarks      Float            @default(9.0)
+  feedback      String?
+  status        String           @default("PENDING") // "PENDING" | "EVALUATED"
+  evaluatedById String?
+  evaluatedBy   User?            @relation("EvaluatedSpeaking", fields: [evaluatedById], references: [id])
+  evaluatedAt   DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@unique([attemptId, questionId])
+}

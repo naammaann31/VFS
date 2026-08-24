@@ -56,6 +56,9 @@
   color: #fff;
   background: #11182799;
 }
+.mobile-only-link {
+  display: none;
+}
 .navbar.scrolled .navbar-links li a.active {
   color: #fff;
   background: #0f172a;
@@ -84,6 +87,33 @@
 }
 .navbar.scrolled .lets-talk-btn:hover {
   background: #1e293b;
+}
+.ielts-test-btn {
+  color: #fff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  background: #d97706;
+  border: 1px solid #d97706;
+  border-radius: 30px;
+  padding: 0.53rem 1.62rem;
+  font-size: 13px;
+  font-weight: 700;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+.navbar.scrolled .ielts-test-btn {
+  color: #fff;
+  background: #d97706;
+  border: 1px solid #d97706;
+}
+.ielts-test-btn:hover {
+  background: #b45309;
+  border-color: #b45309;
+}
+.navbar.scrolled .ielts-test-btn:hover {
+  background: #b45309;
 }
 .navbar-hamburger {
   cursor: pointer;
@@ -163,6 +193,9 @@
 }
 .navbar-links li:nth-child(6) {
   animation-delay: 0.7s;
+}
+.navbar-links li:nth-child(7) {
+  animation-delay: 0.8s;
 }
 .navbar-action {
   animation-delay: 0.8s;
@@ -371,6 +404,15 @@
   }
   .navbar-links.open {
     right: 0;
+  }
+  .mobile-only-link {
+    display: list-item;
+  }
+  .navbar-links li a.ielts-test-btn {
+    background: #d97706;
+    color: #fff !important;
+    margin: 0.5rem 1rem;
+    border-radius: 30px;
   }
   .navbar-links li {
     text-align: center;

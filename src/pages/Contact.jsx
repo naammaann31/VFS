@@ -88,7 +88,16 @@ const Contact = () => {
   }));
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    let { name, value, type, checked } = e.target;
+
+    if (name === "fullName") {
+      // Allow only letters, spaces, hyphens, and apostrophes
+      value = value.replace(/[^a-zA-Z\s'-]/g, "");
+    } else if (name === "phone") {
+      // Allow only numbers and restrict to 12 digits max
+      value = value.replace(/\D/g, "").slice(0, 12);
+    }
+
     setFormData((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
     if (error) setError("");
   };
@@ -97,14 +106,47 @@ const Contact = () => {
     e.preventDefault();
     setError("");
 
-    if (!formData.fullName.trim()) {
-      return setError("Please enter your full name.");
+    // 1. Full Name Validation: Mandatory, only characters, at least 2 chars
+    const cleanName = formData.fullName.trim();
+    if (!cleanName) {
+      return setError("Please enter your full name (letters only).");
     }
-    if (!formData.email.trim() || !/^\S+@\S+\.\S+$/.test(formData.email)) {
-      return setError("Please enter a valid email address.");
+    if (!/^[a-zA-Z\s'-]{2,}$/.test(cleanName)) {
+      return setError("Full name must contain only letters (at least 2 characters).");
     }
-    if (!formData.phone.trim() || formData.phone.length < 6) {
-      return setError("Please enter a valid phone number.");
+
+    // 2. Email Address Validation: Mandatory & standard email format
+    const cleanEmail = formData.email.trim();
+    if (!cleanEmail) {
+      return setError("Please enter your email address.");
+    }
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(cleanEmail)) {
+      return setError("Please enter a valid email address (e.g. name@example.com).");
+    }
+
+    // 3. Phone Number Validation: Mandatory, 10 to 12 digits only
+    const cleanPhone = formData.phone.trim();
+    if (!cleanPhone) {
+      return setError("Please enter your phone number.");
+    }
+    if (!/^\d{10,12}$/.test(cleanPhone)) {
+      return setError("Phone number must contain only numbers and be between 10 and 12 digits.");
+    }
+
+    // 4. Country of Interest: Mandatory
+    if (!formData.country) {
+      return setError("Please select your country of interest.");
+    }
+
+    // 5. Visa Type: Mandatory
+    if (!formData.visaType) {
+      return setError("Please select a visa type.");
+    }
+
+    // 6. Message: Mandatory
+    if (!formData.message.trim()) {
+      return setError("Please enter your message describing your goals.");
     }
 
     setSubmitting(true);
@@ -383,7 +425,7 @@ const Contact = () => {
 
               <div className="form-group">
                 <label htmlFor="contact-fullName" className="form-label">
-                  Full Name
+                  Full Name <span style={{ color: "#E11D48" }}>*</span>
                 </label>
                 <input
                   type="text"
@@ -391,9 +433,11 @@ const Contact = () => {
                   name="fullName"
                   value={formData.fullName}
                   onChange={handleChange}
-                  placeholder="Enter your full name"
+                  placeholder="Enter your full name (letters only)"
                   className="form-input"
                   autoComplete="name"
+                  pattern="[A-Za-z\s'-]+"
+                  title="Only letters and spaces allowed"
                   required
                 />
               </div>
@@ -401,7 +445,7 @@ const Contact = () => {
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="contact-email" className="form-label">
-                    Email Address
+                    Email Address <span style={{ color: "#E11D48" }}>*</span>
                   </label>
                   <input
                     type="email"
@@ -409,7 +453,7 @@ const Contact = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="Enter your email"
+                    placeholder="Enter your email address"
                     className="form-input"
                     autoComplete="email"
                     required
@@ -418,7 +462,7 @@ const Contact = () => {
 
                 <div className="form-group">
                   <label htmlFor="contact-phone" className="form-label">
-                    Phone Number
+                    Phone Number <span style={{ color: "#E11D48" }}>*</span>
                   </label>
                   <input
                     type="tel"
@@ -426,9 +470,14 @@ const Contact = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
-                    placeholder="Enter your phone number"
+                    placeholder="Enter 10–12 digit number"
                     className="form-input"
                     autoComplete="tel"
+                    inputMode="numeric"
+                    pattern="[0-9]{10,12}"
+                    minLength={10}
+                    maxLength={12}
+                    title="10 to 12 digit phone number"
                     required
                   />
                 </div>
@@ -437,7 +486,7 @@ const Contact = () => {
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="contact-country" className="form-label">
-                    Country of Interest
+                    Country of Interest <span style={{ color: "#E11D48" }}>*</span>
                   </label>
                   <select
                     id="contact-country"
@@ -445,6 +494,7 @@ const Contact = () => {
                     value={formData.country}
                     onChange={handleChange}
                     className="form-select"
+                    required
                   >
                     <option value="">Select a country</option>
                     {countryOptions.map((country) => (
@@ -457,7 +507,7 @@ const Contact = () => {
 
                 <div className="form-group">
                   <label htmlFor="contact-visaType" className="form-label">
-                    Visa Type
+                    Visa Type <span style={{ color: "#E11D48" }}>*</span>
                   </label>
                   <select
                     id="contact-visaType"
@@ -465,6 +515,7 @@ const Contact = () => {
                     value={formData.visaType}
                     onChange={handleChange}
                     className="form-select"
+                    required
                   >
                     <option value="">Select visa type</option>
                     {visaTypes.map((type) => (
@@ -478,7 +529,7 @@ const Contact = () => {
 
               <div className="form-group">
                 <label htmlFor="contact-message" className="form-label">
-                  Message
+                  Message <span style={{ color: "#E11D48" }}>*</span>
                 </label>
                 <textarea
                   id="contact-message"
@@ -487,7 +538,9 @@ const Contact = () => {
                   onChange={handleChange}
                   placeholder="Tell us about your immigration goals..."
                   className="form-textarea"
-                  rows="5"
+                  rows="4"
+                  maxLength={1000}
+                  required
                 />
               </div>
 

@@ -97,17 +97,27 @@ file_put_contents($rate_file, json_encode(array_values($rate_data)));
 $fullName = trim($data['fullName'] ?? '');
 $email    = trim($data['email'] ?? '');
 $phone    = trim($data['phone'] ?? '');
+$country  = trim($data['country'] ?? '');
+$visaType = trim($data['visaType'] ?? '');
+$messageTxt = trim($data['message'] ?? '');
 $formType = $data['formType'] ?? 'Website Form';
 
-if ($fullName === '' || $email === '' || $phone === '') {
+if ($fullName === '' || $email === '' || $phone === '' || $country === '' || $visaType === '' || $messageTxt === '') {
     http_response_code(400);
-    echo json_encode(["error" => "Name, email, and phone are required."]);
+    echo json_encode(["error" => "All fields in the inquiry form are mandatory."]);
     exit;
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     http_response_code(400);
     echo json_encode(["error" => "Invalid email address."]);
+    exit;
+}
+
+$cleanPhone = preg_replace('/\D/', '', $phone);
+if (strlen($cleanPhone) < 10 || strlen($cleanPhone) > 12) {
+    http_response_code(400);
+    echo json_encode(["error" => "Phone number must be between 10 and 12 digits."]);
     exit;
 }
 

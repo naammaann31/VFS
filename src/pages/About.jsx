@@ -169,19 +169,19 @@ const About = () => {
     },
     {
       name: "Vectra Foreign Services",
-      url: "#",
+      url: "/",
       desc: "Immigration & Visa Consulting",
       icon: <GlobeIcon />,
     },
     {
       name: "Vectra Informatics",
-      url: "#",
+      url: "https://vectrainformatics.com/",
       desc: "Technology & Software Development",
       icon: <CodeIcon />,
     },
     {
       name: "Vectra Staffing Canada",
-      url: "#",
+      url: "https://www.vectrastaffing.com/",
       desc: "Canadian Workforce & Staffing Solutions",
       icon: <PinIcon />,
     },
