@@ -1953,6 +1953,7 @@
 
       // Security, Anti-Cheat & Session Management
       isSessionActive: false,
+      isExamStarted: false,
       activeSectionId: 'sec-registration',
       tabSwitches: 0,
       tabWarningActive: false,
@@ -2143,6 +2144,10 @@
       }
     }
 
+    function isExamProtectionActive() {
+      return state.isSessionActive && state.isExamStarted && state.activeSectionId !== 'sec-registration' && !state.testSubmitted;
+    }
+
     function launchListeningFromModal() {
       const modal = document.getElementById('listening-instructions-modal');
       if (modal) modal.style.display = 'none';
@@ -2150,6 +2155,7 @@
       requestExamFullscreen();
 
       state.isSessionActive = true;
+      state.isExamStarted = true;
       state.activeSectionId = 'sec-listening';
       const name = state.student.fullName;
       const country = state.student.targetCountry;
@@ -2181,57 +2187,57 @@
     }
 
     function setupAntiCheatListeners() {
-      // 1. Disable Right-Click Context Menu
+      // 1. Disable Right-Click Context Menu (Active only during test)
       document.addEventListener('contextmenu', (e) => {
-        if (state.isSessionActive && !state.testSubmitted) {
+        if (isExamProtectionActive()) {
           e.preventDefault();
           showToast('⚠️ Right-click context menu & spell check are disabled in proctored exam mode.', '🔒');
           return false;
         }
       });
 
-      // 2. Disable Paste Globally (in textarea and all inputs)
+      // 2. Disable Paste Globally (Active only during test)
       document.addEventListener('paste', (e) => {
-        if (state.isSessionActive && !state.testSubmitted) {
+        if (isExamProtectionActive()) {
           e.preventDefault();
           showToast('⚠️ Pasting text is strictly disabled during the exam. Please type your response manually.', '🔒');
           return false;
         }
       });
 
-      // 3. Prevent Copy / Cut on ALL Content
+      // 3. Prevent Copy / Cut on ALL Content (Active only during test)
       document.addEventListener('copy', (e) => {
-        if (state.isSessionActive && !state.testSubmitted) {
+        if (isExamProtectionActive()) {
           e.preventDefault();
           showToast('⚠️ Copying test content is strictly prohibited.', '🔒');
           return false;
         }
       });
       document.addEventListener('cut', (e) => {
-        if (state.isSessionActive && !state.testSubmitted) {
+        if (isExamProtectionActive()) {
           e.preventDefault();
           showToast('⚠️ Cut is disabled.', '🔒');
           return false;
         }
       });
 
-      // 4. Disable Drag & Drop of text into inputs/textarea
+      // 4. Disable Drag & Drop of text into inputs/textarea (Active only during test)
       document.addEventListener('drop', (e) => {
-        if (state.isSessionActive && !state.testSubmitted) {
+        if (isExamProtectionActive()) {
           e.preventDefault();
           return false;
         }
       });
       document.addEventListener('dragstart', (e) => {
-        if (state.isSessionActive && !state.testSubmitted) {
+        if (isExamProtectionActive()) {
           e.preventDefault();
           return false;
         }
       });
 
-      // 5. Disable Text Selection on non-input areas
+      // 5. Disable Text Selection on non-input areas (Active only during test)
       document.addEventListener('selectstart', (e) => {
-        if (state.isSessionActive && !state.testSubmitted) {
+        if (isExamProtectionActive()) {
           const tag = e.target && e.target.tagName ? e.target.tagName.toLowerCase() : '';
           if (tag !== 'textarea' && tag !== 'input') {
             e.preventDefault();
@@ -2242,7 +2248,7 @@
 
       // 6. Intercept Forbidden Keyboard Shortcuts (Copy, Paste, Cut, Function Keys, DevTools)
       document.addEventListener('keydown', (e) => {
-        if (!state.isSessionActive || state.testSubmitted) return;
+        if (!isExamProtectionActive()) return;
 
         // Block Copy (Ctrl+C / Cmd+C / Ctrl+Insert)
         if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C' || e.key === 'Insert')) {
@@ -2286,9 +2292,9 @@
         }
       });
 
-      // 4. Tab Switching & Window Focus Loss Monitoring (Zero Tab Switching Allowed)
+      // 7. Tab Switching & Window Focus Loss Monitoring (Active strictly after exam starts)
       document.addEventListener('visibilitychange', () => {
-        if (!state.isSessionActive || state.testSubmitted) return;
+        if (!isExamProtectionActive()) return;
         if (document.hidden) {
           state.isWindowHidden = true;
           handleSecurityViolation('TAB_SWITCH');
@@ -2298,19 +2304,19 @@
       });
 
       window.addEventListener('blur', () => {
-        if (!state.isSessionActive || state.testSubmitted) return;
+        if (!isExamProtectionActive()) return;
         state.isWindowBlurred = true;
         handleSecurityViolation('WINDOW_BLUR');
       });
 
       window.addEventListener('focus', () => {
-        if (!state.isSessionActive || state.testSubmitted) return;
+        if (!isExamProtectionActive()) return;
         state.isWindowBlurred = false;
       });
 
-      // 5. Prevent Accidental Window Closure / Reload Confirmation
+      // 8. Prevent Accidental Window Closure / Reload Confirmation
       window.addEventListener('beforeunload', (e) => {
-        if (state.isSessionActive && !state.testSubmitted) {
+        if (isExamProtectionActive()) {
           saveSession();
           e.preventDefault();
           e.returnValue = 'Your IELTS test session is in progress. Are you sure you want to leave?';
@@ -2320,7 +2326,7 @@
     }
 
     function handleSecurityViolation(type = 'TAB_SWITCH') {
-      if (state.tabWarningActive || !state.isSessionActive || state.testSubmitted) return;
+      if (state.tabWarningActive || !isExamProtectionActive()) return;
       state.tabSwitches++;
       state.tabWarningActive = true;
       saveSession();
@@ -2381,7 +2387,7 @@
     }
 
     function saveSession() {
-      if (!state.isSessionActive || state.testSubmitted) return;
+      if (!isExamProtectionActive()) return;
 
       try {
         syncAnswersFromDOM();
@@ -2389,6 +2395,7 @@
         const sessionPayload = {
           student: state.student,
           isSessionActive: state.isSessionActive,
+          isExamStarted: state.isExamStarted,
           activeSectionId: state.activeSectionId || 'sec-listening',
           answers: state.answers,
           readingTimer: {
@@ -2429,7 +2436,8 @@
         if (!savedRaw) return false;
 
         const saved = JSON.parse(savedRaw);
-        if (!saved || !saved.isSessionActive || !saved.student || !saved.student.fullName) {
+        if (!saved || !saved.isSessionActive || !saved.isExamStarted || !saved.activeSectionId || saved.activeSectionId === 'sec-registration' || !saved.student || !saved.student.fullName) {
+          localStorage.removeItem(CONFIG.STORAGE_KEY);
           return false;
         }
 
@@ -2438,6 +2446,8 @@
         // 1. Restore Student Data & Session Status
         state.student = saved.student;
         state.isSessionActive = true;
+        state.isExamStarted = true;
+        state.activeSectionId = saved.activeSectionId || 'sec-listening';
         state.tabSwitches = saved.tabSwitches || 0;
         state.listeningLocked = !!saved.listeningLocked;
         state.readingLocked = !!saved.readingLocked;
@@ -2856,7 +2866,10 @@
       if (msgSuccess) msgSuccess.style.display = 'block';
 
       setTimeout(() => {
-        state.isSessionActive = true;
+        // Prepare student metadata
+        state.isSessionActive = false;
+        state.isExamStarted = false;
+        state.activeSectionId = 'sec-registration';
         const name = state.student.fullName;
         const country = state.student.targetCountry;
 
@@ -2864,6 +2877,9 @@
         if (el.displayCandidateCountry) el.displayCandidateCountry.textContent = `Target: ${country}`;
         const initials = name ? name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'CD';
         if (el.avatarInitials) el.avatarInitials.textContent = initials || 'CD';
+
+        // Keep exam sticky bar hidden during registration/modal until candidate starts section 1
+        if (el.examStickyBar) el.examStickyBar.style.display = 'none';
 
         // Show Listening Instructions Modal after login
         showListeningInstructionsModal();
