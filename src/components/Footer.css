@@ -89,8 +89,10 @@
   transition: color 0.2s, transform 0.2s;
 }
 
-.group-list li a:hover {
-  color: #d97706;
+.group-list li a:hover,
+.group-list li a:focus,
+.group-list li a:active {
+  color: #fff;
   text-decoration: underline;
 }
 

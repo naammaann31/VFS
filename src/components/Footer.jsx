@@ -69,9 +69,8 @@ const Footer = () => {
                 href="/ielts-mock-test.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: '#D97706', fontWeight: 'bold' }}
               >
-                🎓 Free IELTS Mock Test
+                Free IELTS Mock Test
               </a>
             </li>
             <li>

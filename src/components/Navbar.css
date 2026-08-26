@@ -63,7 +63,8 @@
   color: #fff;
   background: #0f172a;
 }
-.lets-talk-btn {
+.lets-talk-btn,
+.ielts-test-btn {
   color: #fff;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -76,44 +77,24 @@
   font-size: 13px;
   font-weight: 700;
   transition: all 0.3s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
-.navbar.scrolled .lets-talk-btn {
+.navbar.scrolled .lets-talk-btn,
+.navbar.scrolled .ielts-test-btn {
   color: #fff;
   background: #0f172a;
   border: 1px solid #0000;
 }
-.lets-talk-btn:hover {
+.lets-talk-btn:hover,
+.ielts-test-btn:hover {
   background: #ffffff1a;
 }
-.navbar.scrolled .lets-talk-btn:hover {
-  background: #1e293b;
-}
-.ielts-test-btn {
-  color: #fff;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  white-space: nowrap;
-  background: #d97706;
-  border: 1px solid #d97706;
-  border-radius: 30px;
-  padding: 0.53rem 1.62rem;
-  font-size: 13px;
-  font-weight: 700;
-  transition: all 0.3s;
-  text-decoration: none;
-}
-.navbar.scrolled .ielts-test-btn {
-  color: #fff;
-  background: #d97706;
-  border: 1px solid #d97706;
-}
-.ielts-test-btn:hover {
-  background: #b45309;
-  border-color: #b45309;
-}
+.navbar.scrolled .lets-talk-btn:hover,
 .navbar.scrolled .ielts-test-btn:hover {
-  background: #b45309;
+  background: #1e293b;
 }
 .navbar-hamburger {
   cursor: pointer;
@@ -304,7 +285,8 @@
     padding: 0.4rem 0.9rem;
     font-size: 0.75rem;
   }
-  .lets-talk-btn {
+  .lets-talk-btn,
+  .ielts-test-btn {
     padding: 0.5rem 1.2rem;
     font-size: 0.75rem;
   }
@@ -409,7 +391,7 @@
     display: list-item;
   }
   .navbar-links li a.ielts-test-btn {
-    background: #d97706;
+    background: #0f172a;
     color: #fff !important;
     margin: 0.5rem 1rem;
     border-radius: 30px;

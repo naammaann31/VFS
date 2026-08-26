@@ -207,7 +207,7 @@ const Navbar = () => {
             className="ielts-test-btn"
             onClick={closeMenu}
           >
-            🎓 IELTS MOCK TEST
+            IELTS MOCK TEST
           </a>
         </li>
       </ul>
@@ -220,7 +220,7 @@ const Navbar = () => {
           className="ielts-test-btn"
           onClick={closeMenu}
         >
-          🎓 IELTS MOCK TEST
+          IELTS MOCK TEST
         </a>
         <Link to="/contact" className="lets-talk-btn" onClick={closeMenu}>
           Book Consultation
