@@ -8,35 +8,24 @@ const SECTIONS = [
   { id: 'REVIEW', label: '5. Review & Submit', icon: '📋' }
 ];
 
-export default function SectionNavigator({ currentSection, onSelectSection, completedSections = [] }) {
-  const currentIndex = SECTIONS.findIndex(s => s.id === currentSection);
-
+export default function SectionNavigator({ currentSection, onSelectSection }) {
   return (
     <div className="stepper-nav-bar">
       <div className="stepper-container">
-        {SECTIONS.map((sec, idx) => {
+        {SECTIONS.map((sec) => {
           const isActive = sec.id === currentSection;
-          const isCompleted = completedSections.includes(sec.id) || idx < currentIndex;
-
-          let pillClass = 'stepper-pill';
-          if (isActive) pillClass += ' active';
-          else if (isCompleted) pillClass += ' completed';
+          const pillClass = `stepper-pill ${isActive ? 'active' : ''}`;
 
           return (
             <button
               key={sec.id}
               className={pillClass}
-              onClick={() => {
-                if (isCompleted && !isActive) return;
-                onSelectSection(sec.id);
-              }}
-              disabled={isCompleted && !isActive}
-              style={{ cursor: isCompleted && !isActive ? 'not-allowed' : 'pointer' }}
+              onClick={() => onSelectSection(sec.id)}
               type="button"
+              title={`Switch to ${sec.label}`}
             >
-              <span>{isCompleted && !isActive ? '🔒' : sec.icon}</span>
+              <span>{sec.icon}</span>
               <span>{sec.label}</span>
-              {isCompleted && !isActive && <span style={{ marginLeft: '4px' }}>✓</span>}
             </button>
           );
         })}

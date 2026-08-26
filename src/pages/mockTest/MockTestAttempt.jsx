@@ -275,11 +275,11 @@ export default function MockTestAttempt() {
 
   return (
     <div className="mock-app-container">
-      {/* Sticky Exam Header & Timer (2h 45m / 165 mins) */}
+      {/* Sticky Exam Header & 20-Minute Overall Timer */}
       <CountdownTimer
-        durationMinutes={mockTest.duration || 165}
+        durationMinutes={20}
         studentName={studentName}
-        testTitle={mockTest.title}
+        testTitle={mockTest.title || 'IELTS Mock Test (20 Min)'}
         onTimeExpire={handleSubmitTest}
       />
 
@@ -291,7 +291,6 @@ export default function MockTestAttempt() {
           setActiveSection(sec);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
-        completedSections={completedSections}
       />
 
       <main className="mock-content-body">
@@ -335,24 +334,23 @@ export default function MockTestAttempt() {
                 className="btn-vfs btn-vfs-primary"
                 onClick={() => {
                   saveDraft();
-                  setCompletedSections(prev => [...new Set([...prev, 'LISTENING'])]);
                   setActiveSection('READING');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
               >
-                Next: Reading Section (60 Mins) →
+                Next: Reading Section →
               </button>
             </div>
           </div>
         )}
 
-        {/* 2. READING SECTION (60 MINUTES - 40 QUESTIONS) */}
+        {/* 2. READING SECTION */}
         {activeSection === 'READING' && readingSec && (
           <div className="mock-section-card">
             <div className="section-title-wrap">
-              <div className="section-category-tag">Module 2 • 60 Minutes</div>
+              <div className="section-category-tag">Module 2</div>
               <h2 className="section-heading">{readingSec.title}</h2>
-              <p className="section-subtext">{readingSec.instructions || 'Read the passages and answer Questions 1–40.'}</p>
+              <p className="section-subtext">{readingSec.instructions || 'Read the passages and answer the questions.'}</p>
             </div>
 
             <ReadingPassage
@@ -378,24 +376,23 @@ export default function MockTestAttempt() {
                 className="btn-vfs btn-vfs-primary"
                 onClick={() => {
                   saveDraft();
-                  setCompletedSections(prev => [...new Set([...prev, 'READING'])]);
                   setActiveSection('WRITING');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
               >
-                Next: Writing Section (60 Mins) →
+                Next: Writing Section →
               </button>
             </div>
           </div>
         )}
 
-        {/* 3. WRITING SECTION (60 MINUTES - TASK 1 & TASK 2) */}
+        {/* 3. WRITING SECTION */}
         {activeSection === 'WRITING' && writingSec && (
           <div className="mock-section-card">
             <div className="section-title-wrap">
-              <div className="section-category-tag">Module 3 • 60 Minutes</div>
+              <div className="section-category-tag">Module 3</div>
               <h2 className="section-heading">{writingSec.title}</h2>
-              <p className="section-subtext">{writingSec.instructions || 'Spend 20 minutes on Task 1 and 40 minutes on Task 2.'}</p>
+              <p className="section-subtext">{writingSec.instructions || 'Write your essay response.'}</p>
             </div>
 
             {writingSec.questions.map((q, qIdx) => (
@@ -426,7 +423,6 @@ export default function MockTestAttempt() {
                 className="btn-vfs btn-vfs-primary"
                 onClick={() => {
                   saveDraft();
-                  setCompletedSections(prev => [...new Set([...prev, 'WRITING'])]);
                   setActiveSection('SPEAKING');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
@@ -441,22 +437,22 @@ export default function MockTestAttempt() {
         {activeSection === 'SPEAKING' && speakingSec && (
           <div className="mock-section-card">
             <div className="section-title-wrap">
-              <div className="section-category-tag">Module 4 • 11–14 Minutes</div>
+              <div className="section-category-tag">Module 4</div>
               <h2 className="section-heading">{speakingSec.title}</h2>
               <p className="section-subtext">Record your voice responses using your device's microphone.</p>
             </div>
 
-            {/* Official 5-point instructions card */}
+            {/* Official Instructions Card */}
             <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '10px', padding: '1.25rem 1.5rem', marginBottom: '1.5rem' }}>
               <div style={{ fontWeight: 800, fontSize: '0.95rem', color: '#1C2B4B', marginBottom: '0.6rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span>📋</span> <span>Speaking – Instructions</span>
               </div>
               <ol style={{ fontSize: '0.88rem', color: '#475569', lineHeight: '1.7', margin: 0, paddingLeft: '1.25rem' }}>
-                <li><strong>Total time:</strong> The total time for the speaking will be <strong>11–14 minutes</strong>.</li>
-                <li><strong>3 Parts:</strong> The test consists of 3 structured parts.</li>
-                <li><strong>Part-1 (4–5 minutes):</strong> The candidate and examiner introduce themselves. Candidates then answer general questions about familiar topics.</li>
-                <li><strong>Part-2 (3–4 minutes):</strong> The candidate is given a task card with prompts and is asked to talk on a particular topic. The candidate has <strong>one minute to prepare and make notes</strong>, before speaking for between <strong>1 and 2 minutes</strong>.</li>
-                <li><strong>Part-3 (4–5 minutes):</strong> The examiner and candidate engage in a discussion of more abstract issues which are thematically linked to the topic in Part-2.</li>
+                <li><strong>Overall Time:</strong> You have a total of <strong>20 minutes</strong> for the entire exam. Allocate time across modules freely.</li>
+                <li><strong>3 Parts:</strong> The test consists of structured speaking prompts.</li>
+                <li><strong>Part-1:</strong> General questions about familiar topics.</li>
+                <li><strong>Part-2:</strong> Task cue card topic.</li>
+                <li><strong>Part-3:</strong> In-depth discussion linked to Part-2.</li>
               </ol>
             </div>
 
@@ -526,7 +522,6 @@ export default function MockTestAttempt() {
                   className="btn-vfs btn-vfs-primary"
                   onClick={() => {
                     saveDraft();
-                    setCompletedSections(prev => [...new Set([...prev, 'SPEAKING'])]);
                     setActiveSection('REVIEW');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
@@ -544,7 +539,7 @@ export default function MockTestAttempt() {
             <div className="section-title-wrap">
               <div className="section-category-tag">Final Step</div>
               <h2 className="section-heading">Test Summary & Final Submission</h2>
-              <p className="section-subtext">Please review your completed sections before final submission.</p>
+              <p className="section-subtext">Please review your completed sections before final submission. You can jump back to any module to make changes.</p>
             </div>
 
             <ReviewPanel

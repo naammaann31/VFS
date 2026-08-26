@@ -716,3 +716,168 @@
   box-shadow: var(--vfs-shadow-lg);
   padding: 2rem;
 }
+
+/* ==============================================================================
+   RESPONSIVE DESIGN & MOBILE OPTIMIZATIONS
+   ============================================================================== */
+
+@media (max-width: 900px) {
+  .reading-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .passage-panel {
+    max-height: 380px;
+  }
+}
+
+@media (max-width: 768px) {
+  .exam-sticky-header {
+    padding: 0.6rem 1rem;
+  }
+
+  .exam-header-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .candidate-badge {
+    gap: 0.5rem;
+  }
+
+  .candidate-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+
+  .candidate-name {
+    font-size: 0.88rem;
+  }
+
+  .candidate-id {
+    display: none;
+  }
+
+  .exam-timer-box {
+    font-size: 0.95rem;
+    padding: 0.35rem 0.7rem;
+    gap: 0.35rem;
+  }
+
+  .stepper-nav-bar {
+    padding: 0.5rem 0.75rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .stepper-container {
+    justify-content: flex-start;
+    gap: 0.35rem;
+  }
+
+  .stepper-pill {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .mock-content-body {
+    padding: 0 0.75rem 2rem 0.75rem;
+    margin: 1rem auto;
+  }
+
+  .mock-section-card {
+    padding: 1.25rem 1rem;
+    border-radius: var(--vfs-radius-sm);
+    margin-bottom: 1.25rem;
+  }
+
+  .section-heading {
+    font-size: 1.35rem;
+  }
+
+  .section-subtext {
+    font-size: 0.88rem;
+  }
+
+  .vfs-audio-player {
+    padding: 1rem;
+  }
+
+  .audio-controls-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-play-audio {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .speaking-recorder-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .recorder-btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .recorder-btn-group .btn-vfs {
+    width: 100%;
+  }
+
+  .section-nav-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .section-nav-footer .btn-vfs {
+    width: 100%;
+  }
+
+  .review-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .review-stat-box {
+    padding: 1rem;
+  }
+
+  .vfs-modal-content {
+    padding: 1.25rem;
+    max-height: calc(100dvh - 2rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .exam-header-inner {
+    gap: 0.4rem;
+  }
+
+  .exam-timer-box {
+    font-size: 0.88rem;
+    padding: 0.3rem 0.55rem;
+  }
+
+  .writing-textarea {
+    min-height: 220px;
+    font-size: 0.95rem;
+  }
+
+  .word-counter-card {
+    flex-direction: column;
+    gap: 0.4rem;
+    text-align: center;
+  }
+
+  .question-item-card {
+    padding: 1rem;
+  }
+}

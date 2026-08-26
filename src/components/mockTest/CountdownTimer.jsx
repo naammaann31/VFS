@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
 export default function CountdownTimer({
-  durationMinutes = 40,
+  durationMinutes = 20,
   studentName = 'Candidate',
   testTitle = 'IELTS Full Mock Test',
   onTimeExpire
 }) {
   const [secondsRemaining, setSecondsRemaining] = useState(durationMinutes * 60);
+
+  useEffect(() => {
+    setSecondsRemaining(durationMinutes * 60);
+  }, [durationMinutes]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -21,11 +25,11 @@ export default function CountdownTimer({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [durationMinutes, onTimeExpire]);
+  }, [onTimeExpire]);
 
   const minutes = Math.floor(secondsRemaining / 60);
   const seconds = secondsRemaining % 60;
-  const isWarning = secondsRemaining < 300; // Under 5 minutes
+  const isWarning = secondsRemaining <= 180; // Under 3 minutes
 
   const formatDigits = (num) => (num < 10 ? `0${num}` : num);
 
@@ -42,12 +46,14 @@ export default function CountdownTimer({
           </div>
         </div>
 
-        <div className={`exam-timer-box ${isWarning ? 'warning' : ''}`}>
+        <div className={`exam-timer-box ${isWarning ? 'warning' : ''}`} title="Overall 20-Minute Exam Countdown">
           <span>⏱️</span>
           <span>
             {formatDigits(minutes)}:{formatDigits(seconds)}
           </span>
-          <span style={{ fontSize: '0.75rem', fontWeight: 500, color: '#94A3B8' }}>remaining</span>
+          <span style={{ fontSize: '0.75rem', fontWeight: 500, color: isWarning ? '#FCA5A5' : '#94A3B8' }}>
+            remaining
+          </span>
         </div>
       </div>
     </div>

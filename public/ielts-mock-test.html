@@ -179,15 +179,24 @@
     }
 
     .step-pill {
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       font-weight: 600;
-      padding: 0.3rem 0.65rem;
+      padding: 0.35rem 0.75rem;
       border-radius: 20px;
       background: rgba(255, 255, 255, 0.1);
       color: #D1D5DB;
       border: 1px solid rgba(255, 255, 255, 0.15);
-      cursor: default;
+      cursor: pointer;
       transition: all 0.2s ease;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .step-pill:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
     }
 
     .step-pill.active {
@@ -195,12 +204,7 @@
       color: var(--navy-primary);
       border-color: #FFFFFF;
       font-weight: 700;
-    }
-
-    .step-pill.completed {
-      background: rgba(5, 150, 105, 0.2);
-      color: #6EE7B7;
-      border-color: rgba(5, 150, 105, 0.4);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
     /* Exam Countdown Timer */
@@ -1059,8 +1063,17 @@
     }
 
     @media (max-width: 640px) {
+      .main-wrapper {
+        padding: 0 0.75rem;
+        margin: 1rem auto;
+      }
+
       .card {
         padding: 1.25rem 1rem;
+      }
+
+      .card-title {
+        font-size: 1.35rem;
       }
 
       .security-modal-overlay {
@@ -1068,36 +1081,76 @@
       }
 
       .security-modal-card {
-        padding: 1rem;
+        padding: 1.25rem 1rem;
         border-radius: 8px;
         max-height: calc(100vh - 1rem);
         max-height: calc(100dvh - 1rem);
       }
 
+      .exam-header {
+        padding: 0.6rem 1rem;
+      }
+
       .exam-header-container {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.6rem;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .candidate-info {
+        gap: 0.5rem;
+      }
+
+      .candidate-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
+      }
+
+      .candidate-name {
+        font-size: 0.88rem;
+      }
+
+      .candidate-country {
+        display: none;
+      }
+
+      #security-badge-container {
+        display: none !important;
+      }
+
+      .timer-card {
+        padding: 0.3rem 0.6rem;
+      }
+
+      .timer-display {
+        font-size: 1rem;
       }
 
       .stepper {
         overflow-x: auto;
         width: 100%;
-        padding-bottom: 0.35rem;
+        padding: 0.4rem 0.25rem 0.25rem 0.25rem;
         -webkit-overflow-scrolling: touch;
+        gap: 0.35rem;
       }
 
       .step-pill {
         flex-shrink: 0;
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
       }
 
       .btn-row {
         flex-direction: column;
         align-items: stretch;
+        gap: 0.75rem;
       }
 
       .btn-row .btn {
         width: 100%;
+        justify-content: center;
       }
 
       .btn-row > span {
@@ -1105,6 +1158,23 @@
       }
 
       .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .audio-player-card {
+        padding: 1rem;
+      }
+
+      .recorder-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .recorder-actions .btn {
+        width: 100%;
+      }
+
+      .review-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -1122,7 +1192,7 @@
         </div>
       </a>
       <div style="font-size:0.85rem; background:rgba(255,255,255,0.1); padding:0.4rem 0.8rem; border-radius:4px;">
-        🎓 Free Computer-Delivered IELTS Practice Test
+        🎓 Free Computer-Delivered IELTS Practice Test (20 Min)
       </div>
     </div>
   </header>
@@ -1140,22 +1210,22 @@
 
       <!-- Stepper Progress Bar -->
       <nav class="stepper" aria-label="Test section progress">
-        <span class="step-pill" id="step-pill-listening">1. Listening</span>
-        <span class="step-pill" id="step-pill-reading">2. Reading</span>
-        <span class="step-pill" id="step-pill-writing">3. Writing</span>
-        <span class="step-pill" id="step-pill-speaking">4. Speaking</span>
-        <span class="step-pill" id="step-pill-review">5. Review</span>
+        <button type="button" class="step-pill active" id="step-pill-listening">🎧 1. Listening</button>
+        <button type="button" class="step-pill" id="step-pill-reading">📖 2. Reading</button>
+        <button type="button" class="step-pill" id="step-pill-writing">✍️ 3. Writing</button>
+        <button type="button" class="step-pill" id="step-pill-speaking">🎙️ 4. Speaking</button>
+        <button type="button" class="step-pill" id="step-pill-review">📋 5. Review</button>
       </nav>
 
       <!-- Security / Anti-Cheat Status Badge -->
-      <div id="security-badge-container" class="security-badge-header" style="display:inline-flex;" title="Tab switching is strictly prohibited in proctored mode">
-        <span>🔒 Proctored Exam: No Tab Switching</span>
+      <div id="security-badge-container" class="security-badge-header" style="display:inline-flex;" title="Proctored exam mode active">
+        <span>🔒 Proctored Exam</span>
       </div>
 
-      <!-- Exam Timer (Shown only for timed sections: Reading 5m, Writing 5m, Speaking 6m) -->
-      <div id="exam-timer-card" class="timer-card" aria-live="polite" style="display: none;">
-        <span id="timer-section-label" class="timer-label">Time Remaining</span>
-        <span id="timer-display" class="timer-display">05:00</span>
+      <!-- Exam Timer (20-minute unified countdown timer for all modules) -->
+      <div id="exam-timer-card" class="timer-card" aria-live="polite" style="display: flex;" title="Overall 20-Minute Exam Countdown">
+        <span id="timer-section-label" class="timer-label">Overall Time</span>
+        <span id="timer-display" class="timer-display">20:00</span>
       </div>
     </div>
   </div>
@@ -1168,7 +1238,7 @@
       <div class="card">
         <div class="card-header">
           <h1 id="reg-heading" class="card-title">Candidate Registration</h1>
-          <p class="card-subtitle">Complete your details to start your free 40-minute simulated IELTS test.</p>
+          <p class="card-subtitle">Complete your details to start your free 20-minute simulated IELTS practice test.</p>
         </div>
 
         <form id="reg-form" novalidate>
@@ -1211,9 +1281,8 @@
             </div>
 
             <div
-              style="background-color: #F9FAFB; border: 1px solid #E5E7EB; padding: 1rem; border-radius: 4px; margin-top: 1rem; font-size: 0.85rem; color: #6B7280;">
-              📌 <strong>Exam Instructions:</strong> This test consists of 4 modules (Listening, Reading, Writing, and
-              Speaking). Reading and Writing are timed at <strong>5 minutes</strong> each. Audio is automated and Speaking is self-paced.
+              style="background-color: #F9FAFB; border: 1px solid #E5E7EB; padding: 1rem; border-radius: 6px; margin-top: 1rem; font-size: 0.88rem; color: #4B5563; line-height: 1.6;">
+              ⏱️ <strong>Exam Structure:</strong> This test consists of 4 modules (Listening, Reading, Writing, and Speaking) with a fixed <strong>20-minute overall timer</strong>. You can switch freely between modules at any time to manage your time.
             </div>
 
             <div class="btn-row" style="justify-content: flex-end;">
@@ -1291,15 +1360,14 @@
           <span style="color:var(--accent-gold); font-weight:700; font-size:0.85rem; text-transform:uppercase;">Module
             1</span>
           <h2 id="listening-heading" class="card-title">Listening Test</h2>
-          <p class="card-subtitle">Listen to the audio recording carefully and answer Questions 1–3. The audio plays
-            ONCE only.</p>
+          <p class="card-subtitle">Listen to the audio recording carefully and answer Questions 1–3.</p>
         </div>
 
         <!-- Automated Listening Audio Player -->
         <div class="audio-player-card">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
             <span style="font-weight: 600; font-size: 0.95rem;">
-              🎧 IELTS Listening Audio (Plays Automatically & Once Only)
+              🎧 IELTS Listening Audio
             </span>
             <span id="listening-stage-badge" style="font-size:0.8rem; font-weight:700; background:#D97706; color:#FFFFFF; padding:0.25rem 0.65rem; border-radius:12px;">
               ⏳ Reading Time: 30s
@@ -1385,7 +1453,7 @@
 
         <div class="btn-row">
           <div></div>
-          <button type="button" class="btn btn-primary" onclick="lockListeningSection(); navToSection('sec-reading');">
+          <button type="button" class="btn btn-primary" onclick="navToSection('sec-reading');">
             Next: Reading Section →
           </button>
         </div>
@@ -1399,7 +1467,7 @@
           <span style="color:var(--accent-gold); font-weight:700; font-size:0.85rem; text-transform:uppercase;">Module
             2</span>
           <h2 id="reading-heading" class="card-title">Reading Test</h2>
-          <p class="card-subtitle">Read the text below and answer Questions 1–3. Time limit: <strong>5 minutes</strong>.</p>
+          <p class="card-subtitle">Read the text below and answer Questions 1–3.</p>
         </div>
 
         <div class="reading-grid">
@@ -1489,10 +1557,10 @@
         </div>
 
         <div class="btn-row">
-          <span style="color:#9CA3AF; font-size:0.85rem; display:inline-flex; align-items:center; gap:0.4rem;">
-            🔒 Section 1 (Listening) Locked
-          </span>
-          <button type="button" class="btn btn-primary" onclick="lockReadingSection(); navToSection('sec-writing');">
+          <button type="button" class="btn btn-secondary" onclick="navToSection('sec-listening');">
+            ← Back to Listening
+          </button>
+          <button type="button" class="btn btn-primary" onclick="navToSection('sec-writing');">
             Next: Writing Section →
           </button>
         </div>
@@ -1506,7 +1574,7 @@
           <span style="color:var(--accent-gold); font-weight:700; font-size:0.85rem; text-transform:uppercase;">Module
             3</span>
           <h2 id="writing-heading" class="card-title">Academic Writing (Task 2)</h2>
-          <p class="card-subtitle">You have <strong>5 minutes</strong> on this task. Write at least 150 words.</p>
+          <p class="card-subtitle">Write an essay of at least 150 words on the topic below.</p>
         </div>
 
         <div class="question-block" style="border-left-color: var(--accent-gold);">
@@ -1535,10 +1603,10 @@
         </div>
 
         <div class="btn-row">
-          <span style="color:#9CA3AF; font-size:0.85rem; display:inline-flex; align-items:center; gap:0.4rem;">
-            🔒 Section 2 (Reading) Locked
-          </span>
-          <button type="button" class="btn btn-primary" onclick="lockWritingSection(); navToSection('sec-speaking');">
+          <button type="button" class="btn btn-secondary" onclick="navToSection('sec-reading');">
+            ← Back to Reading
+          </button>
+          <button type="button" class="btn btn-primary" onclick="navToSection('sec-speaking');">
             Next: Speaking Section →
           </button>
         </div>
@@ -1552,7 +1620,7 @@
           <span style="color:var(--accent-gold); font-weight:700; font-size:0.85rem; text-transform:uppercase;">Module
             4</span>
           <h2 id="speaking-heading" class="card-title">Speaking Test (Voice Recorder)</h2>
-          <p class="card-subtitle">Record your voice responses using your device's microphone. Time limit: <strong>6 minutes</strong>.
+          <p class="card-subtitle">Record your voice responses using your device's microphone.
           </p>
         </div>
 
@@ -1643,10 +1711,10 @@
         </div>
 
         <div class="btn-row">
-          <span style="color:#9CA3AF; font-size:0.85rem; display:inline-flex; align-items:center; gap:0.4rem;">
-            🔒 Section 3 (Writing) Locked
-          </span>
-          <button type="button" class="btn btn-primary" onclick="lockSpeakingSection(); navToSection('sec-review');">
+          <button type="button" class="btn btn-secondary" onclick="navToSection('sec-writing');">
+            ← Back to Writing
+          </button>
+          <button type="button" class="btn btn-primary" onclick="navToSection('sec-review');">
             Review & Submit Test →
           </button>
         </div>
@@ -1660,32 +1728,40 @@
           <span style="color:var(--accent-gold); font-weight:700; font-size:0.85rem; text-transform:uppercase;">Final
             Step</span>
           <h2 id="review-heading" class="card-title">Test Summary & Submission</h2>
-          <p class="card-subtitle">Please review your completed answers before final submission.</p>
+          <p class="card-subtitle">Please review your completed answers before final submission. You can jump to any module to refine your answers.</p>
         </div>
 
         <div class="review-grid">
           <div class="review-card">
             <div class="review-card-title">Listening Section</div>
-            <div id="summary-listening" class="review-card-stat">0 / 3</div>
-            <span style="font-size:0.8rem; color:#9CA3AF; font-weight:600;">🔒 Section Locked</span>
+            <div id="summary-listening" class="review-card-stat">0 / 3 answered</div>
+            <button type="button" class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.82rem; margin-top: 0.6rem; width: 100%;" onclick="navToSection('sec-listening')">
+              ✏️ Edit Listening Answers
+            </button>
           </div>
 
           <div class="review-card">
             <div class="review-card-title">Reading Section</div>
-            <div id="summary-reading" class="review-card-stat">0 / 3</div>
-            <span style="font-size:0.8rem; color:#9CA3AF; font-weight:600;">🔒 Section Locked</span>
+            <div id="summary-reading" class="review-card-stat">0 / 3 answered</div>
+            <button type="button" class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.82rem; margin-top: 0.6rem; width: 100%;" onclick="navToSection('sec-reading')">
+              ✏️ Edit Reading Answers
+            </button>
           </div>
 
           <div class="review-card">
             <div class="review-card-title">Writing Essay</div>
             <div id="summary-writing" class="review-card-stat">0 words</div>
-            <span style="font-size:0.8rem; color:#9CA3AF; font-weight:600;">🔒 Section Locked</span>
+            <button type="button" class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.82rem; margin-top: 0.6rem; width: 100%;" onclick="navToSection('sec-writing')">
+              ✍️ Edit Essay
+            </button>
           </div>
 
           <div class="review-card">
             <div class="review-card-title">Speaking Audio</div>
             <div id="summary-speaking" class="review-card-stat">0 / 2 Recorded</div>
-            <span style="font-size:0.8rem; color:#9CA3AF; font-weight:600;">🔒 Section Locked</span>
+            <button type="button" class="btn btn-secondary" style="padding: 0.4rem 0.75rem; font-size: 0.82rem; margin-top: 0.6rem; width: 100%;" onclick="navToSection('sec-speaking')">
+              🎙️ Manage Speaking
+            </button>
           </div>
         </div>
 
@@ -1698,7 +1774,10 @@
           </p>
         </div>
 
-        <div class="btn-row" style="justify-content: flex-end;">
+        <div class="btn-row">
+          <button type="button" class="btn btn-secondary" onclick="navToSection('sec-speaking');">
+            ← Back to Speaking
+          </button>
           <button type="button" class="btn btn-success" id="btn-final-submit"
             style="padding: 0.85rem 2rem; font-size: 1.05rem;">
             🚀 Submit Test Now
@@ -1756,62 +1835,54 @@
             🎧
           </div>
           <div>
-            <span style="font-size: 0.72rem; font-weight: 700; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px;">Module 1 of 4</span>
+            <span style="font-size: 0.72rem; font-weight: 700; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px;">IELTS Full Mock Test</span>
             <h3 id="listening-instructions-title" style="font-size: 1.3rem; color: var(--navy-primary); margin: 0; font-family: 'Fraunces', Georgia, serif; line-height: 1.25;">
-              IELTS Listening Test Instructions
+              IELTS Mock Test Instructions
             </h3>
           </div>
         </div>
         <p style="font-size: 0.88rem; color: #4B5563; margin: 0; line-height: 1.45;">
-          Please review the exam timing and progression rules carefully before starting your listening module:
+          Please review the test timing and progression guidelines before starting:
         </p>
       </div>
 
       <div class="modal-scrollable-body" style="display: flex; flex-direction: column; gap: 0.65rem;">
         <div class="instruction-rule-item" style="display: flex; gap: 0.8rem; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.7rem 0.9rem; border-radius: 8px; align-items: center;">
-          <span style="font-size: 1.25rem; flex-shrink: 0;">⏳</span>
+          <span style="font-size: 1.25rem; flex-shrink: 0;">⏱️</span>
           <div>
-            <div class="instruction-rule-title" style="font-weight: 700; font-size: 0.88rem; color: #1E293B;">1. 30 Seconds Question Reading Time</div>
-            <div class="instruction-rule-desc" style="font-size: 0.8rem; color: #64748B;">You have 30 seconds before the audio starts to read Questions 1–3 and prepare.</div>
+            <div class="instruction-rule-title" style="font-weight: 700; font-size: 0.88rem; color: #1E293B;">1. 20-Minute Overall Exam Timer</div>
+            <div class="instruction-rule-desc" style="font-size: 0.8rem; color: #64748B;">You have <strong>20 minutes</strong> total for the entire test. The overall countdown timer runs continuously in the top bar.</div>
+          </div>
+        </div>
+
+        <div class="instruction-rule-item" style="display: flex; gap: 0.8rem; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.7rem 0.9rem; border-radius: 8px; align-items: center;">
+          <span style="font-size: 1.25rem; flex-shrink: 0;">🔄</span>
+          <div>
+            <div class="instruction-rule-title" style="font-weight: 700; font-size: 0.88rem; color: #1E293B;">2. Free Section Switching</div>
+            <div class="instruction-rule-desc" style="font-size: 0.8rem; color: #64748B;">You can switch between Listening, Reading, Writing, and Speaking at any time to manage your time flexibly.</div>
           </div>
         </div>
 
         <div class="instruction-rule-item" style="display: flex; gap: 0.8rem; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.7rem 0.9rem; border-radius: 8px; align-items: center;">
           <span style="font-size: 1.25rem; flex-shrink: 0;">🔊</span>
           <div>
-            <div class="instruction-rule-title" style="font-weight: 700; font-size: 0.88rem; color: #1E293B;">2. Audio Plays ONCE Only</div>
-            <div class="instruction-rule-desc" style="font-size: 0.8rem; color: #64748B;">The audio starts automatically and plays <strong>strictly once</strong>. It cannot be paused, seeked, or replayed.</div>
+            <div class="instruction-rule-title" style="font-weight: 700; font-size: 0.88rem; color: #1E293B;">3. Listening Audio</div>
+            <div class="instruction-rule-desc" style="font-size: 0.8rem; color: #64748B;">The Listening audio gives 30 seconds of prep time before starting. Answer questions as you listen.</div>
           </div>
         </div>
 
         <div class="instruction-rule-item" style="display: flex; gap: 0.8rem; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.7rem 0.9rem; border-radius: 8px; align-items: center;">
-          <span style="font-size: 1.25rem; flex-shrink: 0;">✍️</span>
+          <span style="font-size: 1.25rem; flex-shrink: 0;">🎙️</span>
           <div>
-            <div class="instruction-rule-title" style="font-weight: 700; font-size: 0.88rem; color: #1E293B;">3. 30 Seconds Answer Review Time</div>
-            <div class="instruction-rule-desc" style="font-size: 0.8rem; color: #64748B;">After the audio finishes, you have 30 seconds to finalize your answers before this section locks.</div>
-          </div>
-        </div>
-
-        <div class="instruction-rule-item" style="display: flex; gap: 0.8rem; background: #FEF2F2; border: 1px solid #FECACA; padding: 0.7rem 0.9rem; border-radius: 8px; align-items: center;">
-          <span style="font-size: 1.25rem; flex-shrink: 0;">🔒</span>
-          <div>
-            <div class="instruction-rule-title" style="font-weight: 700; font-size: 0.88rem; color: #991B1B;">4. No Returning to Completed Sections</div>
-            <div class="instruction-rule-desc" style="font-size: 0.8rem; color: #B91C1C;">Once you submit a section (or time expires), it is permanently locked. You <strong>cannot return</strong> to any completed section.</div>
-          </div>
-        </div>
-
-        <div class="instruction-rule-item" style="display: flex; gap: 0.8rem; background: #FEF3C7; border: 1px solid #FDE68A; padding: 0.7rem 0.9rem; border-radius: 8px; align-items: center;">
-          <span style="font-size: 1.25rem; flex-shrink: 0;">⏱️</span>
-          <div>
-            <div class="instruction-rule-title" style="font-weight: 700; font-size: 0.88rem; color: #92400E;">5. Audio-Paced Timing (No 5-Minute Timer)</div>
-            <div class="instruction-rule-desc" style="font-size: 0.8rem; color: #B45309;">The Listening section has no 5-minute countdown clock. The 5-minute timers will apply to the Reading & Writing modules next.</div>
+            <div class="instruction-rule-title" style="font-weight: 700; font-size: 0.88rem; color: #1E293B;">4. Voice Recording & Essay Auto-Save</div>
+            <div class="instruction-rule-desc" style="font-size: 0.8rem; color: #64748B;">All your answers, essay inputs, and voice recordings are automatically saved as you progress.</div>
           </div>
         </div>
       </div>
 
       <div class="modal-footer-section">
         <button type="button" class="btn btn-primary" id="btn-start-listening-test" style="width: 100%; padding: 0.85rem 1.25rem; font-size: 1rem; font-weight: 700; justify-content: center; box-shadow: 0 4px 6px -1px rgba(30, 58, 138, 0.25);" onclick="launchListeningFromModal()">
-          🎧 I Understand — Start Listening Section →
+          🚀 I Understand — Start 20-Minute Test →
         </button>
       </div>
     </div>
@@ -1885,8 +1956,8 @@
       // Default MP3 sample audio URL for Listening section
       LISTENING_AUDIO_URL: "/listening-audio.mp3",
 
-      // Test duration limit in minutes
-      TIMER_MINUTES: 40,
+      // Test duration limit in minutes (overall 20-minute timer)
+      TIMER_MINUTES: 20,
 
       // Notification email constant
       NOTIFY_EMAIL: "vectraforeignservices@gmail.com",
@@ -1914,32 +1985,16 @@
           q2: { base64: "", mimeType: "", duration: 0 }
         }
       },
-      readingTimer: {
-        remainingSeconds: 300, // 5 minutes
-        timerId: null,
-        started: false
-      },
-      writingTimer: {
-        remainingSeconds: 300, // 5 minutes
-        timerId: null,
-        started: false
-      },
-      speakingTimer: {
-        remainingSeconds: 360, // 6 minutes
+      examTimer: {
+        remainingSeconds: CONFIG.TIMER_MINUTES * 60, // 20 minutes (1200 seconds)
         timerId: null,
         started: false
       },
       listening: {
         readingSecondsLeft: 30,
-        reviewSecondsLeft: 30,
-        stage: 'idle', // 'reading' | 'playing' | 'review' | 'locked'
-        readingTimerId: null,
-        reviewTimerId: null
+        stage: 'idle', // 'reading' | 'playing' | 'ended'
+        readingTimerId: null
       },
-      listeningLocked: false,
-      readingLocked: false,
-      writingLocked: false,
-      speakingLocked: false,
       listeningAudioPlayed: false,
       mediaRecorders: { q1: null, q2: null },
       audioBlobs: { q1: null, q2: null },
@@ -1982,10 +2037,6 @@
 
       // Security Elements
       securityBadgeContainer: document.getElementById('security-badge-container'),
-      tabSwitchCountDisplay: document.getElementById('tab-switch-count-display'),
-      tabSwitchModal: document.getElementById('tab-switch-modal'),
-      tabSwitchBadge: document.getElementById('tab-switch-badge'),
-      tabSwitchDetailText: document.getElementById('tab-switch-detail-text'),
       examToast: document.getElementById('exam-toast'),
       examToastMsg: document.getElementById('exam-toast-msg'),
       examToastIcon: document.getElementById('exam-toast-icon'),
@@ -2072,11 +2123,12 @@
       el.btnRecQ2Stop.addEventListener('click', () => stopRecording('q2'));
       el.btnRecQ2Reset.addEventListener('click', () => resetRecording('q2'));
 
-      // Stepper pill click protection (no jumping back to completed sections)
+      // Stepper pill click navigation (jump freely to any section)
       ['step-pill-listening', 'step-pill-reading', 'step-pill-writing', 'step-pill-speaking', 'step-pill-review'].forEach(id => {
         const pill = document.getElementById(id);
         if (pill) {
           pill.addEventListener('click', () => {
+            if (!state.isExamStarted) return;
             const pillSecMap = {
               'step-pill-listening': 'sec-listening',
               'step-pill-reading': 'sec-reading',
@@ -2085,13 +2137,8 @@
               'step-pill-review': 'sec-review'
             };
             const target = pillSecMap[id];
-            if (target && target !== state.activeSectionId) {
-              const order = ['sec-listening', 'sec-reading', 'sec-writing', 'sec-speaking', 'sec-review'];
-              const curIdx = order.indexOf(state.activeSectionId);
-              const tgtIdx = order.indexOf(target);
-              if (tgtIdx < curIdx) {
-                showToast('🔒 Exam Rules: Completed sections are permanently locked and cannot be reopened.', '⚠️');
-              }
+            if (target) {
+              navToSection(target);
             }
           });
         }
@@ -2100,19 +2147,18 @@
       // Final Submit Button
       el.btnFinalSubmit.addEventListener('click', submitFullTest);
 
-      // Setup Anti-Cheat & Grammarly Blocker Listeners
+      // Setup Anti-Cheat Listeners
       setupAntiCheatListeners();
 
       // Check and Restore Active Session if page was reloaded
       const restored = restoreSession();
       if (!restored) {
-        // No existing active session, default to registration view
         console.log('No active test session found. Ready for candidate registration.');
       }
     });
 
     /* ==========================================================================
-       5. CORPORATE PROCTORING ENGINE (TCS / INFOSYS ASSESSMENT STANDARD)
+       5. CORPORATE PROCTORING ENGINE
        ========================================================================== */
     function isFullscreenActive() {
       return !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
@@ -2166,13 +2212,12 @@
       if (el.avatarInitials) el.avatarInitials.textContent = initials || 'CD';
 
       if (el.examStickyBar) el.examStickyBar.style.display = 'block';
+      if (el.examTimerCard) el.examTimerCard.style.display = 'flex';
 
-      // Hide 5-minute timer card completely during listening section
-      if (el.examTimerCard) el.examTimerCard.style.display = 'none';
-
+      startExamTimer();
       navToSection('sec-listening');
       saveSession();
-      showToast(`🎧 Welcome ${name}! Listening preparation (30s) started.`, '⏳');
+      showToast(`🎧 Welcome ${name}! Overall 20-minute IELTS test started.`, '⏱️');
     }
 
     function launchProctoredExamFullscreen() {
@@ -2221,7 +2266,7 @@
         }
       });
 
-      // 4. Disable Drag & Drop of text into inputs/textarea (Active only during test)
+      // 4. Disable Drag & Drop of text into inputs/textarea
       document.addEventListener('drop', (e) => {
         if (isExamProtectionActive()) {
           e.preventDefault();
@@ -2235,18 +2280,7 @@
         }
       });
 
-      // 5. Disable Text Selection on non-input areas (Active only during test)
-      document.addEventListener('selectstart', (e) => {
-        if (isExamProtectionActive()) {
-          const tag = e.target && e.target.tagName ? e.target.tagName.toLowerCase() : '';
-          if (tag !== 'textarea' && tag !== 'input') {
-            e.preventDefault();
-            return false;
-          }
-        }
-      });
-
-      // 6. Intercept Forbidden Keyboard Shortcuts (Copy, Paste, Cut, Function Keys, DevTools)
+      // 5. Intercept Forbidden Keyboard Shortcuts
       document.addEventListener('keydown', (e) => {
         if (!isExamProtectionActive()) return;
 
@@ -2292,7 +2326,7 @@
         }
       });
 
-      // 7. Tab Switching & Window Focus Loss Monitoring (Active strictly after exam starts)
+      // 6. Tab Switching & Window Focus Loss Monitoring
       document.addEventListener('visibilitychange', () => {
         if (!isExamProtectionActive()) return;
         if (document.hidden) {
@@ -2314,7 +2348,7 @@
         state.isWindowBlurred = false;
       });
 
-      // 8. Prevent Accidental Window Closure / Reload Confirmation
+      // 7. Prevent Accidental Window Closure / Reload Confirmation
       window.addEventListener('beforeunload', (e) => {
         if (isExamProtectionActive()) {
           saveSession();
@@ -2398,27 +2432,14 @@
           isExamStarted: state.isExamStarted,
           activeSectionId: state.activeSectionId || 'sec-listening',
           answers: state.answers,
-          readingTimer: {
-            remainingSeconds: state.readingTimer.remainingSeconds,
-            started: state.readingTimer.started
-          },
-          writingTimer: {
-            remainingSeconds: state.writingTimer.remainingSeconds,
-            started: state.writingTimer.started
-          },
-          speakingTimer: {
-            remainingSeconds: state.speakingTimer.remainingSeconds,
-            started: state.speakingTimer.started
+          examTimer: {
+            remainingSeconds: state.examTimer.remainingSeconds,
+            started: state.examTimer.started
           },
           listening: {
             stage: state.listening.stage,
-            readingSecondsLeft: state.listening.readingSecondsLeft,
-            reviewSecondsLeft: state.listening.reviewSecondsLeft
+            readingSecondsLeft: state.listening.readingSecondsLeft
           },
-          listeningLocked: state.listeningLocked,
-          readingLocked: state.readingLocked,
-          writingLocked: state.writingLocked,
-          speakingLocked: state.speakingLocked,
           listeningAudioPlayed: state.listeningAudioPlayed,
           tabSwitches: state.tabSwitches,
           timestamp: Date.now()
@@ -2449,10 +2470,6 @@
         state.isExamStarted = true;
         state.activeSectionId = saved.activeSectionId || 'sec-listening';
         state.tabSwitches = saved.tabSwitches || 0;
-        state.listeningLocked = !!saved.listeningLocked;
-        state.readingLocked = !!saved.readingLocked;
-        state.writingLocked = !!saved.writingLocked;
-        state.speakingLocked = !!saved.speakingLocked;
         state.listeningAudioPlayed = !!saved.listeningAudioPlayed;
 
         // 2. Restore Answers
@@ -2460,28 +2477,21 @@
           state.answers = saved.answers;
         }
 
-        // 3. Restore Timers
-        if (saved.readingTimer) {
-          state.readingTimer.remainingSeconds = saved.readingTimer.remainingSeconds;
-          state.readingTimer.started = saved.readingTimer.started;
-        }
-        if (saved.writingTimer) {
-          state.writingTimer.remainingSeconds = saved.writingTimer.remainingSeconds;
-          state.writingTimer.started = saved.writingTimer.started;
-        }
-        if (saved.speakingTimer) {
-          state.speakingTimer.remainingSeconds = saved.speakingTimer.remainingSeconds;
-          state.speakingTimer.started = saved.speakingTimer.started;
+        // 3. Restore 20-minute Exam Timer
+        if (saved.examTimer) {
+          state.examTimer.remainingSeconds = saved.examTimer.remainingSeconds || (CONFIG.TIMER_MINUTES * 60);
+          state.examTimer.started = saved.examTimer.started;
         }
 
         // 4. Populate Sticky Header Candidate Info
         const name = state.student.fullName;
         const country = state.student.targetCountry;
-        el.displayCandidateName.textContent = name;
-        el.displayCandidateCountry.textContent = `Target: ${country}`;
+        if (el.displayCandidateName) el.displayCandidateName.textContent = name;
+        if (el.displayCandidateCountry) el.displayCandidateCountry.textContent = `Target: ${country}`;
         const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-        el.avatarInitials.textContent = initials || 'CD';
-        el.examStickyBar.style.display = 'block';
+        if (el.avatarInitials) el.avatarInitials.textContent = initials || 'CD';
+        if (el.examStickyBar) el.examStickyBar.style.display = 'block';
+        if (el.examTimerCard) el.examTimerCard.style.display = 'flex';
 
         // 5. Populate Listening UI
         if (state.answers.listening.q1) {
@@ -2494,9 +2504,6 @@
         }
         if (el.listeningQ3 && state.answers.listening.q3) {
           el.listeningQ3.value = state.answers.listening.q3;
-        }
-        if (state.listeningLocked) {
-          lockListeningSection();
         }
 
         // 6. Populate Reading UI
@@ -2511,17 +2518,11 @@
         if (el.readingQ3 && state.answers.reading.q3) {
           el.readingQ3.value = state.answers.reading.q3;
         }
-        if (state.readingLocked) {
-          lockReadingSection();
-        }
 
         // 7. Populate Writing UI
         if (el.writingEssay && state.answers.writing.essay) {
           el.writingEssay.value = state.answers.writing.essay;
           updateWordCounter();
-        }
-        if (state.writingLocked) {
-          lockWritingSection();
         }
 
         // 8. Populate Speaking UI & Audio Previews
@@ -2539,23 +2540,18 @@
               statusText.style.display = 'block';
               statusText.textContent = `✅ Recording saved for Question ${qn === 'q1' ? '1' : '2'}.`;
             }
-            if (resetBtn && !state.speakingLocked) {
+            if (resetBtn) {
               resetBtn.style.display = 'inline-flex';
             }
           }
         });
-        if (state.speakingLocked) {
-          lockSpeakingSection();
-        }
 
         // 9. Update Security Counter Badge
         updateTabSwitchUI();
 
-        // 10. Navigate directly to last active section (avoiding registration page)
+        // 10. Start Timer & Navigate directly to last active section
+        startExamTimer();
         const targetSec = saved.activeSectionId || 'sec-listening';
-        if (targetSec === 'sec-listening' && !state.listeningLocked) {
-          if (el.examTimerCard) el.examTimerCard.style.display = 'none';
-        }
         navToSection(targetSec);
 
         showToast(`🔄 Welcome back, ${name}! Your active test session has been restored.`, '✅');
@@ -2567,26 +2563,9 @@
     }
 
     /* ==========================================================================
-       7. SECTION NAVIGATION & STEPPER
+       7. SECTION NAVIGATION & STEPPER (FREE SWITCHING)
        ========================================================================== */
     function navToSection(sectionId) {
-      if (sectionId === 'sec-listening' && state.listeningLocked) {
-        showToast('🔒 Listening section has been submitted and locked. You cannot return.', '⚠️');
-        return;
-      }
-      if (sectionId === 'sec-reading' && state.readingLocked) {
-        showToast('🔒 Reading section has been submitted and locked. You cannot return.', '⚠️');
-        return;
-      }
-      if (sectionId === 'sec-writing' && state.writingLocked) {
-        showToast('🔒 Writing section has been submitted and locked. You cannot return.', '⚠️');
-        return;
-      }
-      if (sectionId === 'sec-speaking' && state.speakingLocked) {
-        showToast('🔒 Speaking section has been submitted and locked. You cannot return.', '⚠️');
-        return;
-      }
-
       state.activeSectionId = sectionId;
 
       document.querySelectorAll('.test-section').forEach(sec => sec.classList.remove('active'));
@@ -2602,33 +2581,13 @@
         updateReviewSummary();
       }
 
-      // Handle Section-specific Timers & Flows
+      // Handle Section-specific Triggers
       if (sectionId === 'sec-listening') {
-        // Remove 5-minute timer from listening section
-        if (el.examTimerCard) el.examTimerCard.style.display = 'none';
         startListeningPhase();
-      } else if (sectionId === 'sec-reading') {
-        lockListeningSection();
-        if (el.examTimerCard) el.examTimerCard.style.display = 'flex';
-        startReadingTimer();
-      } else if (sectionId === 'sec-writing') {
-        lockListeningSection();
-        lockReadingSection();
-        if (el.examTimerCard) el.examTimerCard.style.display = 'flex';
-        startWritingTimer();
-      } else if (sectionId === 'sec-speaking') {
-        lockListeningSection();
-        lockReadingSection();
-        lockWritingSection();
-        if (el.examTimerCard) el.examTimerCard.style.display = 'flex';
-        startSpeakingTimer();
-      } else if (sectionId === 'sec-review') {
-        lockListeningSection();
-        lockReadingSection();
-        lockWritingSection();
-        lockSpeakingSection();
-        if (el.examTimerCard) el.examTimerCard.style.display = 'flex';
-        setReviewHeader();
+      }
+
+      if (state.isExamStarted) {
+        startExamTimer();
       }
 
       saveSession();
@@ -2644,34 +2603,14 @@
       };
 
       const order = ['sec-listening', 'sec-reading', 'sec-writing', 'sec-speaking', 'sec-review'];
-      const currentIndex = order.indexOf(sectionId);
 
-      order.forEach((sec, idx) => {
+      order.forEach((sec) => {
         const pill = document.getElementById(pillMap[sec]);
         if (!pill) return;
-        pill.classList.remove('active', 'completed');
-        if (sec === 'sec-listening' && state.listeningLocked) {
-          pill.classList.add('completed');
-          pill.textContent = '🔒 1. Listening';
-          pill.style.cursor = 'not-allowed';
-        } else if (sec === 'sec-reading' && state.readingLocked) {
-          pill.classList.add('completed');
-          pill.textContent = '🔒 2. Reading';
-          pill.style.cursor = 'not-allowed';
-        } else if (sec === 'sec-writing' && state.writingLocked) {
-          pill.classList.add('completed');
-          pill.textContent = '🔒 3. Writing';
-          pill.style.cursor = 'not-allowed';
-        } else if (sec === 'sec-speaking' && state.speakingLocked) {
-          pill.classList.add('completed');
-          pill.textContent = '🔒 4. Speaking';
-          pill.style.cursor = 'not-allowed';
-        } else if (idx < currentIndex) {
-          pill.classList.add('completed');
-          pill.style.cursor = 'not-allowed';
-        } else if (idx === currentIndex) {
+        pill.classList.remove('active');
+        pill.style.cursor = 'pointer';
+        if (sec === sectionId) {
           pill.classList.add('active');
-          pill.style.cursor = 'default';
         }
       });
     }
@@ -2924,212 +2863,58 @@
     }
 
     /* ==========================================================================
-       9. TIMERS (READING, WRITING, SPEAKING)
+       9. UNIFIED 20-MINUTE EXAM TIMER & NO-OP LOCKS
        ========================================================================== */
-    function startReadingTimer() {
-      if (state.readingLocked) return;
-      if (!state.readingTimer.started) {
-        state.readingTimer.started = true;
-        if (!state.readingTimer.remainingSeconds || state.readingTimer.remainingSeconds <= 0) {
-          state.readingTimer.remainingSeconds = 300;
+    function startExamTimer() {
+      if (!state.examTimer.started) {
+        state.examTimer.started = true;
+        if (!state.examTimer.remainingSeconds || state.examTimer.remainingSeconds <= 0) {
+          state.examTimer.remainingSeconds = CONFIG.TIMER_MINUTES * 60;
         }
       }
-      renderReadingTimer();
+      renderExamTimer();
 
-      if (state.readingTimer.timerId) clearInterval(state.readingTimer.timerId);
-      state.readingTimer.timerId = setInterval(() => {
-        state.readingTimer.remainingSeconds--;
-        renderReadingTimer();
+      if (state.examTimer.timerId) clearInterval(state.examTimer.timerId);
+      state.examTimer.timerId = setInterval(() => {
+        state.examTimer.remainingSeconds--;
+        renderExamTimer();
 
-        if (state.readingTimer.remainingSeconds % 5 === 0) saveSession();
+        if (state.examTimer.remainingSeconds % 5 === 0) saveSession();
 
-        if (state.readingTimer.remainingSeconds <= 60) {
-          el.examTimerCard.classList.add('warning');
+        if (state.examTimer.remainingSeconds <= 180) { // 3 minutes warning
+          if (el.examTimerCard) el.examTimerCard.classList.add('warning');
         } else {
-          el.examTimerCard.classList.remove('warning');
+          if (el.examTimerCard) el.examTimerCard.classList.remove('warning');
         }
 
-        if (state.readingTimer.remainingSeconds <= 0) {
-          clearInterval(state.readingTimer.timerId);
-          alert('⏰ 5 minutes for the Reading section is up! Proceeding to the Writing section.');
-          lockReadingSection();
-          navToSection('sec-writing');
+        if (state.examTimer.remainingSeconds <= 0) {
+          clearInterval(state.examTimer.timerId);
+          alert('⏰ 20 minutes time limit is up! Submitting your test automatically.');
+          submitFullTest();
         }
       }, 1000);
     }
 
-    function renderReadingTimer() {
-      const min = Math.floor(Math.max(0, state.readingTimer.remainingSeconds) / 60);
-      const sec = Math.max(0, state.readingTimer.remainingSeconds) % 60;
+    function renderExamTimer() {
+      const totalSec = Math.max(0, state.examTimer.remainingSeconds);
+      const min = Math.floor(totalSec / 60);
+      const sec = totalSec % 60;
       const label = document.getElementById('timer-section-label');
-      if (label) label.textContent = 'Reading Time (5m)';
+      if (label) label.textContent = 'Overall Time';
       if (el.timerDisplay) el.timerDisplay.textContent = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
     }
 
-    function lockReadingSection() {
-      if (state.readingLocked) return;
-      state.readingLocked = true;
-      if (state.readingTimer.timerId) clearInterval(state.readingTimer.timerId);
-
-      const pill = document.getElementById('step-pill-reading');
-      if (pill) {
-        pill.classList.remove('active');
-        pill.classList.add('completed');
-        pill.textContent = '🔒 2. Reading';
-        pill.style.opacity = '0.7';
-      }
-
-      const readingInputs = document.querySelectorAll('#sec-reading input');
-      readingInputs.forEach(input => {
-        input.disabled = true;
-      });
-
-      saveSession();
-    }
-
-    function startWritingTimer() {
-      if (state.writingLocked) return;
-      if (!state.writingTimer.started) {
-        state.writingTimer.started = true;
-        if (!state.writingTimer.remainingSeconds || state.writingTimer.remainingSeconds <= 0) {
-          state.writingTimer.remainingSeconds = 300;
-        }
-      }
-      renderWritingTimer();
-
-      if (state.writingTimer.timerId) clearInterval(state.writingTimer.timerId);
-      state.writingTimer.timerId = setInterval(() => {
-        state.writingTimer.remainingSeconds--;
-        renderWritingTimer();
-
-        if (state.writingTimer.remainingSeconds % 5 === 0) saveSession();
-
-        if (state.writingTimer.remainingSeconds <= 60) {
-          el.examTimerCard.classList.add('warning');
-        } else {
-          el.examTimerCard.classList.remove('warning');
-        }
-
-        if (state.writingTimer.remainingSeconds <= 0) {
-          clearInterval(state.writingTimer.timerId);
-          alert('⏰ 5 minutes for the Writing section is up! Proceeding to the Speaking section.');
-          lockWritingSection();
-          navToSection('sec-speaking');
-        }
-      }, 1000);
-    }
-
-    function renderWritingTimer() {
-      const min = Math.floor(Math.max(0, state.writingTimer.remainingSeconds) / 60);
-      const sec = Math.max(0, state.writingTimer.remainingSeconds) % 60;
-      const label = document.getElementById('timer-section-label');
-      if (label) label.textContent = 'Writing Time (5m)';
-      if (el.timerDisplay) el.timerDisplay.textContent = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
-    }
-
-    function lockWritingSection() {
-      if (state.writingLocked) return;
-      state.writingLocked = true;
-      if (state.writingTimer.timerId) clearInterval(state.writingTimer.timerId);
-
-      const pill = document.getElementById('step-pill-writing');
-      if (pill) {
-        pill.classList.remove('active');
-        pill.classList.add('completed');
-        pill.textContent = '🔒 3. Writing';
-        pill.style.opacity = '0.7';
-      }
-
-      if (el.writingEssay) {
-        el.writingEssay.disabled = true;
-      }
-
-      saveSession();
-    }
-
-    function startSpeakingTimer() {
-      if (state.speakingLocked) return;
-      if (!state.speakingTimer.started) {
-        state.speakingTimer.started = true;
-        if (!state.speakingTimer.remainingSeconds || state.speakingTimer.remainingSeconds <= 0) {
-          state.speakingTimer.remainingSeconds = 360;
-        }
-      }
-      renderSpeakingTimer();
-
-      if (state.speakingTimer.timerId) clearInterval(state.speakingTimer.timerId);
-      state.speakingTimer.timerId = setInterval(() => {
-        state.speakingTimer.remainingSeconds--;
-        renderSpeakingTimer();
-
-        if (state.speakingTimer.remainingSeconds % 5 === 0) saveSession();
-
-        if (state.speakingTimer.remainingSeconds <= 60) {
-          el.examTimerCard.classList.add('warning');
-        } else {
-          el.examTimerCard.classList.remove('warning');
-        }
-
-        if (state.speakingTimer.remainingSeconds <= 0) {
-          clearInterval(state.speakingTimer.timerId);
-          alert('⏰ 6 minutes for the Speaking section is up! Proceeding to the Review & Submission section.');
-          lockSpeakingSection();
-          navToSection('sec-review');
-        }
-      }, 1000);
-    }
-
-    function renderSpeakingTimer() {
-      const min = Math.floor(Math.max(0, state.speakingTimer.remainingSeconds) / 60);
-      const sec = Math.max(0, state.speakingTimer.remainingSeconds) % 60;
-      const label = document.getElementById('timer-section-label');
-      if (label) label.textContent = 'Speaking Time (6m)';
-      if (el.timerDisplay) el.timerDisplay.textContent = `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
-    }
-
-    function lockSpeakingSection() {
-      if (state.speakingLocked) return;
-      state.speakingLocked = true;
-      if (state.speakingTimer.timerId) clearInterval(state.speakingTimer.timerId);
-
-      // Stop in-progress recording safely
-      if (state.mediaRecorders.q1 && state.mediaRecorders.q1.state === 'recording') {
-        stopRecording('q1');
-      }
-      if (state.mediaRecorders.q2 && state.mediaRecorders.q2.state === 'recording') {
-        stopRecording('q2');
-      }
-
-      const pill = document.getElementById('step-pill-speaking');
-      if (pill) {
-        pill.classList.remove('active');
-        pill.classList.add('completed');
-        pill.textContent = '🔒 4. Speaking';
-        pill.style.opacity = '0.7';
-      }
-
-      if (el.btnRecQ1Start) el.btnRecQ1Start.disabled = true;
-      if (el.btnRecQ1Stop) el.btnRecQ1Stop.disabled = true;
-      if (el.btnRecQ1Reset) el.btnRecQ1Reset.style.display = 'none';
-      if (el.btnRecQ2Start) el.btnRecQ2Start.disabled = true;
-      if (el.btnRecQ2Stop) el.btnRecQ2Stop.disabled = true;
-      if (el.btnRecQ2Reset) el.btnRecQ2Reset.style.display = 'none';
-
-      saveSession();
-    }
-
-    function setReviewHeader() {
-      if (el.examTimerCard) el.examTimerCard.classList.remove('warning');
-      const label = document.getElementById('timer-section-label');
-      if (label) label.textContent = 'Review & Submit';
-      if (el.timerDisplay) el.timerDisplay.textContent = 'Ready';
-    }
+    // Harmless no-ops for backward compatibility
+    function lockListeningSection() {}
+    function lockReadingSection() {}
+    function lockWritingSection() {}
+    function lockSpeakingSection() {}
 
     /* ==========================================================================
-       10. LISTENING AUTOMATED TIMERS & AUDIO ENGINE
+       10. LISTENING AUDIO ENGINE
        ========================================================================== */
     function startListeningPhase() {
-      if (state.listeningLocked || state.listening.stage !== 'idle') return;
+      if (state.listening.stage !== 'idle') return;
 
       state.listening.stage = 'reading';
       state.listening.readingSecondsLeft = 30;
@@ -3181,7 +2966,7 @@
     }
 
     function startListeningAudio() {
-      if (state.listeningLocked || state.listening.stage === 'playing' || state.listening.stage === 'review' || state.listening.stage === 'locked') return;
+      if (state.listening.stage === 'playing' || state.listening.stage === 'ended') return;
 
       state.listening.stage = 'playing';
       state.listeningAudioPlayed = true;
@@ -3198,7 +2983,7 @@
         noticeBanner.style.background = '#ECFDF5';
         noticeBanner.style.borderColor = '#10B981';
         noticeBanner.style.color = '#065F46';
-        noticeBanner.innerHTML = '🔊 <strong>Listening Audio is playing:</strong> Answer questions as you listen. The audio plays ONCE only and cannot be paused.';
+        noticeBanner.innerHTML = '🔊 <strong>Listening Audio is playing:</strong> Answer questions as you listen. The audio plays ONCE only.';
       }
 
       if (el.btnPlayAudio) {
@@ -3206,7 +2991,7 @@
         el.btnPlayAudio.textContent = '🔊 Audio Playing...';
       }
       if (el.audioStatusBadge) {
-        el.audioStatusBadge.textContent = 'Playing (Cannot Pause)';
+        el.audioStatusBadge.textContent = 'Playing';
       }
 
       el.listeningAudioElement.currentTime = 0;
@@ -3236,81 +3021,28 @@
     }
 
     function handleAudioEnded() {
-      state.listening.stage = 'review';
-      state.listening.reviewSecondsLeft = 30;
+      state.listening.stage = 'ended';
 
       const stageBadge = document.getElementById('listening-stage-badge');
       const noticeBanner = document.getElementById('listening-notice-banner');
 
       if (el.btnPlayAudio) {
         el.btnPlayAudio.disabled = true;
-        el.btnPlayAudio.textContent = '🔒 Audio Finished';
+        el.btnPlayAudio.textContent = '✅ Audio Finished';
       }
       if (el.audioStatusBadge) {
-        el.audioStatusBadge.textContent = 'Locks in 30s';
+        el.audioStatusBadge.textContent = 'Finished';
       }
       if (stageBadge) {
-        stageBadge.textContent = '⏳ Review Time: 30s';
-        stageBadge.style.background = '#DC2626';
+        stageBadge.textContent = '✅ Audio Completed';
+        stageBadge.style.background = '#059669';
       }
       if (noticeBanner) {
-        noticeBanner.style.background = '#FEF2F2';
-        noticeBanner.style.borderColor = '#EF4444';
-        noticeBanner.style.color = '#991B1B';
-        noticeBanner.innerHTML = '⏱️ <strong>Audio Finished:</strong> You have <span id="review-countdown-num" style="font-weight:700;">30</span>s to finalize answers before this section is locked and auto-advances to Reading!';
+        noticeBanner.style.background = '#F0FDF4';
+        noticeBanner.style.borderColor = '#86EFAC';
+        noticeBanner.style.color = '#166534';
+        noticeBanner.innerHTML = '✅ <strong>Audio Finished:</strong> You can review your answers or continue to other sections using the top navigation.';
       }
-
-      if (state.listening.reviewTimerId) clearInterval(state.listening.reviewTimerId);
-
-      state.listening.reviewTimerId = setInterval(() => {
-        state.listening.reviewSecondsLeft--;
-        const count = state.listening.reviewSecondsLeft;
-        const countdownSpan = document.getElementById('review-countdown-num');
-        if (countdownSpan) countdownSpan.textContent = count;
-
-        if (el.audioStatusBadge) {
-          el.audioStatusBadge.textContent = `Locks in ${count}s`;
-        }
-        if (stageBadge) {
-          stageBadge.textContent = `⏳ Review Time: ${count}s`;
-        }
-
-        if (count <= 0) {
-          clearInterval(state.listening.reviewTimerId);
-          lockListeningSection();
-          navToSection('sec-reading');
-        }
-      }, 1000);
-    }
-
-    function lockListeningSection() {
-      if (state.listeningLocked) return;
-      state.listeningLocked = true;
-      state.listening.stage = 'locked';
-
-      if (state.listening.readingTimerId) clearInterval(state.listening.readingTimerId);
-      if (state.listening.reviewTimerId) clearInterval(state.listening.reviewTimerId);
-
-      try {
-        if (!el.listeningAudioElement.paused) {
-          el.listeningAudioElement.pause();
-        }
-      } catch (e) {}
-
-      const pill = document.getElementById('step-pill-listening');
-      if (pill) {
-        pill.classList.remove('active');
-        pill.classList.add('completed');
-        pill.textContent = '🔒 1. Listening';
-        pill.style.opacity = '0.7';
-        pill.style.cursor = 'not-allowed';
-      }
-
-      const listeningInputs = document.querySelectorAll('#sec-listening input');
-      listeningInputs.forEach(input => {
-        input.disabled = true;
-      });
-
       saveSession();
     }
 
@@ -3607,12 +3339,9 @@
     async function submitFullTest() {
       updateReviewSummary();
 
-      // Clear all running timers
-      if (state.readingTimer.timerId) clearInterval(state.readingTimer.timerId);
-      if (state.writingTimer.timerId) clearInterval(state.writingTimer.timerId);
-      if (state.speakingTimer.timerId) clearInterval(state.speakingTimer.timerId);
+      // Clear exam timer
+      if (state.examTimer.timerId) clearInterval(state.examTimer.timerId);
       if (state.listening.readingTimerId) clearInterval(state.listening.readingTimerId);
-      if (state.listening.reviewTimerId) clearInterval(state.listening.reviewTimerId);
 
       const payload = {
         timestamp: new Date().toISOString(),
