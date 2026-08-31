@@ -470,6 +470,38 @@
   }
 }
 
+@media (width<=360px) {
+  .legal-hero {
+    padding: 100px 12px 32px;
+  }
+
+  .legal-body {
+    padding: 12px 12px 50px;
+  }
+
+  .legal-section {
+    padding: 22px 16px;
+    border-radius: 16px;
+  }
+
+  .legal-paragraph {
+    font-size: 14.5px;
+  }
+
+  .legal-footer-note {
+    padding: 20px 16px;
+    border-radius: 18px;
+    font-size: 13.5px;
+  }
+
+  .legal-top-button {
+    width: 40px;
+    height: 40px;
+    bottom: 72px;
+    right: 16px;
+  }
+}
+
 /* Sub-heading inside a section (e.g. "3.1 Strictly Necessary Cookies") */
 .legal-subheading {
   color: #050a14;

@@ -1,7 +1,7 @@
 .country-slideshow-container {
   z-index: 0;
   background-color: #050a14;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   position: absolute;
   top: 0;
@@ -771,4 +771,59 @@
 .country-cta-btn.secondary:hover {
   background: #f1f5f9;
   transform: translateY(-2px);
+}
+@media (width<=480px) {
+  .served-countries-section {
+    padding: 50px 16px;
+  }
+  .served-countries-title {
+    margin-bottom: 30px;
+  }
+  .served-countries-list {
+    gap: 10px;
+  }
+  .served-country-item {
+    padding: 8px 14px;
+    gap: 10px;
+  }
+  .served-country-flag {
+    width: 26px;
+    height: 18px;
+  }
+  .served-country-name {
+    font-size: 0.9rem;
+  }
+  .country-cta-section {
+    padding: 50px 16px;
+  }
+  .country-cta-content {
+    border-radius: 16px;
+    padding: 36px 24px;
+  }
+  .country-cta-content p {
+    font-size: 0.95rem;
+    margin-bottom: 28px;
+  }
+  .country-cta-buttons {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  .country-cta-btn {
+    width: 100%;
+    text-align: center;
+    padding: 12px 24px;
+    font-size: 0.9rem;
+  }
+}
+@media (width<=360px) {
+  .served-countries-section {
+    padding: 40px 12px;
+  }
+  .country-cta-section {
+    padding: 40px 12px;
+  }
+  .country-cta-content {
+    padding: 28px 16px;
+  }
 }

@@ -204,15 +204,24 @@ const Navbar = () => {
             href="/ielts-mock-test.html"
             target="_blank"
             rel="noopener noreferrer"
-            className="ielts-test-btn"
+            className="mobile-action-btn primary"
             onClick={closeMenu}
           >
             IELTS MOCK TEST
           </a>
         </li>
+        <li className="mobile-only-link">
+          <Link
+            to="/contact"
+            className="mobile-action-btn secondary"
+            onClick={closeMenu}
+          >
+            BOOK CONSULTATION
+          </Link>
+        </li>
       </ul>
 
-      <div className="navbar-action" style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+      <div className="navbar-action">
         <a
           href="/ielts-mock-test.html"
           target="_blank"

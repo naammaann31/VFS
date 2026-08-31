@@ -37,3 +37,15 @@
     height: 28px;
   }
 }
+@media (width<=480px) {
+  .whatsapp-widget {
+    width: 46px;
+    height: 46px;
+    bottom: 16px;
+    right: 16px;
+  }
+  .whatsapp-widget svg {
+    width: 26px;
+    height: 26px;
+  }
+}

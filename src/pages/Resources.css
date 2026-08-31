@@ -113,7 +113,7 @@
   font-weight: 900;
 }
 .programs-grid {
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
   gap: 24px;
   display: grid;
 }
@@ -313,5 +313,77 @@
   }
   .ss-list {
     grid-template-columns: 1fr;
+  }
+}
+@media (width<=480px) {
+  .resources-hero {
+    padding: 120px 16px 60px;
+  }
+  .resources-container {
+    padding: 0 16px;
+  }
+  .programs-section {
+    padding: 40px 0 60px;
+  }
+  .section-title {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+  .filter-tab {
+    padding: 8px 18px;
+    font-size: 13px;
+  }
+  .program-card {
+    padding: 20px;
+    border-radius: 16px;
+  }
+  .specialized-services-section {
+    padding: 0 0 80px;
+  }
+  .specialized-service-card,
+  .specialized-service-card.reverse {
+    padding: 28px 20px;
+    border-radius: 18px;
+    margin-bottom: 24px;
+  }
+  .ss-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+  }
+  .ss-icon svg {
+    width: 28px;
+    height: 28px;
+  }
+  .ss-content h2 {
+    font-size: 20px;
+  }
+  .ss-desc {
+    font-size: 14px;
+  }
+  .ss-cta {
+    width: 100%;
+    text-align: center;
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+}
+@media (width<=360px) {
+  .resources-hero {
+    padding: 110px 12px 50px;
+  }
+  .resources-container {
+    padding: 0 12px;
+  }
+  .programs-filter-tabs {
+    gap: 8px;
+  }
+  .filter-tab {
+    padding: 7px 14px;
+    font-size: 12px;
+  }
+  .specialized-service-card,
+  .specialized-service-card.reverse {
+    padding: 22px 16px;
   }
 }

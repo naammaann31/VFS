@@ -180,6 +180,9 @@
 }
 .navbar-action {
   animation-delay: 0.8s;
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
 .navbar-dropdown-wrapper {
   position: relative;
@@ -389,12 +392,25 @@
   }
   .mobile-only-link {
     display: list-item;
+    margin-top: 10px;
   }
-  .navbar-links li a.ielts-test-btn {
+  .navbar-links li a.mobile-action-btn {
+    letter-spacing: 1px;
+    padding: 0.8rem 1.2rem;
+    font-size: 14px;
+    border-radius: 30px;
+    margin: 5px 0;
+    width: 100%;
+    text-align: center;
+  }
+  .navbar-links li a.mobile-action-btn.primary {
     background: #0f172a;
     color: #fff !important;
-    margin: 0.5rem 1rem;
-    border-radius: 30px;
+  }
+  .navbar-links li a.mobile-action-btn.secondary {
+    background: transparent;
+    color: #0f172a !important;
+    border: 2px solid #0f172a;
   }
   .navbar-links li {
     text-align: center;

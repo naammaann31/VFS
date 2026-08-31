@@ -51,3 +51,36 @@
 .thank-you-btn {
   text-decoration: none;
 }
+@media (width<=480px) {
+  .thank-you-container {
+    padding: 100px 1rem 3rem;
+  }
+  .thank-you-content {
+    padding: 2.5rem 1.5rem;
+    border-radius: 20px;
+  }
+  .success-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1.5rem;
+  }
+  .success-icon {
+    width: 32px;
+    height: 32px;
+  }
+  .thank-you-heading {
+    margin-bottom: 1rem;
+  }
+  .thank-you-description {
+    margin-bottom: 2rem;
+    font-size: clamp(0.9rem, 3vw, 1rem);
+  }
+}
+@media (width<=360px) {
+  .thank-you-container {
+    padding: 90px 0.75rem 2rem;
+  }
+  .thank-you-content {
+    padding: 2rem 1.2rem;
+  }
+}

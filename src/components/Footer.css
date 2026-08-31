@@ -304,7 +304,6 @@
 
   .footer-col:nth-child(3) {
     order: 2;
-    margin-top: 104px;
   }
 
   .footer-col:nth-child(2) {
@@ -341,5 +340,21 @@
 
   .footer-bottom-content {
     padding: 0 1rem;
+  }
+}
+@media (width<=360px) {
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 0 0.75rem;
+  }
+  .brand-col {
+    grid-column: span 1;
+  }
+  .contact-offices-col {
+    grid-column: span 1;
+  }
+  .footer-bottom-content {
+    padding: 0 0.75rem;
   }
 }
