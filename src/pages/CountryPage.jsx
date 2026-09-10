@@ -109,6 +109,11 @@ function CountryPage() {
   const [previousSlide, setPreviousSlide] = useState(-1);
   // Hold the hero back until the globe transition has finished flying in
   const [heroReady, setHeroReady] = useState(!isActive);
+  // Every slide used to be in the DOM from the first paint, so a country page
+  // downloaded its whole gallery (~2 MB) to show one frame. Slides are revealed
+  // as the show reaches them instead; nothing is ever unmounted, so the
+  // crossfade and Ken Burns animation behave exactly as before.
+  const [revealedUpTo, setRevealedUpTo] = useState(1);
   const [activePathway, setActivePathway] = useState("student");
   const [whyChooseVisible, setWhyChooseVisible] = useState(false);
   const whyChooseRef = useRef(null);
@@ -146,6 +151,7 @@ function CountryPage() {
     const interval = setInterval(() => {
       setPreviousSlide(currentSlide);
       setCurrentSlide(nextSlide);
+      setRevealedUpTo((highest) => Math.max(highest, nextSlide));
     }, 2500);
 
     return () => clearInterval(interval);
@@ -170,7 +176,14 @@ function CountryPage() {
 
             return (
               <div className={className} key={image}>
-                <img src={image} alt={`${displayName} background`} />
+                {index <= revealedUpTo && (
+                  <img
+                    src={image}
+                    alt={`${displayName} background`}
+                    decoding="async"
+                    fetchPriority={index === 0 ? "high" : "auto"}
+                  />
+                )}
               </div>
             );
           })}

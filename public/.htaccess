@@ -7,3 +7,35 @@
   RewriteCond %{REQUEST_FILENAME} !-l
   RewriteRule . /index.html [L]
 </IfModule>
+
+# Compression. Left to mod_deflate on purpose: serving the pre-built .gz files
+# instead needs mod_rewrite and mod_headers to both be enabled, and if only the
+# first one is, Apache hands the browser gzipped bytes with no Content-Encoding
+# and every page breaks. Not worth the risk for bytes mod_deflate already saves.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+  AddOutputFilterByType DEFLATE application/json application/xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Caching. Matched by extension rather than by an <If> block on /assets/, so it
+# also works on Apache 2.2.
+<IfModule mod_headers.c>
+  # Every .js/.css in this build is content-hashed by Vite, so a change always
+  # produces a new filename and these can be cached indefinitely.
+  <FilesMatch "\.(js|css)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # Images, video and audio keep stable filenames, so they get a week instead.
+  <FilesMatch "\.(jpg|jpeg|png|webp|gif|svg|ico|mp4|webm|mp3|woff|woff2|ttf)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+
+  # HTML must always revalidate, otherwise a redeploy would not reach anyone
+  # still holding a cached copy.
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
