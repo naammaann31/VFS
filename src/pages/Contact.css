@@ -131,6 +131,41 @@
   font-weight: 500;
   line-height: 1.5;
 }
+.contact-hours {
+  width: 100%;
+  max-width: 300px;
+  margin: 2px 0 0;
+}
+.contact-hours-row {
+  grid-template-columns: 84px 1fr;
+  align-items: baseline;
+  column-gap: 16px;
+  padding: 7px 0;
+  display: grid;
+}
+.contact-hours-row + .contact-hours-row {
+  border-top: 1px solid #0000000d;
+}
+.contact-hours dt,
+.contact-hours dd {
+  text-align: left;
+}
+.contact-hours dt {
+  color: #050a14;
+  font-size: 14px;
+  font-weight: 600;
+}
+.contact-hours dd {
+  color: #334155;
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.contact-hours dd.contact-hours-closed {
+  color: #94a3b8;
+}
 .contact-social-section {
   border-top: 1px solid #0000000d;
   width: 100%;

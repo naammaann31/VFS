@@ -175,7 +175,7 @@ const Contact = () => {
     <div className="contact-page">
       <Seo
         title="Contact Vectra Foreign Services | Visa & Immigration Consultants"
-        description="Book a free consultation with Vectra Foreign Services in Ahmedabad. Call +91 8401172400 or email info@vectraforeignservices.com. Mon-Sat, 10 AM-6 PM."
+        description="Book a free consultation with Vectra Foreign Services in Ahmedabad. Call +91 8401172400 or email info@vectraforeignservices.com."
         path="/contact"
       />
       <Navbar />
@@ -282,7 +282,20 @@ const Contact = () => {
                   </div>
                   <div className="contact-info-text-group">
                     <h4 className="contact-info-title">Working Hours</h4>
-                    <p className="contact-info-detail">Mon - Sat, 10:00 AM - 6:00 PM</p>
+                    <dl className="contact-hours">
+                      <div className="contact-hours-row">
+                        <dt>Mon – Fri</dt>
+                        <dd>10:00 AM – 6:00 PM</dd>
+                      </div>
+                      <div className="contact-hours-row">
+                        <dt>Sat</dt>
+                        <dd>09:30 AM – 2:30 PM</dd>
+                      </div>
+                      <div className="contact-hours-row">
+                        <dt>Sun</dt>
+                        <dd className="contact-hours-closed">Closed</dd>
+                      </div>
+                    </dl>
                   </div>
                 </motion.div>
 
@@ -311,14 +324,14 @@ const Contact = () => {
                     <h4 className="contact-info-title">India - Ahmedabad</h4>
                     <p className="contact-info-detail">
                       <a
-                        href="https://www.google.com/maps/place/Vectra+Staffing+Pvt+Ltd/@23.1039949,72.5289416,16.93z/data=!4m10!1m2!2m1!1svectra+staffing+ahmedabad!3m6!1s0x395e830bcc3b1ec5:0x8a3f8f07b4c1f530!8m2!3d23.1039929!4d72.5338474!15sChl2ZWN0cmEgc3RhZmZpbmcgYWhtZWRhYmFkkgEVZW1wbG95bWVudF9jb25zdWx0YW504AEA!16s%2Fg%2F11npsvsbyt?authuser=0&entry=ttu&g_ep=EgoyMDI2MDYxMC4wIKXMDSoASAFQAw%3D%3D"
+                        href="https://www.google.com/maps/place/Vectra+Foreign+Services/@23.1040068,72.5312766,868m/data=!3m2!1e3!4b1!4m6!3m5!1s0x395e8353e85779ef:0x5f8842681a02f3c5!8m2!3d23.1040019!4d72.5338515!16s%2Fg%2F11zxcpmf25?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D"
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{ color: "inherit", textDecoration: "none" }}
                         onMouseEnter={(e) => (e.target.style.textDecoration = "underline")}
                         onMouseLeave={(e) => (e.target.style.textDecoration = "none")}
                       >
-                        SF-202 Olive Greens, Ahmedabad 382481
+                        SF - 202, Olive Greens, above Shambhu's Coffee, Gota, Ahmedabad, Gujarat 382481
                       </a>
                     </p>
                   </div>

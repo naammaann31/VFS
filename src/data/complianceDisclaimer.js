@@ -502,7 +502,7 @@ export const complianceSections = [
           {
             label: "Business Address",
             value:
-              "2nd Floor - 202, No.32, T.P. Scheme, Olive Greens, above Shambhu's Coffee, Gota, Ahmedabad, Gujarat 382481",
+              "SF - 202, Olive Greens, above Shambhu's Coffee, Gota, Ahmedabad, Gujarat 382481",
           },
         ],
       },
@@ -629,7 +629,7 @@ export const complianceSections = [
           {
             label: "Address",
             value:
-              "2nd Floor - 202, No.32, T.P. Scheme, Olive Greens, above Shambhu's Coffee, Gota, Ahmedabad, Gujarat 382481",
+              "SF - 202, Olive Greens, above Shambhu's Coffee, Gota, Ahmedabad, Gujarat 382481",
           },
         ],
       },

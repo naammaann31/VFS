@@ -144,11 +144,11 @@ const Footer = () => {
               </h5>
               <p>
                 <a
-                  href="https://maps.google.com/?q=SF-202+Olive+Greens,+Ahmedabad+382481"
+                  href="https://www.google.com/maps/place/Vectra+Foreign+Services/@23.1040068,72.5312766,868m/data=!3m2!1e3!4b1!4m6!3m5!1s0x395e8353e85779ef:0x5f8842681a02f3c5!8m2!3d23.1040019!4d72.5338515!16s%2Fg%2F11zxcpmf25?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  SF-202 Olive Greens, Ahmedabad 382481
+                  SF - 202, Olive Greens, above Shambhu's Coffee, Gota, Ahmedabad, Gujarat 382481
                 </a>
               </p>
             </div>
