@@ -4,5 +4,8 @@ Allow: /
 # Disallow crawling of internal or private routes
 Disallow: /thank-you
 Disallow: /send_mail.php
+Disallow: /admin/
+Disallow: /mock-tests/attempt/
+Disallow: /mock-tests/result/
 
 Sitemap: https://vectraforeignservices.com/sitemap.xml

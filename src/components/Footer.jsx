@@ -11,7 +11,13 @@ const Footer = () => {
         <div className="footer-col brand-col">
           <div className="footer-logo">
             <a href="https://vectragroup.in/" target="_blank" rel="noopener noreferrer" title="Vectra Group">
-              <img src="/vectrafooter.png" alt="Vectra Group" />
+              <img
+                src="/vectrafooter.png"
+                alt="Vectra Group"
+                width="355"
+                height="339"
+                loading="lazy"
+              />
             </a>
           </div>
           <h4 className="footer-heading">Vectra Group</h4>
@@ -116,7 +122,7 @@ const Footer = () => {
           <h4 className="footer-heading">CONTACT &amp; OFFICES</h4>
           <div className="footer-contact-info">
             <a href="mailto:info@vectraforeignservices.com">info@vectraforeignservices.com</a>
-            <a href="tel:+918401172400">+91-8401172400</a>
+            <a href="tel:+918401172400">+91 8401172400</a>
           </div>
           <div className="contact-divider"></div>
           <div className="offices-grid">

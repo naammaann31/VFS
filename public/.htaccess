@@ -1,12 +1,50 @@
+# ---------------------------------------------------------------------------
+# Routing
+#
+# This is a client-rendered SPA, so the real pages only exist inside the
+# browser. The server therefore has to know which URLs are real. Previously
+# every unknown URL was rewritten to /index.html, which made the server answer
+# 200 for URLs that do not exist (soft 404s). Now only the routes listed in
+# src/App.jsx are handed to index.html; everything else gets a real 404.
+#
+# When a route is added to src/App.jsx, add it to the list in step 4 below.
+# ---------------------------------------------------------------------------
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+
+  # 1. One canonical host: www -> non-www, always over https, in a single hop.
+  #    (http -> https for the bare domain is already enforced by the host, so
+  #    no separate https rule is added here to avoid any chance of a loop.)
+  RewriteCond %{HTTP_HOST} ^www\.vectraforeignservices\.com$ [NC]
+  RewriteRule ^(.*)$ https://vectraforeignservices.com/$1 [R=301,L]
+
+  # 2. /index.html is just "/".
+  RewriteCond %{THE_REQUEST} \s/index\.html[?\s] [NC]
+  RewriteRule ^index\.html$ / [R=301,L]
+
+  # 3. No trailing slash: /about/ -> /about. Real directories are left alone.
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+  # Serving index.html itself (also used by ErrorDocument below): stop here.
   RewriteRule ^index\.html$ - [L]
+
+  # 4. Known SPA routes -> index.html. Real files/directories (assets, images,
+  #    send_mail.php, ielts-mock-test.html, ...) are never rewritten.
+  #    Routes are matched case-sensitively and in lowercase, as linked.
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-l
-  RewriteRule . /index.html [L]
+  RewriteRule ^(about|services|resources|contact|check-eligibility|thank-you|terms-of-service|compliance|cookie-policy|mock-tests|mock-tests/(attempt|result)/[^/]+|admin/login|admin/mock-tests|country/(canada|usa|australia|uk|europe|nz|uae))$ /index.html [L]
+
+  # Anything else is not rewritten, so the server answers 404 on its own.
 </IfModule>
+
+# The 404 response body is the app shell, so a visitor who mistypes a URL sees
+# the site's own "page not found" screen (rendered by the router) instead of a
+# bare server error. The HTTP status stays a genuine 404.
+ErrorDocument 404 /index.html
 
 # Compression. Left to mod_deflate on purpose: serving the pre-built .gz files
 # instead needs mod_rewrite and mod_headers to both be enabled, and if only the

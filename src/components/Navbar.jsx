@@ -33,7 +33,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const location = useLocation();
-  const { triggerTransition } = usePageTransition();
+  const { triggerTransition, warmGlobe } = usePageTransition();
 
   // Light-background pages need the solid navbar from the start, otherwise the
   // white nav text renders invisible against them.
@@ -85,7 +85,7 @@ const Navbar = () => {
     <nav className={`navbar ${isSolid ? "scrolled" : ""}`}>
       <div className="navbar-logo">
         <Link to="/" onClick={closeMenu}>
-          <img src={logo} alt="Vectra Foreign Services Logo" />
+          <img src={logo} alt="Vectra Foreign Services Logo" width="500" height="500" />
         </Link>
       </div>
 
@@ -136,7 +136,12 @@ const Navbar = () => {
           </Link>
         </li>
 
-        <li className="navbar-dropdown-wrapper">
+        <li
+          className="navbar-dropdown-wrapper"
+          onMouseEnter={warmGlobe}
+          onFocus={warmGlobe}
+          onTouchStart={warmGlobe}
+        >
           <Link
             to="/#countries"
             className="countries-dropdown-toggle"

@@ -36,7 +36,7 @@ export const termsSections = [
             value: "info@vectraforeignservices.com",
             href: "mailto:info@vectraforeignservices.com",
           },
-          { label: "Phone", value: "+91-8401172400", href: "tel:+918401172400" },
+          { label: "Phone", value: "+91 8401172400", href: "tel:+918401172400" },
         ],
       },
       {
@@ -616,7 +616,7 @@ export const termsSections = [
             value: "info@vectraforeignservices.com",
             href: "mailto:info@vectraforeignservices.com",
           },
-          { label: "Phone", value: "+91-8401172400", href: "tel:+918401172400" },
+          { label: "Phone", value: "+91 8401172400", href: "tel:+918401172400" },
         ],
       },
     ],

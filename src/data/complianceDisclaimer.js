@@ -498,7 +498,7 @@ export const complianceSections = [
             value: "info@vectraforeignservices.com",
             href: "mailto:info@vectraforeignservices.com",
           },
-          { label: "Customer Support", value: "+91-8401172400", href: "tel:+918401172400" },
+          { label: "Customer Support", value: "+91 8401172400", href: "tel:+918401172400" },
           {
             label: "Business Address",
             value:
@@ -625,7 +625,7 @@ export const complianceSections = [
             value: "info@vectraforeignservices.com",
             href: "mailto:info@vectraforeignservices.com",
           },
-          { label: "Phone", value: "+91-8401172400", href: "tel:+918401172400" },
+          { label: "Phone", value: "+91 8401172400", href: "tel:+918401172400" },
           {
             label: "Address",
             value:

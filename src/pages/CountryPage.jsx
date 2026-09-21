@@ -1,9 +1,23 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
+import NotFound from "./NotFound.jsx";
+import Seo from "../components/Seo.jsx";
 import { usePageTransition } from "../context/TransitionContext.jsx";
 import { countryData } from "../data/countryData.js";
 import "./CountryPage.css";
+
+// Names used in page titles. countryData titles are display styling ("CANADA",
+// "UNITED KINGDOM") and the route slug for New Zealand is "nz".
+const SEO_COUNTRY_NAMES = {
+  canada: "Canada",
+  usa: "USA",
+  australia: "Australia",
+  uk: "United Kingdom",
+  europe: "Europe",
+  nz: "New Zealand",
+  uae: "UAE",
+};
 
 const FeatureIcon = ({ name }) => {
   switch (name) {
@@ -158,11 +172,19 @@ function CountryPage() {
   }, [images, currentSlide, heroReady]);
 
   if (!country) {
-    return <Navigate to="/" replace />;
+    return <NotFound />;
   }
+
+  const countryKey = countryName.toLowerCase();
+  const seoName = SEO_COUNTRY_NAMES[countryKey] || country.title;
 
   return (
     <div style={{ backgroundColor: "#0a1628", fontFamily: "Inter, sans-serif" }}>
+      <Seo
+        title={`${seoName} Visa & Immigration Services | Vectra Foreign Services`}
+        description={`Study, visit or settle in ${seoName}: visa pathways, requirements and steps, plus a free consultation from Vectra Foreign Services.`}
+        path={`/country/${countryKey}`}
+      />
       {images.length > 0 && (
         <div className="country-slideshow-container">
           {images.map((image, index) => {
@@ -179,7 +201,7 @@ function CountryPage() {
                 {index <= revealedUpTo && (
                   <img
                     src={image}
-                    alt={`${displayName} background`}
+                    alt=""
                     decoding="async"
                     fetchPriority={index === 0 ? "high" : "auto"}
                   />
@@ -218,7 +240,7 @@ function CountryPage() {
                 <Link to="/contact" className="hero-glass-btn">
                   Book Free Consultation
                 </Link>
-                <a href="tel:8401172400" className="hero-glass-btn hero-glass-btn-outline">
+                <a href="tel:+918401172400" className="hero-glass-btn hero-glass-btn-outline">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="18"
@@ -232,7 +254,7 @@ function CountryPage() {
                   >
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                   </svg>
-                  8401172400
+                  +91 8401172400
                 </a>
               </div>
             </>
@@ -347,6 +369,9 @@ function CountryPage() {
                     srcSet={`https://flagcdn.com/w80/${servedCountry.code}.png 2x`}
                     alt={`${servedCountry.name} flag`}
                     className="served-country-flag"
+                    width="32"
+                    height="22"
+                    loading="lazy"
                   />
                   <span className="served-country-name">{servedCountry.name}</span>
                 </li>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar.jsx";
+import Seo from "../components/Seo.jsx";
 import ServiceCTA from "../components/ServiceCTA.jsx";
 import "./Services.css";
 
@@ -283,6 +284,11 @@ const services = [
 
 const Services = () => (
   <div className="services-page-wrapper">
+    <Seo
+      title="Visa & Immigration Services in Ahmedabad | Vectra Foreign Services"
+      description="Study visa, tourist visa, permanent residency, family sponsorship and application review support, from first consultation to visa approval."
+      path="/services"
+    />
     <Navbar />
 
     <section className="services-hero-section">

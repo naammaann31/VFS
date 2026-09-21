@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "../components/Navbar.jsx";
+import Seo from "../components/Seo.jsx";
 import "./CheckEligibility.css";
 
 const steps = [
@@ -204,6 +205,11 @@ const CheckEligibility = () => {
 
   return (
     <div className="eligibility-page-wrapper">
+      <Seo
+        title="Check Your Visa Eligibility | Vectra Foreign Services"
+        description="Answer five short questions about your education, work experience and English level to get an initial eligibility rating from Vectra Foreign Services."
+        path="/check-eligibility"
+      />
       <Navbar />
 
       <div className="eligibility-container">

@@ -1,7 +1,28 @@
-import { createContext, useCallback, useContext, useState } from "react";
+import { Component, createContext, lazy, Suspense, useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import GlobeTransition from "../components/GlobeTransition.jsx";
 import { countryData } from "../data/countryData.js";
+
+// The globe (three.js + react-globe.gl + ~2.7 MB of textures) is only ever
+// shown during a country transition, so it is loaded on demand instead of with
+// every page. warmGlobe() is called when a visitor shows intent (hovering or
+// touching the country links, or scrolling the country carousel into view) so
+// that it is normally ready before the transition starts.
+const loadGlobeTransition = () => import("../components/GlobeTransition.jsx");
+const GlobeTransition = lazy(loadGlobeTransition);
+
+// If the chunk cannot be fetched (offline, or a stale tab after a redeploy) the
+// transition just shows its dark backdrop; navigation still happens on its timer.
+class GlobeBoundary extends Component {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
 
 const TransitionContext = createContext();
 
@@ -10,10 +31,19 @@ export const usePageTransition = () => useContext(TransitionContext);
 export const TransitionProvider = ({ children }) => {
   const [isActive, setIsActive] = useState(false);
   const [targetCountry, setTargetCountry] = useState(null);
+  // Once mounted the globe stays mounted (hidden), as it always did, so repeat
+  // transitions start instantly.
+  const [globeRequested, setGlobeRequested] = useState(false);
   const navigate = useNavigate();
+
+  const warmGlobe = useCallback(() => {
+    loadGlobeTransition().catch(() => {});
+    setGlobeRequested(true);
+  }, []);
 
   const triggerTransition = useCallback(
     (path, countryName) => {
+      warmGlobe();
       setTargetCountry(countryName);
       setIsActive(true);
 
@@ -34,11 +64,11 @@ export const TransitionProvider = ({ children }) => {
         }, 100);
       }, 3000);
     },
-    [navigate],
+    [navigate, warmGlobe],
   );
 
   return (
-    <TransitionContext.Provider value={{ triggerTransition, isActive }}>
+    <TransitionContext.Provider value={{ triggerTransition, isActive, warmGlobe }}>
       {children}
       <div
         className={`globe-transition-overlay ${isActive ? "active" : ""}`}
@@ -56,10 +86,16 @@ export const TransitionProvider = ({ children }) => {
           backgroundColor: "#02040a",
         }}
       >
-        <GlobeTransition
-          countryName={targetCountry}
-          isTransitioning={isActive || !!targetCountry}
-        />
+        {globeRequested && (
+          <GlobeBoundary>
+            <Suspense fallback={null}>
+              <GlobeTransition
+                countryName={targetCountry}
+                isTransitioning={isActive || !!targetCountry}
+              />
+            </Suspense>
+          </GlobeBoundary>
+        )}
       </div>
     </TransitionContext.Provider>
   );

@@ -2,44 +2,44 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://vectraforeignservices.com/</loc>
-    <lastmod>2026-07-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
   </url>
   <url>
     <loc>https://vectraforeignservices.com/about</loc>
-    <lastmod>2026-07-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://vectraforeignservices.com/services</loc>
+  </url>
+  <url>
+    <loc>https://vectraforeignservices.com/resources</loc>
   </url>
   <url>
     <loc>https://vectraforeignservices.com/contact</loc>
-    <lastmod>2026-07-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://vectraforeignservices.com/eligibility</loc>
-    <lastmod>2026-07-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://vectraforeignservices.com/check-eligibility</loc>
   </url>
   <url>
-    <loc>https://vectraforeignservices.com/terms-of-service</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <loc>https://vectraforeignservices.com/country/canada</loc>
   </url>
   <url>
-    <loc>https://vectraforeignservices.com/compliance</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <loc>https://vectraforeignservices.com/country/usa</loc>
   </url>
   <url>
-    <loc>https://vectraforeignservices.com/cookie-policy</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <loc>https://vectraforeignservices.com/country/uk</loc>
+  </url>
+  <url>
+    <loc>https://vectraforeignservices.com/country/australia</loc>
+  </url>
+  <url>
+    <loc>https://vectraforeignservices.com/country/nz</loc>
+  </url>
+  <url>
+    <loc>https://vectraforeignservices.com/country/europe</loc>
+  </url>
+  <url>
+    <loc>https://vectraforeignservices.com/country/uae</loc>
+  </url>
+  <url>
+    <loc>https://vectraforeignservices.com/ielts-mock-test.html</loc>
   </url>
 </urlset>

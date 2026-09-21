@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "../components/Navbar.jsx";
+import Seo from "../components/Seo.jsx";
 import ServiceCTA from "../components/ServiceCTA.jsx";
 import "./Resources.css";
 
@@ -281,6 +282,11 @@ const Resources = () => {
 
   return (
     <div className="resources-page-wrapper">
+      <Seo
+        title="IELTS, PTE & Language Coaching | Vectra Foreign Services"
+        description="IELTS, TOEFL, PTE, CELPIP, German and French coaching, plus a free IELTS mock test, writing support and visa interview preparation."
+        path="/resources"
+      />
       <Navbar />
 
       <section className="resources-hero">

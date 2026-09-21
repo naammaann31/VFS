@@ -35,6 +35,9 @@
   object-fit: contain;
   object-position: left top;
   max-width: 100%;
+  /* The img carries width/height attributes (to reserve space); without this
+     the width attribute would apply and widen the box. */
+  width: auto;
   height: 104px;
 }
 

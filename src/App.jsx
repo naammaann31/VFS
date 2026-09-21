@@ -1,10 +1,11 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SmoothScroll from "./components/SmoothScroll.jsx";
 import { TransitionProvider } from "./context/TransitionContext.jsx";
 import Footer from "./components/Footer.jsx";
 import WhatsAppWidget from "./components/WhatsAppWidget.jsx";
 import LoadingScreen from "./components/LoadingScreen.jsx";
+import Seo from "./components/Seo.jsx";
 import "./App.css";
 
 const Home = lazy(() => import("./pages/Home.jsx"));
@@ -27,6 +28,17 @@ const MockTestResult = lazy(() => import("./pages/mockTest/MockTestResult.jsx"))
 const AdminDashboard = lazy(() => import("./pages/mockTest/AdminDashboard.jsx"));
 const AdminLogin = lazy(() => import("./pages/mockTest/AdminLogin.jsx"));
 
+const NotFound = lazy(() => import("./pages/NotFound.jsx"));
+
+// Private, transactional or account-bound screens. They get their own title and
+// are kept out of search results; the public pages set their own metadata.
+const Private = ({ title, robots = "noindex, nofollow", children }) => (
+  <>
+    <Seo title={`${title} | Vectra Foreign Services`} robots={robots} />
+    {children}
+  </>
+);
+
 function App() {
   return (
     <BrowserRouter>
@@ -41,19 +53,62 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/check-eligibility" element={<CheckEligibility />} />
-            <Route path="/thank-you" element={<ThankYou />} />
+            <Route
+              path="/thank-you"
+              element={
+                <Private title="Thank You">
+                  <ThankYou />
+                </Private>
+              }
+            />
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/compliance" element={<ComplianceDisclaimer />} />
             <Route path="/cookie-policy" element={<CookiePolicy />} />
 
             {/* IELTS Full Mock Test System */}
-            <Route path="/mock-tests" element={<MockTestList />} />
-            <Route path="/mock-tests/attempt/:attemptId" element={<MockTestAttempt />} />
-            <Route path="/mock-tests/result/:attemptId" element={<MockTestResult />} />
-            <Route path="/admin/mock-tests" element={<AdminDashboard />} />
-            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route
+              path="/mock-tests"
+              element={
+                <Private title="IELTS Mock Tests" robots="noindex, follow">
+                  <MockTestList />
+                </Private>
+              }
+            />
+            <Route
+              path="/mock-tests/attempt/:attemptId"
+              element={
+                <Private title="IELTS Mock Test">
+                  <MockTestAttempt />
+                </Private>
+              }
+            />
+            <Route
+              path="/mock-tests/result/:attemptId"
+              element={
+                <Private title="IELTS Mock Test Result">
+                  <MockTestResult />
+                </Private>
+              }
+            />
+            <Route
+              path="/admin/mock-tests"
+              element={
+                <Private title="Admin Dashboard">
+                  <AdminDashboard />
+                </Private>
+              }
+            />
+            <Route
+              path="/admin/login"
+              element={
+                <Private title="Admin Login">
+                  <AdminLogin />
+                </Private>
+              }
+            />
 
-            <Route path="*" element={<Navigate to="/" replace />} />
+            {/* Unknown URLs: the server answers these with a real 404 (public/.htaccess) */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
         <Footer />

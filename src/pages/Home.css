@@ -73,6 +73,9 @@
   filter: drop-shadow(0 6px 24px #0009);
   object-fit: contain;
   opacity: 0;
+  /* The img carries width/height attributes (to reserve space); without this
+     the width attribute would apply and stretch the box. */
+  width: auto;
   height: clamp(100px, 25vw, 200px);
   margin-bottom: 0;
   animation: 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards fadeInPremium;

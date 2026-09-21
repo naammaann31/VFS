@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "../components/Navbar.jsx";
+import Seo from "../components/Seo.jsx";
 import ServiceCTA from "../components/ServiceCTA.jsx";
 import "./About.css";
 
@@ -189,6 +190,11 @@ const About = () => {
 
   return (
     <div className="about-page-wrapper">
+      <Seo
+        title="About Vectra Foreign Services | Immigration & Visa Consultants"
+        description="Vectra Foreign Services, a member of the Vectra Group, helps individuals and families plan study, work, travel, sponsorship and settlement abroad."
+        path="/about"
+      />
       <Navbar />
 
       <section className="about-hero-section">

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "../components/Navbar.jsx";
+import Seo from "../components/Seo.jsx";
 import { countryData } from "../data/countryData.js";
 import "./Contact.css";
 
@@ -172,6 +173,11 @@ const Contact = () => {
 
   return (
     <div className="contact-page">
+      <Seo
+        title="Contact Vectra Foreign Services | Visa & Immigration Consultants"
+        description="Book a free consultation with Vectra Foreign Services in Ahmedabad. Call +91 8401172400 or email info@vectraforeignservices.com. Mon-Sat, 10 AM-6 PM."
+        path="/contact"
+      />
       <Navbar />
 
       <section className="contact-section">
@@ -312,7 +318,7 @@ const Contact = () => {
                         onMouseEnter={(e) => (e.target.style.textDecoration = "underline")}
                         onMouseLeave={(e) => (e.target.style.textDecoration = "none")}
                       >
-                        SF- 202 Olive Greens, Ahmedabad - 382481, IND
+                        SF-202 Olive Greens, Ahmedabad 382481
                       </a>
                     </p>
                   </div>

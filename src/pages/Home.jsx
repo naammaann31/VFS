@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import Navbar from "../components/Navbar.jsx";
+import Seo from "../components/Seo.jsx";
 import { usePageTransition } from "../context/TransitionContext.jsx";
 import logo from "../assets/VFS-removebg-preview.png";
 import bgVideo from "../assets/bg_video.mp4";
@@ -53,7 +54,7 @@ const VideoBackground = () => {
         loop
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
         src={bgVideo}
       >
         Your browser does not support the video tag.
@@ -67,7 +68,13 @@ const Hero = () => (
   <div className="hero-container">
     <div className="hero-logo-wrapper">
       <Link to="/">
-        <img src={logo} alt="Vectra Overseas" className="hero-logo" />
+        <img
+          src={logo}
+          alt="Vectra Foreign Services"
+          className="hero-logo"
+          width="500"
+          height="500"
+        />
       </Link>
     </div>
     <div className="hero-content">
@@ -363,7 +370,7 @@ const countries = [
 const CountriesCarousel = () => {
   // Tripled so the auto-scroll can wrap around seamlessly
   const items = [...countries, ...countries, ...countries];
-  const { triggerTransition } = usePageTransition();
+  const { triggerTransition, warmGlobe } = usePageTransition();
   const scrollerRef = useRef(null);
   const [paused, setPaused] = useState(false);
   const [inView, setInView] = useState(false);
@@ -373,13 +380,18 @@ const CountriesCarousel = () => {
     const scroller = scrollerRef.current;
     if (!scroller) return;
 
-    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), {
-      threshold: 0,
-    });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setInView(entry.isIntersecting);
+        // Someone looking at the country list is likely to open one of them
+        if (entry.isIntersecting) warmGlobe();
+      },
+      { threshold: 0 },
+    );
 
     observer.observe(scroller);
     return () => observer.disconnect();
-  }, []);
+  }, [warmGlobe]);
 
   useEffect(() => {
     const scroller = scrollerRef.current;
@@ -440,8 +452,12 @@ const CountriesCarousel = () => {
         <div
           className="marquee-container"
           ref={scrollerRef}
-          onMouseEnter={() => setPaused(true)}
+          onMouseEnter={() => {
+            setPaused(true);
+            warmGlobe();
+          }}
           onMouseLeave={() => setPaused(false)}
+          onTouchStart={warmGlobe}
         >
           <div className="countries-marquee-content">
             {items.map((country, index) => {
@@ -455,7 +471,8 @@ const CountriesCarousel = () => {
                   style={{ "--line-gradient": country.gradient }}
                 >
                   <div className="country-card">
-                    <img src={country.image} alt={country.name} className="country-logo" />
+                    {/* The country name is printed right below, so the image adds nothing for a screen reader */}
+                    <img src={country.image} alt="" className="country-logo" />
                     <p className="country-title">{country.name}</p>
                   </div>
                 </a>
@@ -586,6 +603,11 @@ const VectraPromise = () => (
 function Home() {
   return (
     <>
+      <Seo
+        title="Visa & Immigration Consultants in Ahmedabad | Vectra Foreign Services"
+        description="Visa and immigration guidance from Ahmedabad for students, professionals and families: documentation, SOP support, language coaching and country advice."
+        path="/"
+      />
       <div className="content-wrapper">
         <VideoBackground />
         <Navbar />
