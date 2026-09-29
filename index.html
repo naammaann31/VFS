@@ -1,47 +1,48 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- index.css asks for Inter everywhere but the font was never loaded, so
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- index.css asks for Inter everywhere but the font was never loaded, so
          most visitors were seeing a system fallback instead. One variable-font
          file covers the 300-900 range the stylesheets actually use. -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300..900&display=swap"
-      rel="stylesheet"
-    />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..900&display=swap" rel="stylesheet" />
 
-    <!-- Default metadata (homepage). src/components/Seo.jsx replaces these per
+  <!-- Default metadata (homepage). src/components/Seo.jsx replaces these per
          route once the app loads; they stay here for crawlers and link-preview
          bots that do not run JavaScript. There is deliberately no canonical
          tag here: a static one would point every route at the homepage. -->
-    <title>Visa &amp; Immigration Consultants in Ahmedabad | Vectra Foreign Services</title>
-    <meta name="description" content="Visa and immigration guidance from Ahmedabad for students, professionals and families: documentation, SOP support, language coaching and country advice." />
+  <title>Visa &amp; Immigration Consultants in Ahmedabad | Vectra Foreign Services</title>
+  <meta name="description"
+    content="Visa and immigration guidance from Ahmedabad for students, professionals and families: documentation, SOP support, language coaching and country advice." />
 
-    <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Vectra Foreign Services" />
-    <meta property="og:url" content="https://vectraforeignservices.com/" />
-    <meta property="og:title" content="Visa &amp; Immigration Consultants in Ahmedabad | Vectra Foreign Services" />
-    <meta property="og:description" content="Visa and immigration guidance from Ahmedabad for students, professionals and families: documentation, SOP support, language coaching and country advice." />
-    <meta property="og:image" content="https://vectraforeignservices.com/logo.webp" />
+  <!-- Open Graph / Facebook / WhatsApp / LinkedIn -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Vectra Foreign Services" />
+  <meta property="og:url" content="https://vectraforeignservices.com/" />
+  <meta property="og:title" content="Visa &amp; Immigration Consultants in Ahmedabad | Vectra Foreign Services" />
+  <meta property="og:description"
+    content="Visa and immigration guidance from Ahmedabad for students, professionals and families: documentation, SOP support, language coaching and country advice." />
+  <meta property="og:image" content="https://vectraforeignservices.com/logo.webp" />
 
-    <!-- Twitter / X -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content="https://vectraforeignservices.com/" />
-    <meta name="twitter:title" content="Visa &amp; Immigration Consultants in Ahmedabad | Vectra Foreign Services" />
-    <meta name="twitter:description" content="Visa and immigration guidance from Ahmedabad for students, professionals and families: documentation, SOP support, language coaching and country advice." />
-    <meta name="twitter:image" content="https://vectraforeignservices.com/logo.webp" />
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://vectraforeignservices.com/" />
+  <meta name="twitter:title" content="Visa &amp; Immigration Consultants in Ahmedabad | Vectra Foreign Services" />
+  <meta name="twitter:description"
+    content="Visa and immigration guidance from Ahmedabad for students, professionals and families: documentation, SOP support, language coaching and country advice." />
+  <meta name="twitter:image" content="https://vectraforeignservices.com/logo.webp" />
 
-    <!-- Structured data. Every value below comes from information already
+  <!-- Structured data. Every value below comes from information already
          published on the site (footer, contact page, terms of service, about
          page). Nothing here is invented: no ratings, reviews, registration
          numbers or awards. -->
-    <script type="application/ld+json">
+  <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@graph": [
@@ -108,9 +109,11 @@
         ]
       }
     </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
