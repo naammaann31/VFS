@@ -31,6 +31,11 @@ export default function MockTestAttempt() {
   const [completedSections, setCompletedSections] = useState([]);
   const [autoSaveStatus, setAutoSaveStatus] = useState('');
 
+  // Whether the Listening audio has been played all the way to the end at
+  // least once. Until this is true, the candidate must not be able to move
+  // past the Listening section (skipping ahead defeats the point of it).
+  const [listeningAudioCompleted, setListeningAudioCompleted] = useState(false);
+
   const autoSaveTimerRef = useRef(null);
 
   useEffect(() => {
@@ -265,6 +270,22 @@ export default function MockTestAttempt() {
   const writingSec = sections.find(s => s.type === 'WRITING');
   const speakingSec = sections.find(s => s.type === 'SPEAKING');
 
+  // Only relevant while a Listening section actually exists and the
+  // candidate hasn't finished it yet. Every other section-to-section move
+  // (Reading <-> Writing <-> Speaking <-> Review, or back to Listening) stays
+  // free, matching the rest of the exam's single 20-minute overall timer.
+  const listeningLocked = Boolean(listeningSec) && !listeningAudioCompleted;
+
+  const goToSection = (sec) => {
+    if (listeningLocked && activeSection === 'LISTENING' && sec !== 'LISTENING') {
+      alert('Please finish listening to the audio before continuing to the next section.');
+      return;
+    }
+    saveDraft();
+    setActiveSection(sec);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   // Candidate name for header
   const savedStudent = localStorage.getItem('vfs_student');
   const studentObj = savedStudent ? JSON.parse(savedStudent) : null;
@@ -286,11 +307,8 @@ export default function MockTestAttempt() {
       {/* Module Navigator Stepper */}
       <SectionNavigator
         currentSection={activeSection}
-        onSelectSection={(sec) => {
-          saveDraft();
-          setActiveSection(sec);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
+        onSelectSection={goToSection}
+        lockedSections={listeningLocked ? ['READING', 'WRITING', 'SPEAKING', 'REVIEW'] : []}
       />
 
       <main className="mock-content-body">
@@ -313,7 +331,25 @@ export default function MockTestAttempt() {
               audioUrl={listeningSec.questions[0]?.audioUrl || '/listening-audio.mp3'}
               maxPlays={2}
               autoPrepSeconds={30}
+              onEnded={() => setListeningAudioCompleted(true)}
             />
+
+            {listeningLocked && (
+              <p
+                style={{
+                  color: '#B45309',
+                  background: '#FFFBEB',
+                  border: '1px solid #FDE68A',
+                  borderRadius: '8px',
+                  padding: '0.65rem 1rem',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  margin: '0.75rem 0 0',
+                }}
+              >
+                🔒 Listen to the full track before moving on — "Next" unlocks once it finishes.
+              </p>
+            )}
 
             <div>
               {listeningSec.questions.map((q, idx) => (
@@ -332,11 +368,9 @@ export default function MockTestAttempt() {
               <button
                 type="button"
                 className="btn-vfs btn-vfs-primary"
-                onClick={() => {
-                  saveDraft();
-                  setActiveSection('READING');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onClick={() => goToSection('READING')}
+                disabled={listeningLocked}
+                title={listeningLocked ? 'Finish listening to the audio before continuing' : undefined}
               >
                 Next: Reading Section →
               </button>
@@ -363,22 +397,14 @@ export default function MockTestAttempt() {
               <button
                 type="button"
                 className="btn-vfs btn-vfs-secondary"
-                onClick={() => {
-                  saveDraft();
-                  setActiveSection('LISTENING');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onClick={() => goToSection('LISTENING')}
               >
                 ← Back to Listening
               </button>
               <button
                 type="button"
                 className="btn-vfs btn-vfs-primary"
-                onClick={() => {
-                  saveDraft();
-                  setActiveSection('WRITING');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onClick={() => goToSection('WRITING')}
               >
                 Next: Writing Section →
               </button>
@@ -410,22 +436,14 @@ export default function MockTestAttempt() {
               <button
                 type="button"
                 className="btn-vfs btn-vfs-secondary"
-                onClick={() => {
-                  saveDraft();
-                  setActiveSection('READING');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onClick={() => goToSection('READING')}
               >
                 ← Back to Reading
               </button>
               <button
                 type="button"
                 className="btn-vfs btn-vfs-primary"
-                onClick={() => {
-                  saveDraft();
-                  setActiveSection('SPEAKING');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onClick={() => goToSection('SPEAKING')}
               >
                 Next: Speaking Section →
               </button>
@@ -497,11 +515,7 @@ export default function MockTestAttempt() {
               <button
                 type="button"
                 className="btn-vfs btn-vfs-secondary"
-                onClick={() => {
-                  saveDraft();
-                  setActiveSection('WRITING');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onClick={() => goToSection('WRITING')}
               >
                 ← Back to Writing
               </button>
@@ -520,11 +534,7 @@ export default function MockTestAttempt() {
                 <button
                   type="button"
                   className="btn-vfs btn-vfs-primary"
-                  onClick={() => {
-                    saveDraft();
-                    setActiveSection('REVIEW');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                  onClick={() => goToSection('REVIEW')}
                 >
                   Review & Submit Test →
                 </button>
@@ -547,10 +557,7 @@ export default function MockTestAttempt() {
               answers={answers}
               writingEssay={Object.values(writingEssays).join('\n\n')}
               speakingRecordings={speakingRecordings}
-              onNavigateSection={(sec) => {
-                setActiveSection(sec);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
+              onNavigateSection={goToSection}
               onSubmitTest={handleSubmitTest}
               isSubmitting={isSubmitting}
             />
@@ -559,10 +566,7 @@ export default function MockTestAttempt() {
               <button
                 type="button"
                 className="btn-vfs btn-vfs-secondary"
-                onClick={() => {
-                  setActiveSection('SPEAKING');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+                onClick={() => goToSection('SPEAKING')}
                 disabled={isSubmitting}
               >
                 ← Back to Speaking

@@ -321,6 +321,11 @@
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
     }
 
+    .step-pill.locked {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     /* Proctoring badge */
     .security-badge-header {
       display: inline-flex;
@@ -2162,7 +2167,7 @@
 
         <div class="btn-row">
           <div></div>
-          <button type="button" class="btn btn-primary" onclick="navToSection('sec-reading');">
+          <button type="button" id="btn-listening-next" class="btn btn-primary" onclick="navToSection('sec-reading');" disabled title="Finish listening to the audio before continuing">
             Next: Reading Section →
           </button>
         </div>
@@ -2710,7 +2715,18 @@
       isWindowHidden: false,
       isWindowBlurred: false,
       toastTimer: null,
-      testSubmitted: false
+      testSubmitted: false,
+      // Guards against the same attempt being submitted twice (a fast
+      // double-click on "Submit Test Now", or that click racing the
+      // 20-minute auto-submit timer). Without this, both calls to
+      // submitFullTest() would run in full, each sending the recordings to
+      // Apps Script again — duplicate audio files in Drive and a duplicate
+      // row in the Sheet for one student.
+      submissionInFlight: false,
+      // Stable per-attempt ID so the server can also recognize and ignore a
+      // resend of the exact same attempt (e.g. a reload-then-resubmit),
+      // even if it arrives through a different browser tab/session.
+      submissionId: ""
     };
 
     /* ==========================================================================
@@ -2889,6 +2905,13 @@
       return state.isSessionActive && state.isExamStarted && state.activeSectionId !== 'sec-registration' && !state.testSubmitted;
     }
 
+    function generateSubmissionId() {
+      if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+        return window.crypto.randomUUID();
+      }
+      return 'sub_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
+    }
+
     function launchListeningFromModal() {
       const modal = document.getElementById('listening-instructions-modal');
       if (modal) modal.style.display = 'none';
@@ -2898,6 +2921,7 @@
       state.isSessionActive = true;
       state.isExamStarted = true;
       state.activeSectionId = 'sec-listening';
+      if (!state.submissionId) state.submissionId = generateSubmissionId();
       const name = state.student.fullName;
       const country = state.student.targetCountry;
 
@@ -3137,6 +3161,7 @@
           },
           listeningAudioPlayed: state.listeningAudioPlayed,
           tabSwitches: state.tabSwitches,
+          submissionId: state.submissionId,
           timestamp: Date.now()
         };
 
@@ -3166,6 +3191,7 @@
         state.activeSectionId = saved.activeSectionId || 'sec-listening';
         state.tabSwitches = saved.tabSwitches || 0;
         state.listeningAudioPlayed = !!saved.listeningAudioPlayed;
+        state.submissionId = saved.submissionId || generateSubmissionId();
 
         // 2. Restore Answers
         if (saved.answers) {
@@ -3261,6 +3287,14 @@
        7. SECTION NAVIGATION & STEPPER (FREE SWITCHING)
        ========================================================================== */
     function navToSection(sectionId) {
+      if (state.activeSectionId === 'sec-listening' && sectionId !== 'sec-listening' && sectionId !== 'sec-success') {
+        const audio = el.listeningAudioElement;
+        if (audio && !audio.ended) {
+          showToast('Please wait until the listening audio has finished.', '⏳');
+          return;
+        }
+      }
+
       state.activeSectionId = sectionId;
 
       document.querySelectorAll('.test-section').forEach(sec => sec.classList.remove('active'));
@@ -3299,6 +3333,12 @@
 
       const order = ['sec-listening', 'sec-reading', 'sec-writing', 'sec-speaking', 'sec-review'];
 
+      // Reading/Writing/Speaking/Review stay visually locked until the
+      // Listening audio has played to the end — matches the actual block in
+      // navToSection() below, which this only mirrors for the UI.
+      const audio = el.listeningAudioElement;
+      const listeningLocked = !(audio && audio.ended);
+
       order.forEach((sec) => {
         const pill = document.getElementById(pillMap[sec]);
         if (!pill) return;
@@ -3307,6 +3347,7 @@
         if (sec === sectionId) {
           pill.classList.add('active');
         }
+        pill.classList.toggle('locked', sec !== 'sec-listening' && listeningLocked);
       });
     }
 
@@ -3738,6 +3779,14 @@
         noticeBanner.style.color = '#166534';
         noticeBanner.innerHTML = '✅ <strong>Audio Finished:</strong> You can review your answers or continue to other sections using the top navigation.';
       }
+
+      const nextBtn = document.getElementById('btn-listening-next');
+      if (nextBtn) {
+        nextBtn.disabled = false;
+        nextBtn.title = '';
+      }
+      updateStepperPills(state.activeSectionId);
+
       saveSession();
     }
 
@@ -4032,13 +4081,24 @@
     }
 
     async function submitFullTest() {
+      // Block a second call outright — whether that's a fast double-click on
+      // "Submit Test Now", or that click racing the 20-minute auto-submit
+      // timer. Either would otherwise re-send the same recordings and create
+      // duplicate Drive files + a duplicate Sheet row for this student.
+      if (state.testSubmitted || state.submissionInFlight) return;
+      state.submissionInFlight = true;
+      if (el.btnFinalSubmit) el.btnFinalSubmit.disabled = true;
+
       updateReviewSummary();
 
       // Clear exam timer
       if (state.examTimer.timerId) clearInterval(state.examTimer.timerId);
       if (state.listening.readingTimerId) clearInterval(state.listening.readingTimerId);
 
+      if (!state.submissionId) state.submissionId = generateSubmissionId();
+
       const payload = {
+        submissionId: state.submissionId,
         timestamp: new Date().toISOString(),
         fullName: state.student.fullName || "Anonymous Candidate",
         email: state.student.email || "no-email@example.com",
@@ -4057,10 +4117,15 @@
       // Show loading overlay
       el.loadingOverlay.classList.add('active');
 
-      // Clear session from storage so fresh test can be initiated subsequently
-      state.testSubmitted = true;
-      state.isSessionActive = false;
-      localStorage.removeItem(CONFIG.STORAGE_KEY);
+      // Only clear the active session once we know the submission actually
+      // went through — not before. Marking it "submitted" too early (as this
+      // used to do) meant a failed request still ended the session and the
+      // student had no real way to retry.
+      const markSubmitted = () => {
+        state.testSubmitted = true;
+        state.isSessionActive = false;
+        localStorage.removeItem(CONFIG.STORAGE_KEY);
+      };
 
       if (!CONFIG.SCRIPT_URL || CONFIG.SCRIPT_URL.trim() === "") {
         // DEMO MODE
@@ -4068,6 +4133,8 @@
         console.log(JSON.stringify(payload, null, 2));
 
         setTimeout(() => {
+          markSubmitted();
+          state.submissionInFlight = false;
           el.loadingOverlay.classList.remove('active');
           el.successCandidateName.textContent = state.student.fullName;
           el.successCandidateEmail.textContent = state.student.email;
@@ -4087,6 +4154,7 @@
           body: JSON.stringify(payload)
         });
 
+        markSubmitted();
         el.loadingOverlay.classList.remove('active');
         el.successCandidateName.textContent = state.student.fullName;
         el.successCandidateEmail.textContent = state.student.email;
@@ -4095,7 +4163,10 @@
       } catch (err) {
         console.error('Submission fetch error:', err);
         el.loadingOverlay.classList.remove('active');
-        alert('There was an issue submitting your test to the server. Please check your internet connection or contact Vectra Foreign Services support.');
+        if (el.btnFinalSubmit) el.btnFinalSubmit.disabled = false;
+        alert('There was an issue submitting your test to the server. Please check your internet connection, then click "Submit Test Now" again.');
+      } finally {
+        state.submissionInFlight = false;
       }
     }
   </script>

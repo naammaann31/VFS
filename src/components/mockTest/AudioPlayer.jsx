@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-export default function AudioPlayer({ audioUrl, maxPlays = 2, autoPrepSeconds = 30 }) {
+export default function AudioPlayer({ audioUrl, maxPlays = 2, autoPrepSeconds = 30, onEnded }) {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playCount, setPlayCount] = useState(0);
@@ -69,6 +69,10 @@ export default function AudioPlayer({ audioUrl, maxPlays = 2, autoPrepSeconds = 
   const handleEnded = () => {
     setIsPlaying(false);
     setProgress(100);
+    // Lets the parent know the track has been heard in full, so it can unlock
+    // moving on to the next section (a candidate must not be able to skip the
+    // Listening module just by clicking "Next" before the audio finishes).
+    if (onEnded) onEnded();
   };
 
   const formatTime = (secs) => {

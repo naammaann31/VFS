@@ -8,13 +8,14 @@ const SECTIONS = [
   { id: 'REVIEW', label: '5. Review & Submit', icon: '📋' }
 ];
 
-export default function SectionNavigator({ currentSection, onSelectSection }) {
+export default function SectionNavigator({ currentSection, onSelectSection, lockedSections = [] }) {
   return (
     <div className="stepper-nav-bar">
       <div className="stepper-container">
         {SECTIONS.map((sec) => {
           const isActive = sec.id === currentSection;
-          const pillClass = `stepper-pill ${isActive ? 'active' : ''}`;
+          const isLocked = lockedSections.includes(sec.id);
+          const pillClass = `stepper-pill ${isActive ? 'active' : ''} ${isLocked ? 'locked' : ''}`;
 
           return (
             <button
@@ -22,8 +23,13 @@ export default function SectionNavigator({ currentSection, onSelectSection }) {
               className={pillClass}
               onClick={() => onSelectSection(sec.id)}
               type="button"
-              title={`Switch to ${sec.label}`}
+              title={
+                isLocked
+                  ? 'Finish listening to the audio before continuing'
+                  : `Switch to ${sec.label}`
+              }
             >
+              {isLocked && <span aria-hidden="true">🔒</span>}
               <span>{sec.icon}</span>
               <span>{sec.label}</span>
             </button>

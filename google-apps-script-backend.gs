@@ -162,116 +162,165 @@ function doPost(e) {
       }
     }
 
-    // 1. Get or Create Spreadsheet & "Submissions" Sheet
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName("Submissions");
-
-    if (!sheet) {
-      sheet = ss.insertSheet("Submissions");
-      var headers = [
-        "Timestamp",
-        "Full Name",
-        "Email",
-        "Phone / WhatsApp",
-        "Target Country",
-        "Listening Q1",
-        "Listening Q2",
-        "Listening Q3",
-        "Reading Q1",
-        "Reading Q2",
-        "Reading Q3",
-        "Writing Essay",
-        "Writing Word Count",
-        "Speaking Q1 Link",
-        "Speaking Q2 Link",
-        "Band Score",
-        "Checked By"
-      ];
-      sheet.appendRow(headers);
-      sheet.setFrozenRows(1);
-
-      // Format header row style
-      var headerRange = sheet.getRange(1, 1, 1, headers.length);
-      headerRange.setBackground("#1C2B4B");
-      headerRange.setFontColor("#FFFFFF");
-      headerRange.setFontWeight("bold");
+    // 1. Idempotency guard — the page itself now blocks a second click or an
+    // auto-submit/manual-submit race client-side, but that only protects a
+    // single browser tab. This is the server-side backstop: if the exact same
+    // attempt (same submissionId) was already processed in the last 6 hours —
+    // e.g. the student's connection stalled, they reloaded, and the page
+    // re-sent the same attempt — skip re-saving it a second time. Older page
+    // loads that predate this fix won't send a submissionId; those fall back
+    // to the previous (unprotected) behavior for that one request only.
+    var submissionId = (payload.submissionId || "").toString().trim();
+    var cache = CacheService.getScriptCache();
+    if (submissionId) {
+      if (cache.get("SUBMITTED_" + submissionId)) {
+        return createJsonResponse(true, "Submission already received — skipped duplicate.");
+      }
     }
 
-    // 2. Locate or Create Google Drive Folder for Audio Recordings
-    var folder = getOrCreateDriveFolder(FOLDER_NAME);
+    // 2. Serialize the Sheet/Drive writes below. Apps Script can run multiple
+    // doPost() executions concurrently (e.g. two different students
+    // submitting seconds apart); without a lock, two executions can both see
+    // "no folder yet" and each create one (duplicate folders), or both
+    // append a row at the same moment and clobber each other.
+    var lock = LockService.getScriptLock();
+    lock.waitLock(20000);
 
-    // 3. Process & Save Speaking Audio Recordings
-    var studentCleanName = sanitizeFileName(payload.fullName || "Candidate");
-    var dateStr = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd_HHmm");
-
-    var speakingQ1Url = saveAudioFile(
-      folder,
-      payload.speaking ? payload.speaking.q1 : null,
-      studentCleanName + "_" + dateStr + "_Q1"
-    );
-
-    var speakingQ2Url = saveAudioFile(
-      folder,
-      payload.speaking ? payload.speaking.q2 : null,
-      studentCleanName + "_" + dateStr + "_Q2"
-    );
-
-    // 4. Construct Row Data Array
-    var essayText = payload.writing ? (payload.writing.essay || "") : "";
-    var essayWords = payload.writing ? (payload.writing.wordCount || 0) : 0;
-
-    var rowData = [
-      payload.timestamp || new Date().toISOString(),
-      payload.fullName || "",
-      payload.email || "",
-      payload.phone || "",
-      payload.targetCountry || "",
-
-      payload.listening ? payload.listening.q1 : "",
-      payload.listening ? payload.listening.q2 : "",
-      payload.listening ? payload.listening.q3 : "",
-
-      payload.reading ? payload.reading.q1 : "",
-      payload.reading ? payload.reading.q2 : "",
-      payload.reading ? payload.reading.q3 : "",
-
-      essayText,
-      essayWords,
-
-      speakingQ1Url || "Not Recorded",
-      speakingQ2Url || "Not Recorded",
-
-      "", // Band Score (To be filled manually by Vectra team)
-      ""  // Checked By (To be filled manually by Vectra team)
-    ];
-
-    // Append to Sheet
-    sheet.appendRow(rowData);
-
-    // Auto-Format Google Sheet for clean essay readability
     try {
-      var lastRow = sheet.getLastRow();
-      sheet.setColumnWidth(1, 140);  // Timestamp
-      sheet.setColumnWidth(2, 160);  // Full Name
-      sheet.setColumnWidth(3, 200);  // Email
-      sheet.setColumnWidth(4, 130);  // Phone
-      sheet.setColumnWidth(5, 120);  // Target Country
-      sheet.setColumnWidth(12, 450); // Writing Essay (Wide readable column)
-      sheet.setColumnWidth(13, 110); // Word Count
-      sheet.setColumnWidth(14, 180); // Speaking Q1
-      sheet.setColumnWidth(15, 180); // Speaking Q2
-      sheet.setColumnWidth(16, 100); // Band Score
-      sheet.setColumnWidth(17, 120); // Checked By
+      // Re-check under the lock — if a near-simultaneous duplicate request
+      // for this exact attempt was already mid-flight, it will have marked
+      // the cache key by the time this one gets the lock.
+      if (submissionId && cache.get("SUBMITTED_" + submissionId)) {
+        return createJsonResponse(true, "Submission already received — skipped duplicate.");
+      }
 
-      // Enable text-wrapping on the entire Writing Essay column
-      sheet.getRange(1, 12, lastRow, 1).setWrap(true);
-      // Set top vertical alignment across all rows
-      sheet.getRange(1, 1, lastRow, rowData.length).setVerticalAlignment("top");
-    } catch (fmtErr) {
-      Logger.log("Format error: " + fmtErr.toString());
+      // Get or Create Spreadsheet & "Submissions" Sheet
+      var ss = SpreadsheetApp.getActiveSpreadsheet();
+      var sheet = ss.getSheetByName("Submissions");
+
+      if (!sheet) {
+        sheet = ss.insertSheet("Submissions");
+        var headers = [
+          "Timestamp",
+          "Full Name",
+          "Email",
+          "Phone / WhatsApp",
+          "Target Country",
+          "Listening Q1",
+          "Listening Q2",
+          "Listening Q3",
+          "Reading Q1",
+          "Reading Q2",
+          "Reading Q3",
+          "Writing Essay",
+          "Writing Word Count",
+          "Speaking Q1 Link",
+          "Speaking Q2 Link",
+          "Band Score",
+          "Checked By"
+        ];
+        sheet.appendRow(headers);
+        sheet.setFrozenRows(1);
+
+        // Format header row style
+        var headerRange = sheet.getRange(1, 1, 1, headers.length);
+        headerRange.setBackground("#1C2B4B");
+        headerRange.setFontColor("#FFFFFF");
+        headerRange.setFontWeight("bold");
+      }
+
+      // Locate or Create Google Drive Folder for Audio Recordings
+      var folder = getOrCreateDriveFolder(FOLDER_NAME);
+
+      // Process & Save Speaking Audio Recordings
+      var studentCleanName = sanitizeFileName(payload.fullName || "Candidate");
+      var dateStr = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd_HHmm");
+
+      var speakingQ1Url = saveAudioFile(
+        folder,
+        payload.speaking ? payload.speaking.q1 : null,
+        studentCleanName + "_" + dateStr + "_Q1"
+      );
+
+      var speakingQ2Url = saveAudioFile(
+        folder,
+        payload.speaking ? payload.speaking.q2 : null,
+        studentCleanName + "_" + dateStr + "_Q2"
+      );
+
+      // Construct Row Data Array
+      var essayText = payload.writing ? (payload.writing.essay || "") : "";
+      var essayWords = payload.writing ? (payload.writing.wordCount || 0) : 0;
+
+      // Server-formatted, human-readable timestamp (e.g. "2026-10-09 05:57:21")
+      // instead of a raw ISO string from the client — reads cleanly in Sheets
+      // and isn't at the mercy of the student's device clock.
+      var formattedTimestamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm:ss");
+
+      var rowData = [
+        formattedTimestamp,
+        payload.fullName || "",
+        payload.email || "",
+        payload.phone || "",
+        payload.targetCountry || "",
+
+        payload.listening ? payload.listening.q1 : "",
+        payload.listening ? payload.listening.q2 : "",
+        payload.listening ? payload.listening.q3 : "",
+
+        payload.reading ? payload.reading.q1 : "",
+        payload.reading ? payload.reading.q2 : "",
+        payload.reading ? payload.reading.q3 : "",
+
+        essayText,
+        essayWords,
+
+        speakingQ1Url || "Not Recorded",
+        speakingQ2Url || "Not Recorded",
+
+        "", // Band Score (To be filled manually by Vectra team)
+        ""  // Checked By (To be filled manually by Vectra team)
+      ];
+
+      // Append to Sheet
+      sheet.appendRow(rowData);
+
+      // Remember this attempt as saved so a retried/duplicate request for the
+      // same submissionId within the next 6 hours is skipped instead of
+      // creating a second row and a second set of audio files.
+      if (submissionId) {
+        cache.put("SUBMITTED_" + submissionId, "1", 21600);
+      }
+
+      // Auto-Format Google Sheet for clean essay readability
+      try {
+        var lastRow = sheet.getLastRow();
+        sheet.setColumnWidth(1, 140);  // Timestamp
+        sheet.setColumnWidth(2, 160);  // Full Name
+        sheet.setColumnWidth(3, 200);  // Email
+        sheet.setColumnWidth(4, 130);  // Phone
+        sheet.setColumnWidth(5, 120);  // Target Country
+        sheet.setColumnWidth(12, 450); // Writing Essay (Wide readable column)
+        sheet.setColumnWidth(13, 110); // Word Count
+        sheet.setColumnWidth(14, 180); // Speaking Q1
+        sheet.setColumnWidth(15, 180); // Speaking Q2
+        sheet.setColumnWidth(16, 100); // Band Score
+        sheet.setColumnWidth(17, 120); // Checked By
+
+        // Enable text-wrapping on the entire Writing Essay column
+        sheet.getRange(1, 12, lastRow, 1).setWrap(true);
+        // Set top vertical alignment across all rows
+        sheet.getRange(1, 1, lastRow, rowData.length).setVerticalAlignment("top");
+      } catch (fmtErr) {
+        Logger.log("Format error: " + fmtErr.toString());
+      }
+    } finally {
+      lock.releaseLock();
     }
 
-    // 5. Send Notification Email to Evaluation Desk with Full Formatted Essay
+    // Send Notification Email to Evaluation Desk with Full Formatted Essay.
+    // Kept outside the lock — sending mail doesn't touch the Sheet or Drive,
+    // so there's no reason to make other concurrent submissions wait on it.
     var recipientEmail = payload.notifyEmail || NOTIFY_EMAIL;
     if (recipientEmail && recipientEmail.indexOf("@") !== -1) {
       sendNotificationEmail(recipientEmail, payload, speakingQ1Url, speakingQ2Url);
