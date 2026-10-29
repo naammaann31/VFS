@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
+
+// Lets a program card keep every existing motion.div animation prop
+// (layout, whileInView, exit...) while rendering as a real, navigable link
+// for the one card (IELTS Academic) that has a dedicated page.
+const MotionLink = motion(Link);
 import Navbar from "../components/Navbar.jsx";
 import Seo from "../components/Seo.jsx";
 import ServiceCTA from "../components/ServiceCTA.jsx";
@@ -178,12 +183,14 @@ const programs = [
     icon: <GraduationIcon />,
     title: "IELTS Academic",
     desc: "For students applying to international universities, colleges, and academic programs.",
+    path: "/resources/ielts-academic",
   },
   {
     category: "Standardized Tests",
     icon: <BriefcaseIcon />,
     title: "IELTS General Training",
     desc: "For applicants preparing for work, migration, PR, or general immigration pathways.",
+    path: "/resources/ielts-general-training",
   },
   {
     category: "Standardized Tests",
@@ -196,6 +203,7 @@ const programs = [
     icon: <MonitorIcon />,
     title: "PTE Academic",
     desc: "For applicants who prefer a computer-based English test accepted by many academic and migration pathways.",
+    path: "/resources/pte-academic",
   },
   {
     category: "Standardized Tests",
@@ -208,36 +216,49 @@ const programs = [
     icon: <GraduationIcon />,
     title: "German Language",
     desc: "For students, professionals, and applicants exploring study, work, or relocation options in Germany or German-speaking regions.",
+    path: "/contact",
+    linkHint: "Get Started →",
   },
   {
     category: "Foreign Languages",
     icon: <GraduationIcon />,
     title: "French Language",
     desc: "For applicants exploring destinations where French language ability may support academic, professional, or migration goals.",
+    path: "/contact",
+    linkHint: "Get Started →",
   },
   {
     category: "Specialized Support",
     icon: <MicIcon />,
     title: "Speaking Practice",
     desc: "Focused sessions to improve fluency, confidence, pronunciation, and response structure.",
+    path: "/contact",
+    linkHint: "Get Started →",
   },
   {
     category: "Specialized Support",
     icon: <PenIcon />,
     title: "Writing Support",
     desc: "Guidance on writing tasks, essay structure, grammar clarity, and test-specific scoring expectations.",
+    path: "/contact",
+    linkHint: "Get Started →",
   },
   {
     category: "Specialized Support",
     icon: <CheckSquareIcon />,
     title: "Mock Tests",
     desc: "Practice tests to help applicants understand timing, question types, and performance gaps.",
+    path: "/ielts-mock-test.html",
+    external: true,
+    linkHint: "Take the Test →",
   },
   {
     category: "Specialized Support",
     icon: <TargetIcon />,
     title: "Test Strategy Sessions",
     desc: "Guidance on test format, preparation planning, target score strategy, and improvement areas.",
+    path: "/contact",
+    linkHint: "Get Started →",
   },
 ];
 
@@ -424,23 +445,55 @@ const Resources = () => {
 
           <motion.div layout className="programs-grid">
             <AnimatePresence mode="popLayout">
-              {filteredPrograms.map((program, index) => (
-                <motion.div
-                  key={program.title}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9, y: 30 }}
-                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.4, delay: (index % 6) * 0.1 }}
-                  className="program-card"
-                >
-                  <div className="program-icon-wrapper">{program.icon}</div>
-                  <div className="program-category-label">{program.category}</div>
-                  <h3>{program.title}</h3>
-                  <p>{program.desc}</p>
-                </motion.div>
-              ))}
+              {filteredPrograms.map((program, index) => {
+                const cardProps = {
+                  layout: true,
+                  initial: { opacity: 0, scale: 0.9, y: 30 },
+                  whileInView: { opacity: 1, scale: 1, y: 0 },
+                  exit: { opacity: 0, scale: 0.9 },
+                  viewport: { once: true, margin: "-50px" },
+                  transition: { duration: 0.4, delay: (index % 6) * 0.1 },
+                  className: `program-card${program.path ? " program-card-linked" : ""}`,
+                };
+
+                const cardContent = (
+                  <>
+                    <div className="program-icon-wrapper">{program.icon}</div>
+                    <div className="program-category-label">{program.category}</div>
+                    <h3>{program.title}</h3>
+                    <p>{program.desc}</p>
+                    {program.path && (
+                      <span className="program-card-link-hint">
+                        {program.linkHint || "View Full Guide →"}
+                      </span>
+                    )}
+                  </>
+                );
+
+                if (program.external) {
+                  return (
+                    <motion.a
+                      key={program.title}
+                      href={program.path}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      {...cardProps}
+                    >
+                      {cardContent}
+                    </motion.a>
+                  );
+                }
+
+                return program.path ? (
+                  <MotionLink key={program.title} to={program.path} {...cardProps}>
+                    {cardContent}
+                  </MotionLink>
+                ) : (
+                  <motion.div key={program.title} {...cardProps}>
+                    {cardContent}
+                  </motion.div>
+                );
+              })}
             </AnimatePresence>
           </motion.div>
         </div>

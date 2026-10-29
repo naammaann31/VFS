@@ -15,6 +15,9 @@ const Contact = lazy(() => import("./pages/Contact.jsx"));
 const About = lazy(() => import("./pages/About.jsx"));
 const CheckEligibility = lazy(() => import("./pages/CheckEligibility.jsx"));
 const Resources = lazy(() => import("./pages/Resources.jsx"));
+const IeltsAcademic = lazy(() => import("./pages/IeltsAcademic.jsx"));
+const IeltsGeneralTraining = lazy(() => import("./pages/IeltsGeneralTraining.jsx"));
+const PteAcademic = lazy(() => import("./pages/PteAcademic.jsx"));
 const ThankYou = lazy(() => import("./pages/ThankYou.jsx"));
 const TermsOfService = lazy(() => import("./pages/TermsOfService.jsx"));
 const ComplianceDisclaimer = lazy(() => import("./pages/ComplianceDisclaimer.jsx"));
@@ -52,6 +55,9 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/resources" element={<Resources />} />
+            <Route path="/resources/ielts-academic" element={<IeltsAcademic />} />
+            <Route path="/resources/ielts-general-training" element={<IeltsGeneralTraining />} />
+            <Route path="/resources/pte-academic" element={<PteAcademic />} />
             <Route path="/check-eligibility" element={<CheckEligibility />} />
             <Route
               path="/thank-you"

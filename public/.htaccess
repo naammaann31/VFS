@@ -36,7 +36,7 @@
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-l
-  RewriteRule ^(about|services|resources|contact|check-eligibility|thank-you|terms-of-service|compliance|cookie-policy|mock-tests|mock-tests/(attempt|result)/[^/]+|admin/login|admin/mock-tests|country/(canada|usa|australia|uk|europe|nz|uae))$ /index.html [L]
+  RewriteRule ^(about|services|resources|resources/ielts-academic|resources/ielts-general-training|resources/pte-academic|contact|check-eligibility|thank-you|terms-of-service|compliance|cookie-policy|mock-tests|mock-tests/(attempt|result)/[^/]+|admin/login|admin/mock-tests|country/(canada|usa|australia|uk|europe|nz|uae))$ /index.html [L]
 
   # Anything else is not rewritten, so the server answers 404 on its own.
 </IfModule>

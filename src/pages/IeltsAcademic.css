@@ -1,0 +1,460 @@
+/* Same visual language as the legal/resources pages: light dotted background,
+   white cards with soft shadows, Inter body copy, dark-ink headings. Kept as
+   its own stylesheet (rather than reusing LegalDocument.css) because this
+   page needs its own hero quote and a real data table, not the legal pages'
+   TOC/sidebar layout. */
+.ielts-academic-page {
+  background-color: #f8fafc;
+  background-image: radial-gradient(#a1a1aa 1px, #0000 1px);
+  background-size: 30px 30px;
+  min-height: 100vh;
+  font-family: Inter, sans-serif;
+}
+
+/* Hero */
+.ielts-academic-hero {
+  justify-content: center;
+  width: 100%;
+  padding: clamp(120px, 15vw, 160px) 20px 60px;
+  display: flex;
+}
+
+.ielts-academic-hero-inner {
+  text-align: center;
+  width: 100%;
+  max-width: 820px;
+}
+
+.ielts-academic-back-row {
+  justify-content: flex-start;
+  margin-bottom: 28px;
+  display: flex;
+}
+
+.ielts-academic-back-button {
+  color: #050a14;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #0000000a;
+  border-radius: 999px;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px 10px 15px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  transition: background-color 0.2s, color 0.2s, transform 0.2s;
+  display: inline-flex;
+  box-shadow: 0 6px 20px #0000000a;
+}
+
+.ielts-academic-back-button:hover {
+  color: #fff;
+  background: #050a14;
+  transform: translateY(-2px);
+}
+
+/* The centred opening quote, deliberately the first thing on the page after
+   the back button. */
+.ielts-academic-quote {
+  color: #050a14;
+  letter-spacing: -0.01em;
+  margin: 0 auto 28px;
+  max-width: 640px;
+  font-size: clamp(22px, 3.2vw, 32px);
+  font-weight: 800;
+  font-style: italic;
+  line-height: 1.3;
+  position: relative;
+}
+
+.ielts-academic-quote::before,
+.ielts-academic-quote::after {
+  content: "";
+  background: #d97706;
+  border-radius: 999px;
+  width: 48px;
+  height: 3px;
+  margin: 0 auto 18px;
+  display: block;
+}
+
+.ielts-academic-quote::after {
+  margin: 18px auto 0;
+}
+
+.ielts-academic-hero h1 {
+  color: #050a14;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  font-size: clamp(32px, 4.6vw, 48px);
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.ielts-academic-subtitle {
+  color: #4a5568;
+  margin-bottom: 24px;
+  font-size: clamp(16px, 2vw, 19px);
+  line-height: 1.6;
+}
+
+.ielts-academic-meta {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  display: flex;
+}
+
+.ielts-academic-meta-pill {
+  color: #475569;
+  background: #fff;
+  border: 1px solid #0000000a;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 6px 20px #0000000a;
+}
+
+/* Body / sections */
+.ielts-academic-body {
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 20px 5% 100px;
+}
+
+.ielts-academic-section {
+  background: #fff;
+  border: 1px solid #0000000a;
+  border-radius: 24px;
+  margin-bottom: 20px;
+  padding: 40px 44px;
+  box-shadow: 0 10px 40px #0000000d;
+}
+
+.ielts-academic-section-header {
+  border-bottom: 1px solid #e2e8f0;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  display: flex;
+}
+
+.ielts-academic-section-number {
+  color: #fff;
+  background: #050a14;
+  border-radius: 10px;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  width: 38px;
+  height: 38px;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+}
+
+.ielts-academic-section-title {
+  color: #050a14;
+  letter-spacing: -0.02em;
+  font-size: clamp(19px, 2.2vw, 24px);
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.ielts-academic-paragraph {
+  color: #475569;
+  margin-bottom: 16px;
+  font-size: 15.5px;
+  line-height: 1.75;
+}
+
+.ielts-academic-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.ielts-academic-subheading {
+  color: #050a14;
+  margin: 26px 0 14px;
+  font-size: 16.5px;
+  font-weight: 800;
+}
+
+.ielts-academic-subheading:first-child {
+  margin-top: 0;
+}
+
+.ielts-academic-feature-list {
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.ielts-academic-feature-list li {
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.7;
+  padding-left: 20px;
+  position: relative;
+}
+
+.ielts-academic-feature-list li::before {
+  content: "";
+  background: #d97706;
+  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  position: absolute;
+  top: 9px;
+  left: 0;
+}
+
+.ielts-academic-feature-list li strong {
+  color: #050a14;
+}
+
+.ielts-academic-feature-list li em {
+  color: #92400e;
+  background: #fffbeb;
+  border-radius: 6px;
+  padding: 1px 4px;
+  font-style: normal;
+}
+
+/* Score conversion table */
+.ielts-academic-table-wrapper {
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  margin-top: 4px;
+  overflow: hidden auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ielts-academic-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 480px;
+  font-size: 14.5px;
+}
+
+.ielts-academic-table thead th {
+  color: #fff;
+  text-align: left;
+  background: #050a14;
+  padding: 14px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.ielts-academic-table tbody td {
+  color: #334155;
+  border-top: 1px solid #e2e8f0;
+  padding: 13px 20px;
+  font-weight: 500;
+}
+
+.ielts-academic-table tbody td:first-child {
+  color: #050a14;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.ielts-academic-table tbody tr:nth-child(odd) {
+  background: #f8fafc;
+}
+
+/* Numbered registration steps */
+.ielts-academic-steps {
+  counter-reset: ielts-step;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.ielts-academic-steps li {
+  color: #475569;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 15px;
+  line-height: 1.7;
+  display: flex;
+}
+
+.ielts-academic-steps li::before {
+  counter-increment: ielts-step;
+  content: counter(ielts-step);
+  color: #050a14;
+  text-align: center;
+  background: #f1f5f9;
+  border-radius: 50%;
+  flex-shrink: 0;
+  justify-content: center;
+  align-items: center;
+  width: 26px;
+  height: 26px;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 26px;
+  display: flex;
+}
+
+.ielts-academic-link {
+  color: #050a14;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ielts-academic-link:hover {
+  opacity: 0.7;
+}
+
+/* Closing CTA */
+.ielts-academic-cta {
+  text-align: center;
+  background: linear-gradient(135deg, #1c2b4b 0%, #142038 100%);
+  border-radius: 24px;
+  margin-top: 36px;
+  padding: 48px 40px;
+  box-shadow: 0 15px 40px #0f172a33;
+}
+
+.ielts-academic-cta h2 {
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 800;
+}
+
+.ielts-academic-cta p {
+  color: #cbd5e1;
+  max-width: 560px;
+  margin: 0 auto 28px;
+  font-size: 15.5px;
+  line-height: 1.7;
+}
+
+.ielts-academic-cta-buttons {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  display: flex;
+}
+
+.ielts-academic-cta-btn {
+  border-radius: 999px;
+  padding: 14px 30px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  display: inline-block;
+}
+
+.ielts-academic-cta-btn.primary {
+  color: #142038;
+  background: #d97706;
+  box-shadow: 0 8px 20px #d9770666;
+}
+
+.ielts-academic-cta-btn.primary:hover {
+  background: #f59e0b;
+  transform: translateY(-2px);
+}
+
+.ielts-academic-cta-btn.secondary {
+  color: #fff;
+  background: #0000;
+  border: 2px solid #ffffff4d;
+}
+
+.ielts-academic-cta-btn.secondary:hover {
+  background: #ffffff1a;
+  border-color: #fff;
+  transform: translateY(-2px);
+}
+
+@media (width<=768px) {
+  .ielts-academic-section {
+    border-radius: 20px;
+    padding: 30px 24px;
+  }
+
+  .ielts-academic-section-header {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .ielts-academic-section-number {
+    width: 34px;
+    height: 34px;
+    font-size: 12px;
+  }
+
+  .ielts-academic-cta {
+    padding: 36px 24px;
+  }
+}
+
+@media (width<=480px) {
+  .ielts-academic-hero {
+    padding: 110px 16px 40px;
+  }
+
+  .ielts-academic-back-row {
+    margin-bottom: 20px;
+  }
+
+  .ielts-academic-quote {
+    font-size: clamp(19px, 5.5vw, 24px);
+  }
+
+  .ielts-academic-body {
+    padding: 16px 16px 60px;
+  }
+
+  .ielts-academic-section {
+    padding: 26px 20px;
+  }
+
+  .ielts-academic-cta-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .ielts-academic-cta-buttons {
+    flex-direction: column;
+  }
+}
+
+@media (width<=360px) {
+  .ielts-academic-hero {
+    padding: 100px 12px 32px;
+  }
+
+  .ielts-academic-body {
+    padding: 12px 12px 50px;
+  }
+
+  .ielts-academic-section {
+    padding: 22px 16px;
+    border-radius: 16px;
+  }
+
+  .ielts-academic-paragraph,
+  .ielts-academic-feature-list li,
+  .ielts-academic-steps li {
+    font-size: 14.5px;
+  }
+}

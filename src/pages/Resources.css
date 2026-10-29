@@ -202,6 +202,19 @@
   font-size: 15px;
   line-height: 1.6;
 }
+.program-card-linked {
+  cursor: pointer;
+}
+.program-card-link-hint {
+  color: #3b82f6;
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  transition: transform 0.3s;
+}
+.program-card-linked:hover .program-card-link-hint {
+  transform: translateX(4px);
+}
 .specialized-services-section {
   padding: 0 0 120px;
 }
